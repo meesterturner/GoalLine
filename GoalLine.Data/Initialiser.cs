@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using GoalLine.Structures;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Net.Http.Headers;
+using GoalLine.Structures;
+using GoalLine.Resources;
 
 namespace GoalLine.Data
 {
@@ -32,11 +30,14 @@ namespace GoalLine.Data
         {
             const int MaxTeams = 16;
 
-            string[] TeamFirstName = new string[] {"Grimsby","Lincoln","Scunthorpe","Hull", "Manchester", "Norwich", "Reading","Accrington",
-                                                   "Sheffield", "Leeds","Nottingham","Croydon","Maidstone", "Peterborough", "Swindon", "Southampton",
-                                                   "Cardiff", "Brighton", "Leicester", "Oxford", "Newcastle", "York", "Birmingham"};
+            //string[] TeamFirstName = new string[] {"Grimsby","Lincoln","Scunthorpe","Hull", "Manchester", "Norwich", "Reading","Accrington",
+            //                                       "Sheffield", "Leeds","Nottingham","Croydon","Maidstone", "Peterborough", "Swindon", "Southampton",
+            //                                       "Cardiff", "Brighton", "Leicester", "Oxford", "Newcastle", "York", "Birmingham"};
 
-            string[] TeamLastName = new string[] { "Town", "City", "United", "Borough", "County", "Rovers" };
+            //string[] TeamLastName = new string[] { "Town", "City", "United", "Borough", "County", "Rovers" };
+
+            string[] TeamFirstName = TextResources.TeamList(TeamListResource.Place, ResourceLanguage.en);
+            string[] TeamLastName = TextResources.TeamList(TeamListResource.Suffix, ResourceLanguage.en);
 
             Dictionary<string, bool> UsedNames = new Dictionary<string, bool>();
 
@@ -78,26 +79,8 @@ namespace GoalLine.Data
         {
             const int MaxPlayers = 5000;
 
-            // TODO: This will be replaced with something better later.
-            string[] FirstName = new string[] {"Paul","Chris","Andrew","Daniel", "Alex", "Nick","Lee","Luke","David","Duncan","Jack","Michael",
-                                               "Joseph","Richard","John","Mark","Stuart","Gordon","Alan","Graham","Connor", "Martin", "Matt",
-                                               "Steve", "Thomas", "Tony", "Wayne", "Phil", "Jason", "Lewis", "James", "Scott", "Bruce", "Gary", 
-                                               "Glen", "Vince", "Barry", "Bailey", "Ashley", "Lucas", "Shaun", "Dennis", "Kenny", "Eric", "Aaron",
-                                               "Ewan", "Malcolm", "Adam", "Harry", "Harvey", "Sam", "Tim", "Neil" };
-
-            string[] LastName = new string[] { "Turner","Gibson","Smith","Watson","Edwards","Johnson","Barley","Swinburn","Parker",
-                                               "Reynolds","Hewson","Ibbotson","Read","Bradley","Shaw","Jones", "Palmer", "Burton", "Riley",
-                                               "Redford","Bell","Ross","Blackburn","Beckett","Gray", "Hill", "Ferguson","Charlton","Thompson",
-                                               "Wilkinson","Playford","Bevan", "Taylor", "Brown", "Armitage", "Hewins","Everitt", "Forrester",
-                                               "Walker", "Lee", "Wilson","Goddard", "Boardman", "Wells", "Spencer", "Hayes", "Jackson", "Lovell",
-                                               "Lawson", "Cole", "Manford", "Curtis", "Lewis", "Lee","Severn", "Miller", "Carter","Goodwin", 
-                                               "Ward", "Dugard", "Price", "Ridley", "James", "King", "Scott", "Clark", "Lamb", "Leaning", "Wayne",
-                                               "Sharp", "Law", "Hardy", "Campbell", "Swales", "Grayson", "Sandiford", "Downing", "Blunt", "Waters",
-                                               "Newmarch", "Thomas", "Speed", "Henshaw", "Thurley", "Rusling", "Byron", "Schofield", "Davidson",
-                                               "Steel", "North", "West", "Barney", "Page", "Mitchell", "Harvey", "Dixon", "Cox", "Chase", "Hunter",
-                                               "Newton", "Simpson", "Radley", "Vessey", "Russell", "Kirkham", "O'Brien", "O'Sullivan", "Harris",
-                                               "Banks", "Ford", "Fisher", "Lane", "Messenger", "Douglas", "Moore", "Wright", "Chamberlain",
-                                               "Wood", "Rees", "Young", "Butler", "Jenkinson", "Ramsey", "Oldroyd", "Barker", "Hammond", "Richardson"};
+            string[] FirstName = TextResources.NameList(NameListResource.FirstNames, ResourceLanguage.en);
+            string[] LastName = TextResources.NameList(NameListResource.LastNames, ResourceLanguage.en);
 
 
             Random rand = new Random();
