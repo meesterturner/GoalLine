@@ -43,9 +43,9 @@ namespace GoalLine.ConsoleApp
             you.Human = true;
             you.DateOfBirth = DateTime.Now.AddYears(-40); // TODO: Get real DOB
             you.Reputation = 50;
-            you.UniqueID = 0; // TODO: "Next Manager ID" function, must edit the assign manager below
 
-            World.Managers.Add(you);
+            ManagerAdapter ma = new ManagerAdapter();
+            ma.AddManager(you);// TODO: "Next Manager ID" function, must edit the assign manager below
 
             Console.WriteLine("");
             Progress("Generating Game World...");
@@ -68,7 +68,7 @@ namespace GoalLine.ConsoleApp
                 mnu.AddColumn(new MenuColumn("Team Name", ConsoleColor.White, 35));
                 mnu.AddExtraKeypress("P", "Preview Team");
             
-                foreach (Team t in World.Teams)
+                foreach (Team t in World.Teams) // TODO: Change this one.
                 {
                     mnu.AddItem(new MenuItem(t.UniqueID.ToString(), new string[] { t.UniqueID.ToString(), t.Name }));
                 }
@@ -107,7 +107,10 @@ namespace GoalLine.ConsoleApp
             {
                 ProcessManager.RunStartOfDay(SaveGameJustLoaded);
 
-                foreach(Manager mgr in World.Managers)
+                ManagerAdapter ma = new ManagerAdapter();
+                List<Manager> HumanManagers = ma.GetHumanManagers();
+
+                foreach(Manager mgr in HumanManagers)
                 {
                     if(mgr.Human)
                     {
@@ -134,11 +137,14 @@ namespace GoalLine.ConsoleApp
                 Console.WriteLine(d);
                 Console.WriteLine("");
 
+                TeamAdapter ta = new TeamAdapter();
+
+
                 foreach(Fixture f in FixList)
                 {
-                    Console.Write(World.Teams[f.TeamIDs[0]].Name);
+                    Console.Write(ta.GetTeam(f.TeamIDs[0]).Name);
                     Console.SetCursorPosition(30, Console.CursorTop);
-                    Console.Write(World.Teams[f.TeamIDs[1]].Name);
+                    Console.Write(ta.GetTeam(f.TeamIDs[1]).Name);
 
                     Console.SetCursorPosition(70, Console.CursorTop);
                     Console.Write(f.TeamIDs[0]);

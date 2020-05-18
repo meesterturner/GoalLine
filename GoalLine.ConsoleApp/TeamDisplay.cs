@@ -18,15 +18,17 @@ namespace GoalLine.ConsoleApp
             while(true)
             {
                 StandardUI gui = new StandardUI();
-                gui.BarText = World.Teams[TeamID].Name;
+                
+                TeamAdapter ta = new TeamAdapter();
+                gui.BarText = ta.GetTeam(TeamID).Name;
                 gui.SetupScreen();
 
                 Menu mnu = new Menu();
                 mnu.AddColumn(new MenuColumn("Name", ConsoleColor.White, 40));
                 mnu.AddColumn(new MenuColumn("Position", ConsoleColor.Yellow, 10));
 
-                TeamAdapter a = new TeamAdapter();
-                List<Player> Players = a.GetPlayersInTeam(TeamID);
+                
+                List<Player> Players = ta.GetPlayersInTeam(TeamID);
 
                 foreach (Player p in Players)
                 {

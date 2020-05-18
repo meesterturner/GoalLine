@@ -57,5 +57,25 @@ namespace GoalLine.Data
 
             return fixtures.ToList();
         }
+
+        public List<Fixture> GetFixturesForLeagueForTeam(int LeagueID, int TeamID)
+        {
+            IEnumerable<Fixture> fixtures =
+                    from f in World.Fixtures
+                    where f.TeamIDs[0] == TeamID || f.TeamIDs[1] == TeamID
+                    orderby f.Date
+                    select f;
+
+            return fixtures.ToList();
+        }
+
+        public int AddLeague(League l)
+        {
+            int NextID = World.Leagues.Count;
+            l.UniqueID = NextID;
+            World.Leagues.Add(l);
+
+            return NextID;
+        }
     }
 }

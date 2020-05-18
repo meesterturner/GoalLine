@@ -21,6 +21,8 @@ namespace GoalLine.Processes
         private static void RegisterAllStandardHandlers()
         {
             RegisterProcessHandler(new SeasonProcesses());
+
+            RegisteredStandardHandlers = true;
         }
 
         public static void RunStartOfDay(bool SaveGameJustLoaded)
@@ -67,7 +69,9 @@ namespace GoalLine.Processes
                         }
            
                     }
+#pragma warning disable CS0168
                     catch (NotImplementedException ex)
+#pragma warning restore CS0168
                     {
                         // Silently fail on a NotImplementedException ONLY, because not all classes will implement something
                     }
@@ -115,7 +119,9 @@ namespace GoalLine.Processes
                         }
 
                     }
+#pragma warning disable CS0168
                     catch (NotImplementedException ex)
+#pragma warning restore CS0168
                     {
                         // Silently fail on a NotImplementedException ONLY, because not all classes will implement something
                     }

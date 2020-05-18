@@ -14,8 +14,15 @@ namespace GoalLine.ConsoleApp
         public void Display()
         {
             StandardUI gui = new StandardUI();
-            gui.BarText = World.Managers[World.CurrentManagerID].Name + " - " + 
-                          World.Teams[World.Managers[World.CurrentManagerID].CurrentTeam].Name;
+            
+            TeamAdapter ta = new TeamAdapter();
+            Team CurrentTeam = ta.GetTeamByManager(World.CurrentManagerID);
+
+            ManagerAdapter ma = new ManagerAdapter();
+            Manager CurrentManager = ma.GetManager(World.CurrentManagerID);
+
+            gui.BarText = CurrentManager.Name + " - " +
+                          CurrentTeam.Name;
             gui.SetupScreen();
 
             Menu mnu = new Menu();
@@ -36,12 +43,12 @@ namespace GoalLine.ConsoleApp
 
                 case "TEAM":
                     TeamDisplay td = new TeamDisplay();
-                    td.TeamID = World.Managers[World.CurrentManagerID].CurrentTeam;
+                    td.TeamID = CurrentManager.CurrentTeam;
                     td.Display();
                     break;
 
                 case "FIX":
-                    throw new NotImplementedException();
+                    throw new NotImplementedException(); // TODO: Show my fixtures
                     break;
 
                 case "QUIT":

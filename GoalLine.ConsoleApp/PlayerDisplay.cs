@@ -16,10 +16,13 @@ namespace GoalLine.ConsoleApp
 
         public void Display()
         {
-            Player p = World.Players[PlayerID];
+            PlayerAdapter pa = new PlayerAdapter();
+            TeamAdapter ta = new TeamAdapter();
+
+            Player p = pa.GetPlayer(PlayerID);
 
             StandardUI gui = new StandardUI();
-            gui.BarText = p.Name + "  (" + World.Teams[p.CurrentTeam].Name + ")";
+            gui.BarText = p.Name + "  (" + ta.GetTeamByPlayer(PlayerID).Name + ")";
             gui.SetupScreen();
 
             string[] DisplayAttributes = new string[] {"Position", "PreferredSide", "DateOfBirth", "", "Agility", "Attitude", "Speed" ,"Stamina", "Wages"};

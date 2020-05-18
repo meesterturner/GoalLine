@@ -28,5 +28,28 @@ namespace GoalLine.Data
             World.Players[PlayerID].CurrentTeam = TeamID;
             World.Teams[TeamID].PlayerIDs.Add(PlayerID);
         }
+
+        public Player GetPlayer(int PlayerID)
+        {
+            return World.Players[PlayerID];
+        }
+
+        public int AddPlayer(Player p)
+        {
+            int NextID = World.Players.Count;
+            p.UniqueID = NextID;
+            World.Players.Add(p);
+
+            return NextID;
+        }
+
+        public List<Player> GetPlayers(int TeamID, PlayerPosition pos, PlayerPositionSide side)
+        {
+            return (from player in World.Players
+                    where player.CurrentTeam == -1 &&
+                          player.Position == pos &&
+                          player.PreferredSide == side
+                    select player).ToList();
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.IO;
 using GoalLine.Structures;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Net.Http.Headers;
 
 namespace GoalLine.Data
 {
@@ -45,7 +46,6 @@ namespace GoalLine.Data
                 int r;
 
                 Team NewTeam = new Team();
-                NewTeam.UniqueID = i;
 
                 while (true)
                 {
@@ -67,11 +67,10 @@ namespace GoalLine.Data
                 NewTeam.ManagerID = -1;
                 NewTeam.LeagueID = 0;
 
-                World.Teams.Add(NewTeam);
+                TeamAdapter ta = new TeamAdapter();
+                int NewID = ta.AddTeam(NewTeam);
 
-                
-
-                AssignPlayersToTeam(i);
+                AssignPlayersToTeam(NewID);
             }
         }
 
@@ -199,7 +198,8 @@ namespace GoalLine.Data
                 NewPlayer.DateOfBirth = DateTime.Now.AddDays(rand.Next(0 - (32 * 365), 0-(18*365)));
                 NewPlayer.CurrentTeam = -1;
 
-                World.Players.Add(NewPlayer);
+                PlayerAdapter pa = new PlayerAdapter();
+                pa.AddPlayer(NewPlayer);
             }
         }
 
@@ -207,11 +207,12 @@ namespace GoalLine.Data
         {
             // TODO: A few more than this, lol!
             League L = new League();
-            L.UniqueID = 0;
             L.Name = "Fenwick League";
 
-            World.Leagues.Add(L);
+            LeagueAdapter la = new LeagueAdapter();
+            la.AddLeague(L);
         }
+
         private void AssignPlayersToTeam(int TeamID)
         {
             Random rand = new Random();
@@ -239,14 +240,8 @@ namespace GoalLine.Data
             for (int i = 1; i <= max; i++)
             {
                 // Select free players of given type
-                IEnumerable<Player> playerQuery =
-                    from player in World.Players
-                    where player.CurrentTeam == -1 &&
-                          player.Position == pos &&
-                          player.PreferredSide == side
-                    select player;
-
-                List<Player> playerList = playerQuery.ToList();
+                PlayerAdapter pa = new PlayerAdapter();
+                List<Player> playerList = pa.GetPlayers(-1, pos, side);
 
                 int found = playerList.Count();
                 if (found == 0)
