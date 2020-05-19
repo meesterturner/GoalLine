@@ -37,7 +37,7 @@ namespace GoalLine.Data
 
             Dictionary<string, bool> UsedNames = new Dictionary<string, bool>();
 
-            Random rand = new Random();
+            Utils rand = new Utils();
             LeagueAdapter la = new LeagueAdapter();
             List<League> Leagues = la.GetLeagues();
 
@@ -51,10 +51,10 @@ namespace GoalLine.Data
 
                     while (true)
                     {
-                        r = rand.Next(0, TeamFirstName.GetUpperBound(0));
+                        r = rand.RandomInclusive(0, TeamFirstName.GetUpperBound(0));
                         NewTeam.Name = TeamFirstName[r] + " ";
 
-                        r = rand.Next(0, TeamLastName.GetUpperBound(0));
+                        r = rand.RandomInclusive(0, TeamLastName.GetUpperBound(0));
                         NewTeam.Name = NewTeam.Name + TeamLastName[r];
 
                         if (!UsedNames.ContainsKey(NewTeam.Name))
@@ -86,8 +86,7 @@ namespace GoalLine.Data
             string[] LastName = TextResources.NameList(NameListResource.LastNames, ResourceLanguage.en);
 
 
-            Random rand = new Random();
-            Random posRand = new Random();
+            Utils rand = new Utils();
 
             for (int i = 0; i <= MAXPLAYERS - 1; i++)
             {
@@ -96,20 +95,20 @@ namespace GoalLine.Data
                 Player NewPlayer = new Player();
                 NewPlayer.UniqueID = i;
 
-                r = rand.Next(0, FirstName.GetUpperBound(0));
+                r = rand.RandomInclusive(0, FirstName.GetUpperBound(0));
                 NewPlayer.FirstName = FirstName[r];
 
-                r = rand.Next(0, 100);
+                r = rand.RandomInclusive(0, 100);
                 if(r < 7)
                 {
                     // Double-barrelled surname
-                    r = rand.Next(0, LastName.GetUpperBound(0));
+                    r = rand.RandomInclusive(0, LastName.GetUpperBound(0));
                     NewPlayer.LastName = LastName[r] + "-";
 
                     int r2 = r; // avoiding any Smith-Smith names
                     while(r2 == r)
                     {
-                        r2 = rand.Next(0, LastName.GetUpperBound(0));
+                        r2 = rand.RandomInclusive(0, LastName.GetUpperBound(0));
                         if(r2 != r)
                         {
                             NewPlayer.LastName += LastName[r2];
@@ -123,13 +122,12 @@ namespace GoalLine.Data
 
                     while(NewPlayer.LastName == NewPlayer.FirstName) // Make sure we don't get a James James situation
                     {
-                        r = rand.Next(0, LastName.GetUpperBound(0));
+                        r = rand.RandomInclusive(0, LastName.GetUpperBound(0));
                         NewPlayer.LastName = LastName[r];
                     }
                 }
 
-                r = posRand.Next(10, 59);
-                r = r / (int)10;
+                r = rand.RandomInclusive(1, 5);
 
                 PlayerPosition p = PlayerPosition.None;
 
@@ -168,20 +166,20 @@ namespace GoalLine.Data
                     NewPlayer.PreferenceMiddle = 100;
                 } else
                 {
-                    NewPlayer.PreferenceLeft = rand.Next(0,100);
-                    NewPlayer.PreferenceRight = rand.Next(0, 100);
-                    NewPlayer.PreferenceMiddle = rand.Next(0, 100);
+                    NewPlayer.PreferenceLeft = rand.RandomInclusive(0,100);
+                    NewPlayer.PreferenceRight = rand.RandomInclusive(0, 100);
+                    NewPlayer.PreferenceMiddle = rand.RandomInclusive(0, 100);
 
                 }
 
-                NewPlayer.Agility = rand.Next(0, 100);
-                NewPlayer.Attitude = rand.Next(0, 100);
-                NewPlayer.Speed = rand.Next(0, 100);
-                NewPlayer.Stamina = rand.Next(0, 100);
+                NewPlayer.Agility = rand.RandomInclusive(0, 100);
+                NewPlayer.Attitude = rand.RandomInclusive(0, 100);
+                NewPlayer.Speed = rand.RandomInclusive(0, 100);
+                NewPlayer.Stamina = rand.RandomInclusive(0, 100);
 
-                NewPlayer.Wages = rand.Next(5, 80) * 100;
+                NewPlayer.Wages = rand.RandomInclusive(5, 80) * 100;
 
-                NewPlayer.DateOfBirth = DateTime.Now.AddDays(rand.Next(0 - (32 * 365), 0-(18*365)));
+                NewPlayer.DateOfBirth = DateTime.Now.AddDays(rand.RandomInclusive(0 - (32 * 365), 0-(18*365)));
                 NewPlayer.CurrentTeam = -1;
 
                 PlayerAdapter pa = new PlayerAdapter();
@@ -206,27 +204,27 @@ namespace GoalLine.Data
 
         private void AssignPlayersToTeam(int TeamID)
         {
-            Random rand = new Random();
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Goalkeeper, PlayerPositionSide.Centre, rand.Next(1, 3));
+            Utils rand = new Utils();
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Goalkeeper, PlayerPositionSide.Centre, rand.RandomInclusive(1, 3));
 
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Defender, PlayerPositionSide.Left, rand.Next(1, 3));
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Defender, PlayerPositionSide.Centre, rand.Next(3, 5));
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Defender, PlayerPositionSide.Right, rand.Next(1, 3));
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Defender, PlayerPositionSide.Left, rand.RandomInclusive(1, 3));
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Defender, PlayerPositionSide.Centre, rand.RandomInclusive(3, 5));
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Defender, PlayerPositionSide.Right, rand.RandomInclusive(1, 3));
 
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Midfielder, PlayerPositionSide.Left, rand.Next(1, 3));
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Midfielder, PlayerPositionSide.Centre, rand.Next(3, 5));
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Midfielder, PlayerPositionSide.Right, rand.Next(1, 3));
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Midfielder, PlayerPositionSide.Left, rand.RandomInclusive(1, 3));
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Midfielder, PlayerPositionSide.Centre, rand.RandomInclusive(3, 5));
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Midfielder, PlayerPositionSide.Right, rand.RandomInclusive(1, 3));
 
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Attacker, PlayerPositionSide.Left, rand.Next(0, 1));
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Attacker, PlayerPositionSide.Centre, rand.Next(1, 2));
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Attacker, PlayerPositionSide.Right, rand.Next(0, 1));
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Attacker, PlayerPositionSide.Left, rand.RandomInclusive(0, 1));
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Attacker, PlayerPositionSide.Centre, rand.RandomInclusive(1, 2));
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Attacker, PlayerPositionSide.Right, rand.RandomInclusive(0, 1));
 
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Striker, PlayerPositionSide.Centre, rand.Next(0, 2));
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Striker, PlayerPositionSide.Centre, rand.RandomInclusive(0, 2));
         }
 
         private void AssignPlayersToTeam_Worker(int TeamID, PlayerPosition pos, PlayerPositionSide side, int max)
         {
-            Random rand = new Random();
+            Utils rand = new Utils();
 
             for (int i = 1; i <= max; i++)
             {
@@ -240,7 +238,7 @@ namespace GoalLine.Data
                     throw new Exception("Not enough players");
                 }
 
-                int which = rand.Next(0, found - 1);
+                int which = rand.RandomInclusive(0, found - 1);
                 PlayerAdapter pad = new PlayerAdapter();
 
                 pad.AssignToTeam(playerList[which].UniqueID, TeamID);

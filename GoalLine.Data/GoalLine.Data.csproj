@@ -48,6 +48,7 @@
     <Compile Include="PlayerAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeamAdapter.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
