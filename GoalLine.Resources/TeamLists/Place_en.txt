@@ -22,11 +22,9 @@ Newcastle
 York
 Birmingham
 Swindon
-Cardiff
 Bristol
 Blackpool
 Stoke
-Norwich
 Luton
 Ipswich
 Coventry
@@ -43,7 +41,6 @@ Cambridge
 Aberystwyth
 Scarborough
 Middlesborough
-Sunderland
 Preston
 Bradford
 Shrewsbury
@@ -51,5 +48,4 @@ Hereford
 Exeter
 Dover
 Southend
-Coventry
 Derby
