@@ -35,7 +35,7 @@ namespace GoalLine.Data
             string[] TeamFirstName = TextResources.TeamList(TeamListResource.Place, ResourceLanguage.en);
             string[] TeamLastName = TextResources.TeamList(TeamListResource.Suffix, ResourceLanguage.en);
 
-            Dictionary<string, bool> UsedNames = new Dictionary<string, bool>();
+            List<string> AvailableNames = new List<string>();
 
             Utils rand = new Utils();
             LeagueAdapter la = new LeagueAdapter();
@@ -45,26 +45,22 @@ namespace GoalLine.Data
             {
                 for (int i = 0; i <= MAXTEAMSPERLEAGUE - 1; i++)
                 {
+                    if(AvailableNames.Count == 0)
+                    {
+                        AvailableNames = TeamFirstName.ToList();
+                    }
+
                     int r;
 
                     Team NewTeam = new Team();
 
-                    while (true)
-                    {
-                        r = rand.RandomInclusive(0, TeamFirstName.GetUpperBound(0));
-                        NewTeam.Name = TeamFirstName[r] + " ";
+                    r = rand.RandomInclusive(0, AvailableNames.Count - 1);
+                    NewTeam.Name = AvailableNames[r] + " ";
+                    AvailableNames.RemoveAt(r);
 
-                        r = rand.RandomInclusive(0, TeamLastName.GetUpperBound(0));
-                        NewTeam.Name = NewTeam.Name + TeamLastName[r];
+                    r = rand.RandomInclusive(0, TeamLastName.GetUpperBound(0));
+                    NewTeam.Name = NewTeam.Name + TeamLastName[r];
 
-                        if (!UsedNames.ContainsKey(NewTeam.Name))
-                        {
-                            break;
-                        }
-
-                    }
-
-                    UsedNames.Add(NewTeam.Name, true);
 
                     NewTeam.ManagerID = -1;
                     NewTeam.LeagueID = L.UniqueID;
