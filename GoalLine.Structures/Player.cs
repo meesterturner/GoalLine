@@ -73,5 +73,15 @@ namespace GoalLine.Structures
                 
             }
         }
+
+        public int Value
+        {
+            get
+            {
+                int retVal;
+                retVal = (Agility + Speed + Stamina) / 3 * 10000;
+                return retVal;
+            }
+        }
     }
 }

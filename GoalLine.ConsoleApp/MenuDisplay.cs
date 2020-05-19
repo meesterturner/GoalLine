@@ -14,12 +14,14 @@ namespace GoalLine.ConsoleApp
         public void Display()
         {
             StandardUI gui = new StandardUI();
-            
+
+            WorldAdapter wa = new WorldAdapter();
+
             TeamAdapter ta = new TeamAdapter();
-            Team CurrentTeam = ta.GetTeamByManager(World.CurrentManagerID);
+            Team CurrentTeam = ta.GetTeamByManager(wa.CurrentManagerID);
 
             ManagerAdapter ma = new ManagerAdapter();
-            Manager CurrentManager = ma.GetManager(World.CurrentManagerID);
+            Manager CurrentManager = ma.GetManager(wa.CurrentManagerID);
 
             gui.BarText = CurrentManager.Name + " - " +
                           CurrentTeam.Name;

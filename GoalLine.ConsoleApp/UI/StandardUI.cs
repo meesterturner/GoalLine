@@ -22,6 +22,8 @@ namespace GoalLine.ConsoleApp.UI
 
         public void SetupScreen()
         {
+            WorldAdapter wa = new WorldAdapter();
+
             Console.BackgroundColor = ConsoleColor.Black;
             Console.Clear();
 
@@ -33,7 +35,7 @@ namespace GoalLine.ConsoleApp.UI
             Console.Write(BarText);
 
             Console.SetCursorPosition(Console.WindowWidth - 13, 1);
-            Console.Write(World.CurrentDate.ToString("dd MMM yyyy"));
+            Console.Write(wa.CurrentDate.ToString("dd MMM yyyy"));
 
             Console.BackgroundColor = ConsoleColor.Black;
             Console.SetCursorPosition(0, 4);

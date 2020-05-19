@@ -25,7 +25,7 @@ namespace GoalLine.ConsoleApp
             gui.BarText = p.Name + "  (" + ta.GetTeamByPlayer(PlayerID).Name + ")";
             gui.SetupScreen();
 
-            string[] DisplayAttributes = new string[] {"Position", "PreferredSide", "DateOfBirth", "", "Agility", "Attitude", "Speed" ,"Stamina", "Wages"};
+            string[] DisplayAttributes = new string[] {"Position", "PreferredSide", "DateOfBirth", "", "Agility", "Attitude", "Speed" ,"Stamina", "", "Wages", "Value"};
 
             foreach(string a in DisplayAttributes)
             {

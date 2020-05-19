@@ -40,6 +40,18 @@ namespace GoalLine.Data
             }
         }
 
+        public int CurrentManagerID
+        {
+            get
+            {
+                return World.CurrentManagerID;
+            }
+            set
+            {
+                World.CurrentManagerID = value;
+            }
+        }
+
         public DateTime AdvanceDate()
         {
             return AdvanceDate(1);

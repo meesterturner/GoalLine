@@ -45,7 +45,8 @@ namespace GoalLine.ConsoleApp
                     Fixture f = fa.GetFixture(Int32.Parse( menuRet.ItemID));
 
                     int TeamID = f.TeamIDs[0];
-                    if (TeamID ==  new TeamAdapter().GetTeamByManager(World.CurrentManagerID).UniqueID)
+                    WorldAdapter wa = new WorldAdapter();
+                    if (TeamID ==  new TeamAdapter().GetTeamByManager(wa.CurrentManagerID).UniqueID)
                     {
                         TeamID = f.TeamIDs[1];
                     }

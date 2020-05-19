@@ -126,11 +126,13 @@ namespace GoalLine.ConsoleApp
                 ManagerAdapter ma = new ManagerAdapter();
                 List<Manager> HumanManagers = ma.GetHumanManagers();
 
-                foreach(Manager mgr in HumanManagers)
+                WorldAdapter wa = new WorldAdapter();
+
+                foreach (Manager mgr in HumanManagers)
                 {
                     if(mgr.Human)
                     {
-                        World.CurrentManagerID = mgr.UniqueID;
+                        wa.CurrentManagerID = mgr.UniqueID;
                         MenuDisplay m = new MenuDisplay();
                         m.Display();
                     }
