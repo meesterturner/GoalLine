@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FixtureDisplay.cs" />
     <Compile Include="GoalLine.cs" />
     <Compile Include="MenuDisplay.cs" />
     <Compile Include="PlayerDisplay.cs" />

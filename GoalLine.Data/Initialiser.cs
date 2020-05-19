@@ -9,7 +9,9 @@ namespace GoalLine.Data
     public class Initialiser
     {
         private const int STARTYEAR = 2020;
-        
+        private const int MAXTEAMSPERLEAGUE = 22;
+        private const int MAXPLAYERS = 6000;
+
         public void CreateWorld()
         {
             AssignDates();
@@ -28,13 +30,7 @@ namespace GoalLine.Data
 
         private void CreateTeams()
         {
-            const int MaxTeams = 16;
-
-            //string[] TeamFirstName = new string[] {"Grimsby","Lincoln","Scunthorpe","Hull", "Manchester", "Norwich", "Reading","Accrington",
-            //                                       "Sheffield", "Leeds","Nottingham","Croydon","Maidstone", "Peterborough", "Swindon", "Southampton",
-            //                                       "Cardiff", "Brighton", "Leicester", "Oxford", "Newcastle", "York", "Birmingham"};
-
-            //string[] TeamLastName = new string[] { "Town", "City", "United", "Borough", "County", "Rovers" };
+            
 
             string[] TeamFirstName = TextResources.TeamList(TeamListResource.Place, ResourceLanguage.en);
             string[] TeamLastName = TextResources.TeamList(TeamListResource.Suffix, ResourceLanguage.en);
@@ -42,42 +38,49 @@ namespace GoalLine.Data
             Dictionary<string, bool> UsedNames = new Dictionary<string, bool>();
 
             Random rand = new Random();
-            for (int i = 0; i <= MaxTeams-1; i++)
+            LeagueAdapter la = new LeagueAdapter();
+            List<League> Leagues = la.GetLeagues();
+
+            foreach(League L in Leagues)
             {
-                int r;
-
-                Team NewTeam = new Team();
-
-                while (true)
+                for (int i = 0; i <= MAXTEAMSPERLEAGUE - 1; i++)
                 {
-                    r = rand.Next(0, TeamFirstName.GetUpperBound(0));
-                    NewTeam.Name = TeamFirstName[r] + " ";
+                    int r;
 
-                    r = rand.Next(0, TeamLastName.GetUpperBound(0));
-                    NewTeam.Name = NewTeam.Name + TeamLastName[r];
+                    Team NewTeam = new Team();
 
-                    if (!UsedNames.ContainsKey(NewTeam.Name))
+                    while (true)
                     {
-                        break;
+                        r = rand.Next(0, TeamFirstName.GetUpperBound(0));
+                        NewTeam.Name = TeamFirstName[r] + " ";
+
+                        r = rand.Next(0, TeamLastName.GetUpperBound(0));
+                        NewTeam.Name = NewTeam.Name + TeamLastName[r];
+
+                        if (!UsedNames.ContainsKey(NewTeam.Name))
+                        {
+                            break;
+                        }
+
                     }
-                   
+
+                    UsedNames.Add(NewTeam.Name, true);
+
+                    NewTeam.ManagerID = -1;
+                    NewTeam.LeagueID = L.UniqueID;
+
+                    TeamAdapter ta = new TeamAdapter();
+                    int NewID = ta.AddTeam(NewTeam);
+
+                    AssignPlayersToTeam(NewID);
                 }
 
-                UsedNames.Add(NewTeam.Name, true);
-
-                NewTeam.ManagerID = -1;
-                NewTeam.LeagueID = 0;
-
-                TeamAdapter ta = new TeamAdapter();
-                int NewID = ta.AddTeam(NewTeam);
-
-                AssignPlayersToTeam(NewID);
+            
             }
         }
 
         private void CreatePlayers()
         {
-            const int MaxPlayers = 5000;
 
             string[] FirstName = TextResources.NameList(NameListResource.FirstNames, ResourceLanguage.en);
             string[] LastName = TextResources.NameList(NameListResource.LastNames, ResourceLanguage.en);
@@ -86,7 +89,7 @@ namespace GoalLine.Data
             Random rand = new Random();
             Random posRand = new Random();
 
-            for (int i = 0; i <= MaxPlayers - 1; i++)
+            for (int i = 0; i <= MAXPLAYERS - 1; i++)
             {
                 int r;
 
@@ -188,11 +191,16 @@ namespace GoalLine.Data
 
         private void CreateLeagues()
         {
-            // TODO: A few more than this, lol!
-            League L = new League();
-            L.Name = "Fenwick League";
-
             LeagueAdapter la = new LeagueAdapter();
+
+            League L;
+
+            L = new League();
+            L.Name = "Fenwick League 1";
+            la.AddLeague(L);
+
+            L = new League();
+            L.Name = "Fenwick League 2";
             la.AddLeague(L);
         }
 

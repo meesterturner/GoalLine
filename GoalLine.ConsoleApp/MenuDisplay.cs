@@ -48,7 +48,8 @@ namespace GoalLine.ConsoleApp
                     break;
 
                 case "FIX":
-                    throw new NotImplementedException(); // TODO: Show my fixtures
+                    FixtureDisplay fd = new FixtureDisplay();
+                    fd.Display(CurrentTeam);
                     break;
 
                 case "QUIT":

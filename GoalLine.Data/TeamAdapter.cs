@@ -45,5 +45,12 @@ namespace GoalLine.Data
 
             return NextID;
         }
+
+        public List<Team> GetTeamsByLeague(int LeagueID)
+        {
+            return (from team in World.Teams
+                    where team.LeagueID == LeagueID
+                    select team).ToList();
+        }
     }
 }

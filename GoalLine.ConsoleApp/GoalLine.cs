@@ -12,6 +12,7 @@ namespace GoalLine.ConsoleApp
     {
         static void Main(string[] args)
         {
+            Console.WindowHeight = 55;
 
             Welcome();
             MainGameLoop(false); // TODO: If loading a savegame, this needs to be true.
@@ -57,6 +58,11 @@ namespace GoalLine.ConsoleApp
             Progress("");
 
             // Choose Team
+
+            int LeagueID = 0;
+            LeagueAdapter la = new LeagueAdapter();
+            int MaxLeagueID = la.GetLeagues().Count - 1;
+
             while(TeamID == -1)
             {
                 StandardUI gui = new StandardUI();
@@ -66,11 +72,14 @@ namespace GoalLine.ConsoleApp
                 Menu mnu = new Menu();
                 mnu.AddColumn(new MenuColumn("ID", ConsoleColor.Yellow, 5));
                 mnu.AddColumn(new MenuColumn("Team Name", ConsoleColor.White, 35));
+                mnu.AddColumn(new MenuColumn("League", ConsoleColor.White, 20));
                 mnu.AddExtraKeypress("P", "Preview Team");
-            
-                foreach (Team t in World.Teams) // TODO: Change this one.
+                mnu.AddExtraKeypress("+", "Next League");
+
+                TeamAdapter ta = new TeamAdapter();
+                foreach (Team t in ta.GetTeamsByLeague(LeagueID))
                 {
-                    mnu.AddItem(new MenuItem(t.UniqueID.ToString(), new string[] { t.UniqueID.ToString(), t.Name }));
+                    mnu.AddItem(new MenuItem(t.UniqueID.ToString(), new string[] { t.UniqueID.ToString(), t.Name, la.GetLeague(LeagueID).Name }));
                 }
 
                 MenuReturnData menuRet = mnu.RunMenu();
@@ -92,6 +101,13 @@ namespace GoalLine.ConsoleApp
                         TeamDisplay td = new TeamDisplay();
                         td.TeamID = Int32.Parse(menuRet.ItemID);
                         td.Display();
+                    } else if(menuRet.Keypress == "+")
+                    {
+                        LeagueID++;
+                        if(LeagueID > MaxLeagueID)
+                        {
+                            LeagueID = 0;
+                        }
                     }
                 }
             }
@@ -124,14 +140,14 @@ namespace GoalLine.ConsoleApp
             }
         }
 
-        private static void FixtureTest()
+        public static void FixtureTest()
         {
-            LeagueAdapter la = new LeagueAdapter();
-            List<DateTime> dates = la.GetDistinctDatesForLeagueMatches(0);
+            FixtureAdapter fa = new FixtureAdapter();
+            List<DateTime> dates = fa.GetDistinctDatesForLeagueMatches(0);
 
             foreach(DateTime d in dates)
             {
-                List<Fixture> FixList = la.GetFixturesForLeagueForDate(0, d);
+                List<Fixture> FixList = fa.GetFixturesForLeagueForDate(0, d);
                 Console.Clear();
 
                 Console.WriteLine(d);

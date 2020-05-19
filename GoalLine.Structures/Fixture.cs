@@ -8,6 +8,7 @@ namespace GoalLine.Structures
 {
     public class Fixture
     {
+        public int UniqueID { get; set; }
         public int LeagueID { get; set; }
         public DateTime Date { get; set; }
         public int[] TeamIDs { get; set; }  = new int[2]; // [0] = Home, [1] = Away

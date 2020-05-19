@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FixtureAdapter.cs" />
     <Compile Include="Initialiser.cs" />
     <Compile Include="LeagueAdapter.cs" />
     <Compile Include="ManagerAdapter.cs" />

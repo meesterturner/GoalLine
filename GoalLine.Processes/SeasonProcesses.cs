@@ -60,7 +60,9 @@ namespace GoalLine.Processes
             }
 
             World.Fixtures = null;
-            List<Fixture> FixList = new List<Fixture>();
+
+            FixtureAdapter fa = new FixtureAdapter();
+            fa.ClearFixtures();
 
             foreach(League L in World.Leagues)
             {
@@ -104,8 +106,7 @@ namespace GoalLine.Processes
                                 f.TeamIDs[0] = TeamIDs[gridpos + (NumberOfTeams / 2)];
                             }
                             
-                            FixList.Add(f);
-                            f = null;
+                            fa.AddFixture(f);
                         }
 
                         // Rotate the grid! (Counterclockwise, though - fix later)
@@ -121,15 +122,6 @@ namespace GoalLine.Processes
                 }
                 
             }
-
-            //IEnumerable<Fixture> fixturesSorted =
-            //        from f in FixList
-            //        orderby f.LeagueID, f.Date
-            //        select f;
-
-            //World.Fixtures = fixturesSorted.ToList();
-
-            World.Fixtures = FixList;
         }
     }
 }
