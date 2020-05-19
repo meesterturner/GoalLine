@@ -53,24 +53,24 @@ namespace GoalLine.Processes
         private void CreateSeasonFixtures()
         {
             // First find first available Saturday
-            DateTime FirstMatchDate = World.MainSeasonDate;
+            WorldAdapter wa = new WorldAdapter();
+            DateTime FirstMatchDate = wa.MainSeasonDate;
             while(FirstMatchDate.DayOfWeek != DayOfWeek.Saturday)
             {
                 FirstMatchDate = FirstMatchDate.AddDays(1);
             }
 
-            World.Fixtures = null;
-
             FixtureAdapter fa = new FixtureAdapter();
             fa.ClearFixtures();
 
-            foreach(League L in World.Leagues)
+            LeagueAdapter la = new LeagueAdapter();
+            List<League> Leagues = la.GetLeagues();
+
+            foreach(League L in Leagues)
             {
                 // Get teams in the league we're looking at.
-                List<int> TeamList =
-                    (from team in World.Teams
-                    where team.LeagueID == L.UniqueID
-                    select team.UniqueID).ToList();
+                TeamAdapter ta = new TeamAdapter();
+                List<Team> TeamList = ta.GetTeamsByLeague(L.UniqueID);
 
                 // Create that league's fixtures
                 // https://en.wikipedia.org/wiki/Round-robin_tournament
@@ -79,7 +79,7 @@ namespace GoalLine.Processes
                 int[] TeamIDs = new int[NumberOfTeams + 1]; // Create a grid with an additional blank space to allow rotation
                 for(int i = 0; i < TeamList.Count(); i++)
                 {
-                    TeamIDs[i] = TeamList[i];
+                    TeamIDs[i] = TeamList[i].UniqueID;
                 }
 
                 DateTime MatchDate = FirstMatchDate;

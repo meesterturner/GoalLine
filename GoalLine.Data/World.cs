@@ -8,7 +8,7 @@ using GoalLine.Structures;
 
 namespace GoalLine.Data
 {
-    public static class World
+    static class World
     {
         public static DateTime CurrentDate { get; set; }
         public static DateTime PreSeasonDate { get; set; }

@@ -50,6 +50,7 @@
     <Compile Include="TeamAdapter.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="World.cs" />
+    <Compile Include="WorldAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoalLine.Resources\GoalLine.Resources.csproj">

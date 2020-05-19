@@ -37,8 +37,11 @@ namespace GoalLine.Processes
                 return;
             }
 
-            foreach(IProcess Handler in ProcessHandlers)
+            WorldAdapter wa = new WorldAdapter();
+
+            foreach (IProcess Handler in ProcessHandlers)
             {
+                
                 for(int i = 1; i <= 4; i++)
                 {
                     try
@@ -50,14 +53,14 @@ namespace GoalLine.Processes
                                 break;
 
                             case 2:
-                                if (World.CurrentDate == World.PreSeasonDate)
+                                if (wa.CurrentDate == wa.PreSeasonDate)
                                 {
                                     Handler.PreSeasonStart();
                                 }
                                 break;
 
                             case 3:
-                                if (World.CurrentDate == World.MainSeasonDate)
+                                if (wa.CurrentDate == wa.MainSeasonDate)
                                 {
                                     Handler.SeasonStart();
                                 }
@@ -90,6 +93,8 @@ namespace GoalLine.Processes
                 RegisterAllStandardHandlers();
             }
 
+            WorldAdapter wa = new WorldAdapter();
+
             foreach (IProcess Handler in ProcessHandlers)
             {
                 for (int i = 1; i <= 4; i++)
@@ -107,7 +112,7 @@ namespace GoalLine.Processes
                                 break;
 
                             case 3:
-                                if (World.CurrentDate == World.MainSeasonDate.AddDays(-1))
+                                if (wa.CurrentDate == wa.MainSeasonDate.AddDays(-1))
                                 {
                                     Handler.PreSeasonEnd();
                                 }
@@ -130,7 +135,7 @@ namespace GoalLine.Processes
             }
 
             // Go to next day, whoop!
-            World.CurrentDate = World.CurrentDate.AddDays(1);
+            wa.AdvanceDate();
         }
     }
 }
