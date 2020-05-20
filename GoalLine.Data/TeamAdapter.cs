@@ -12,14 +12,46 @@ namespace GoalLine.Data
         public List<Player> GetPlayersInTeam(int TeamID)
         {
             List<Player> retVal = new List<Player>();
-            List<int> PlayerIDs = World.Teams[TeamID].PlayerIDs;
 
-            foreach(int PlayerID in PlayerIDs)
+            foreach(KeyValuePair<int, TeamPlayer> tp in World.Teams[TeamID].Players)
             {
-                retVal.Add(World.Players[PlayerID]);
+                retVal.Add(World.Players[tp.Key]);
             }
 
             return retVal;
+        }
+
+        public Dictionary<int, TeamPlayer> GetTeamPlayerSelections(int TeamID)
+        {
+            return World.Teams[TeamID].Players;
+        }
+
+        public void SetTeamPlayerSelection(int TeamID, int PlayerID, PlayerSelectionStatus Status)
+        {
+            World.Teams[TeamID].Players[PlayerID].Selected = Status;
+        }
+
+        public PlayerSelectionStatus CycleTeamPlayerSelection(int TeamID, int PlayerID)
+        {
+            PlayerSelectionStatus Old = World.Teams[TeamID].Players[PlayerID].Selected;
+            PlayerSelectionStatus New;
+            if (Old == PlayerSelectionStatus.None)
+            {
+                New = PlayerSelectionStatus.Starting;
+            } else if (Old == PlayerSelectionStatus.Starting)
+            {
+                New = PlayerSelectionStatus.Sub;
+            } else if (Old == PlayerSelectionStatus.Sub)
+            {
+                New = PlayerSelectionStatus.None;
+            } else
+            {
+                throw new NotImplementedException();
+            }
+
+            SetTeamPlayerSelection(TeamID, PlayerID, New);
+
+            return New;
         }
 
         public Team GetTeam(int TeamID)

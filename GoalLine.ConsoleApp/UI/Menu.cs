@@ -13,6 +13,8 @@ namespace GoalLine.ConsoleApp.UI
         private int CurrentOptionIndex = 0;
         private Dictionary<string, string> ExtraKeys = new Dictionary<string, string>();
 
+        public bool RedrawOnRun { get; set; } = true;
+
         /// <summary>
         /// Allows the definition of an additional keypress, other than Enter/Esc
         /// </summary>
@@ -24,7 +26,7 @@ namespace GoalLine.ConsoleApp.UI
             {
                 throw new ArgumentException("Single character only");
             }
-            ExtraKeys.Add(Character.ToUpper().Trim(), Description);
+            ExtraKeys.Add(Character.ToUpper(), Description);
         }
 
         List<MenuColumn> Columns = new List<MenuColumn>();
@@ -52,7 +54,7 @@ namespace GoalLine.ConsoleApp.UI
         /// Operate the menu with the given columns, items and any extra keypresses.
         /// </summary>
         /// <returns>MenuReturnData containing the key pressed, and the ID of the last selected item</returns>
-        public MenuReturnData RunMenu()
+        public MenuReturnData RunMenu(string DefaultOptionID)
         {
             MenuReturnData retVal = new MenuReturnData();
 
@@ -60,6 +62,18 @@ namespace GoalLine.ConsoleApp.UI
             Console.CursorVisible = false;
 
             DisplayHeaders();
+
+            if(DefaultOptionID != "")
+            {
+                for (int i = 0; i < Items.Count; i++)
+                {
+                    if(Items[i].Id == DefaultOptionID)
+                    {
+                        CurrentOptionIndex = i;
+                        break;
+                    }
+                }
+            }
 
             for (int i = 0; i < Items.Count; i++)
             {
@@ -71,7 +85,12 @@ namespace GoalLine.ConsoleApp.UI
             Console.Write("[ENTER] to Select");
             foreach(KeyValuePair<string, string> k in ExtraKeys)
             {
-                Console.Write(String.Format(", [{0}] to {1}", k.Key, k.Value));
+                string KeyToDisplay = k.Key;
+                if(KeyToDisplay == " ")
+                {
+                    KeyToDisplay = "SPACE";
+                }
+                Console.Write(String.Format(", [{0}] to {1}", KeyToDisplay, k.Value));
             }
 
             bool bored = false;
@@ -131,6 +150,11 @@ namespace GoalLine.ConsoleApp.UI
             return retVal;
         }
 
+        public MenuReturnData RunMenu()
+        {
+            return RunMenu("");
+        }
+
         /// <summary>
         /// Redraw the given menu item in it's selected or deselected state
         /// </summary>
@@ -187,6 +211,19 @@ namespace GoalLine.ConsoleApp.UI
                 Console.SetCursorPosition(x, TopY);
                 Console.Write(col.Title);
                 x += col.Width;
+            }
+        }
+
+        public void UpdateItemText(string ItemID, int ColumnID, string Text)
+        {
+            for(int i = 0; i < Items.Count(); i++)
+            {
+                if(Items[i].Id == ItemID)
+                {
+                    Items[i].DisplayText[ColumnID] = Text;
+                    DisplayItem(i, i == CurrentOptionIndex);
+                    break;
+                }
             }
         }
     }

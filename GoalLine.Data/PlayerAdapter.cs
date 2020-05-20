@@ -16,17 +16,15 @@ namespace GoalLine.Data
 
             if(OldTeam > -1)
             {
-                for (int i = 0; i < World.Teams[OldTeam].PlayerIDs.Count; i++)
+                if(World.Teams[OldTeam].Players.ContainsKey(PlayerID))
                 {
-                    if (World.Teams[OldTeam].PlayerIDs[i] == PlayerID)
-                    {
-                        World.Teams[OldTeam].PlayerIDs.RemoveAt(i);
-                    }
+                    World.Teams[OldTeam].Players.Remove(PlayerID);
                 }
             }
 
             World.Players[PlayerID].CurrentTeam = TeamID;
-            World.Teams[TeamID].PlayerIDs.Add(PlayerID);
+
+            World.Teams[TeamID].Players.Add(PlayerID, new TeamPlayer(PlayerID));
         }
 
         public Player GetPlayer(int PlayerID)

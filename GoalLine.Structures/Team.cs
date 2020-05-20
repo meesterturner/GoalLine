@@ -10,9 +10,26 @@ namespace GoalLine.Structures
     {
         public int UniqueID { get; set; }
         public string Name { get; set; }
-        public List<int> PlayerIDs { get; set; } = new List<int>();
+        public Dictionary<int, TeamPlayer> Players { get; set; } = new Dictionary<int, TeamPlayer>();
         public int ManagerID { get; set; }
         public int LeagueID { get; set; }
 
+    }
+
+    public class TeamPlayer
+    {
+        public int PlayerID { get; set; }
+        public PlayerSelectionStatus Selected { get; set; }
+
+        public TeamPlayer()
+        {
+
+        }
+
+        public TeamPlayer(int PlayerID)
+        {
+            this.PlayerID = PlayerID;
+            this.Selected = PlayerSelectionStatus.None;
+        }
     }
 }

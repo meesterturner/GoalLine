@@ -22,4 +22,11 @@ namespace GoalLine.Structures
         Centre = 0,
         Right = 10
     }
+
+    public enum PlayerSelectionStatus
+    {
+        None = 0,
+        Starting = 1,
+        Sub = 2
+    }
 }
