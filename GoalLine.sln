@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoalLine.Processes", "GoalL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoalLine.Resources", "GoalLine.Resources\GoalLine.Resources.csproj", "{42EC3EFE-AD3A-465B-8DC2-961E23A97E6E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoalLine.Matchday", "GoalLine.Matchday\GoalLine.Matchday.csproj", "{49F86A61-AB61-4C01-BAB4-1F0448945437}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{42EC3EFE-AD3A-465B-8DC2-961E23A97E6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42EC3EFE-AD3A-465B-8DC2-961E23A97E6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42EC3EFE-AD3A-465B-8DC2-961E23A97E6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49F86A61-AB61-4C01-BAB4-1F0448945437}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49F86A61-AB61-4C01-BAB4-1F0448945437}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49F86A61-AB61-4C01-BAB4-1F0448945437}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49F86A61-AB61-4C01-BAB4-1F0448945437}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

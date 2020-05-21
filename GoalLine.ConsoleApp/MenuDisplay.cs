@@ -34,6 +34,8 @@ namespace GoalLine.ConsoleApp
 
             mnu.AddItem(new MenuItem("TEAM", new string[] { "View My Team" }));
             mnu.AddItem(new MenuItem("FIX", new string[] { "View League Fixtures" }));
+            mnu.AddItem(new MenuItem("PLAY", new string[] { "Play Code" }));
+
 
             mnu.AddItem(new MenuItem("QUIT", new string[] { "Quit Game" }));
 
@@ -52,6 +54,11 @@ namespace GoalLine.ConsoleApp
                 case "FIX":
                     FixtureDisplay fd = new FixtureDisplay();
                     fd.Display(CurrentTeam);
+                    break;
+
+                case "PLAY":
+                    Matchday md = new Matchday();
+                    md.Run();
                     break;
 
                 case "QUIT":
