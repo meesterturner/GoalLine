@@ -46,7 +46,6 @@
     <Compile Include="MatchEventCommentary.cs" />
     <Compile Include="MatchPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UICallbackData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoalLine.Data\GoalLine.Data.csproj">
