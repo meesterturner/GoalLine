@@ -23,7 +23,8 @@ namespace GoalLine.ConsoleApp
                 StandardUI gui = new StandardUI();
                 
                 TeamAdapter ta = new TeamAdapter();
-                gui.BarText = ta.GetTeam(TeamID).Name;
+                ManagerAdapter ma = new ManagerAdapter();
+                gui.BarText = ta.GetTeam(TeamID).Name + " - " + ma.GetManager(ta.GetTeam(TeamID).ManagerID).Name;
                 if(RedrawAll)
                 {
                     gui.SetupScreen();

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AIProcesses.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="IProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

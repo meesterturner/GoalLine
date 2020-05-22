@@ -13,7 +13,7 @@ namespace GoalLine.Structures
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public int CurrentTeam { get; set; }
+        public int CurrentTeam { get; set; } = -1;
 
 
         public string Name 

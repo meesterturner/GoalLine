@@ -14,7 +14,7 @@ namespace GoalLine.ConsoleApp
         public void Display(Team T)
         {
             FixtureAdapter fa = new FixtureAdapter();
-            Display_Worker(fa.GetFixturesForLeagueForTeam(T.LeagueID, T.UniqueID));
+            Display_Worker(fa.GetFixtures(T.LeagueID, T.UniqueID));
         }
 
         private void Display_Worker(List<Fixture> Fixtures)

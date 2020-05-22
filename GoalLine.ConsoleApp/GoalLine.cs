@@ -149,7 +149,7 @@ namespace GoalLine.ConsoleApp
 
             foreach(DateTime d in dates)
             {
-                List<Fixture> FixList = fa.GetFixturesForLeagueForDate(0, d);
+                List<Fixture> FixList = fa.GetFixtures(0, d);
                 Console.Clear();
 
                 Console.WriteLine(d);

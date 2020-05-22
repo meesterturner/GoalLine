@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GoalLine.Data;
+using GoalLine.Structures;
 
 namespace GoalLine.Processes
 {
@@ -21,6 +22,7 @@ namespace GoalLine.Processes
         private static void RegisterAllStandardHandlers()
         {
             RegisterProcessHandler(new SeasonProcesses());
+            RegisterProcessHandler(new AIProcesses());
 
             RegisteredStandardHandlers = true;
         }
@@ -67,7 +69,11 @@ namespace GoalLine.Processes
                                 break;
 
                             case 4:
-                                Handler.MatchDayStart();
+
+                                if(new FixtureAdapter().IsTodayAMatchDay())
+                                {
+                                    Handler.MatchDayStart();
+                                }
                                 break;
                         }
            
@@ -104,7 +110,10 @@ namespace GoalLine.Processes
                         switch (i)
                         {
                             case 1:
-                                Handler.MatchDayEnd();
+                                if (new FixtureAdapter().IsTodayAMatchDay())
+                                {
+                                    Handler.MatchDayEnd();
+                                }
                                 break;
 
                             case 2:

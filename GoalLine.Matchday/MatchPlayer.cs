@@ -25,16 +25,17 @@ namespace GoalLine.Matchday
 
         public void StartMatch()
         {
-            
+            if(Fixture == null)
+            {
+                throw new ArgumentNullException("Fixture not set");
+            }
+
             if(Interactive == true && MatchCallback == null)
             {
                 throw new ArgumentNullException("MatchCallback not set");
             }
 
             // TEST CODE!!!
-            string[] CommentaryTemp = new string[] { "Test commentary 1", "Test commentary 2", "Test commen.... They think it's all over!", "It is now" };
-            Random r = new Random();
-
             MatchCallback.Segment = MatchSegment.FirstHalf;
             MatchCallback.EventType = MatchEventType.KickOff;
             for(int s = 0; s <= 45 * 60; s = s + 15)

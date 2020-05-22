@@ -60,15 +60,24 @@ namespace GoalLine.Data
 
                     r = rand.RandomInclusive(0, TeamLastName.GetUpperBound(0));
                     NewTeam.Name = NewTeam.Name + TeamLastName[r];
-
-
-                    NewTeam.ManagerID = -1;
                     NewTeam.LeagueID = L.UniqueID;
 
                     TeamAdapter ta = new TeamAdapter();
                     int NewID = ta.AddTeam(NewTeam);
 
                     AssignPlayersToTeam(NewID);
+
+                    // TODO: Temporary AI manager assignment needs replacing
+                    Manager NewManager = new Manager();
+                    NewManager.FirstName = "Alan";
+                    NewManager.LastName = NewTeam.Name.Split(Convert.ToChar(" "))[0];
+                    NewManager.DateOfBirth = new DateTime(1966, 9, 26);
+                    NewManager.Reputation = rand.RandomInclusive(30, 90);
+                    NewManager.CurrentTeam = -1;
+
+                    ManagerAdapter ma = new ManagerAdapter();
+                    int NewManagerID = ma.AddManager(NewManager);
+                    ma.AssignToTeam(NewManagerID, NewID);
                 }
 
             
@@ -176,7 +185,6 @@ namespace GoalLine.Data
                 NewPlayer.Wages = rand.RandomInclusive(5, 80) * 100;
 
                 NewPlayer.DateOfBirth = DateTime.Now.AddDays(rand.RandomInclusive(0 - (32 * 365), 0-(18*365)));
-                NewPlayer.CurrentTeam = -1;
 
                 PlayerAdapter pa = new PlayerAdapter();
                 pa.AddPlayer(NewPlayer);

@@ -54,6 +54,18 @@ namespace GoalLine.Data
             return retVal;
         }
 
+        public bool IsTodayAMatchDay()
+        {
+            DateTime today = new WorldAdapter().CurrentDate;
+
+            DateTime Found = (from f in World.Fixtures
+                              where f.Date == today
+                              orderby f.Date
+                              select f.Date).FirstOrDefault();
+            
+            return (Found.Year > 1);
+        }
+
         public DateTime GetNextDateForLeagueMatches(int LeagueID, bool AllowCurrentDate)
         {
             DateTime testDate = World.CurrentDate;
@@ -67,7 +79,19 @@ namespace GoalLine.Data
                     select f.Date).FirstOrDefault();
         }
 
-        public List<Fixture> GetFixturesForLeagueForDate(int LeagueID, DateTime date)
+        public List<Fixture> GetFixtures(DateTime date)
+        {
+            IEnumerable<Fixture> fixtures =
+                    from f in World.Fixtures
+                    where f.Date == date
+                    orderby World.Teams[f.TeamIDs[0]].Name, World.Teams[f.TeamIDs[1]].Name
+                    select f;
+
+            return fixtures.ToList();
+        }
+
+
+        public List<Fixture> GetFixtures(int LeagueID, DateTime date)
         {
             IEnumerable<Fixture> fixtures =
                     from f in World.Fixtures
@@ -78,7 +102,7 @@ namespace GoalLine.Data
             return fixtures.ToList();
         }
 
-        public List<Fixture> GetFixturesForLeagueForTeam(int LeagueID, int TeamID)
+        public List<Fixture> GetFixtures(int LeagueID, int TeamID)
         {
             IEnumerable<Fixture> fixtures =
                     from f in World.Fixtures

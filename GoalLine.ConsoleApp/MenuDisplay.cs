@@ -23,6 +23,8 @@ namespace GoalLine.ConsoleApp
             ManagerAdapter ma = new ManagerAdapter();
             Manager CurrentManager = ma.GetManager(wa.CurrentManagerID);
 
+            FixtureAdapter fa = new FixtureAdapter();
+
             gui.BarText = CurrentManager.Name + " - " +
                           CurrentTeam.Name;
             gui.SetupScreen();
@@ -30,11 +32,17 @@ namespace GoalLine.ConsoleApp
             Menu mnu = new Menu();
             mnu.AddColumn(new MenuColumn("Select an Option", ConsoleColor.White, 40));
 
-            mnu.AddItem(new MenuItem("NOWT", new string[] { "Do Nothing Today" }));
+            if(fa.IsTodayAMatchDay())
+            {
+                mnu.AddItem(new MenuItem("PLAY", new string[] { "******** Play Matches ********" }));
+            } else
+            {
+                mnu.AddItem(new MenuItem("NOWT", new string[] { "Do Nothing Today" }));
+            }
 
             mnu.AddItem(new MenuItem("TEAM", new string[] { "View My Team" }));
             mnu.AddItem(new MenuItem("FIX", new string[] { "View League Fixtures" }));
-            mnu.AddItem(new MenuItem("PLAY", new string[] { "Play Code" }));
+            
 
 
             mnu.AddItem(new MenuItem("QUIT", new string[] { "Quit Game" }));
