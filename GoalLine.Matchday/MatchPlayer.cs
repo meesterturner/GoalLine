@@ -9,7 +9,7 @@ using GoalLine.Structures;
 
 namespace GoalLine.Matchday
 {
-    public class MatchPlayer
+    class MatchPlayer
     {
         public Fixture Fixture { get; set; }
         public bool Interactive { get; set; }
@@ -38,6 +38,8 @@ namespace GoalLine.Matchday
             // TEST CODE!!!
             MatchCallback.Segment = MatchSegment.FirstHalf;
             MatchCallback.EventType = MatchEventType.KickOff;
+            MatchCallback.MatchStarting(Fixture);
+
             for(int s = 0; s <= 45 * 60; s = s + 15)
             {
                 MatchCallback.SegmentTimeSeconds = s;
@@ -52,11 +54,17 @@ namespace GoalLine.Matchday
                     RaiseEvent(MatchEventType.None);
                 }
             }
-            
+
+            MatchCallback.MatchFinished(Fixture);
+
         }
 
         private void RaiseEvent(MatchEventType Ev)
         {
+            if(!Interactive)
+            {
+                return; // If non-interactive, no point raising events or deciding on commentary for the UI
+            }
             if(Ev == MatchEventType.None)
             {
                 MatchCallback.Commentary = "";

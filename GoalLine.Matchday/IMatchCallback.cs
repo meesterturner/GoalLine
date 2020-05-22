@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoalLine.Structures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,7 @@ namespace GoalLine.Matchday
         MatchEventType EventType { get; set; }
         int SegmentTimeSeconds { get; set; }
         void UpdateUI();
+        void MatchStarting(Fixture f);
+        void MatchFinished(Fixture f);
     }
 }

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MatchDayRunner.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="IMatchCallback.cs" />
     <Compile Include="MatchEventCommentary.cs" />

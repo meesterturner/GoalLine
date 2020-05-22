@@ -15,20 +15,17 @@ namespace GoalLine.ConsoleApp
         public void Run()
         {
             Console.Clear();
-
+            Console.CursorVisible = false;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("*** START ***");
 
-            MatchPlayer mp = new MatchPlayer();
-            FixtureAdapter fa = new FixtureAdapter();
-            mp.Fixture = fa.GetFixture(0);
-            mp.Interactive = true;
-            mp.MatchCallback = new MatchdayCallback();
-            mp.StartMatch();
+            MatchDayRunner dr = new MatchDayRunner();
+            dr.Run(new MatchdayCallback());
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("*** END ***");
 
+            Console.CursorVisible = true;
             Console.ReadLine();
         }
     }
@@ -40,12 +37,41 @@ namespace GoalLine.ConsoleApp
         public MatchEventType EventType { get; set; }
         public int SegmentTimeSeconds { get; set; }
 
+        public void MatchFinished(Fixture f)
+        {
+            PrintFixture(f, false);
+        }
+
+        public void MatchStarting(Fixture f)
+        {
+            PrintFixture(f, true);
+        }
+
+        private void PrintFixture(Fixture f, bool Starting)
+        {
+            TeamAdapter ta = new TeamAdapter();
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(ta.GetTeam(f.TeamIDs[0]).Name);
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write(" v ");
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(ta.GetTeam(f.TeamIDs[1]).Name);
+
+            Console.WriteLine(String.Format(" - {0}", Starting ? "START" : "END"));
+        }
+
         public void UpdateUI()
         {
+            Console.Write(new string(Convert.ToChar(" "), Console.WindowWidth - 1));
+            Console.SetCursorPosition(0, Console.CursorTop);
+
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("[ " + DisplayMatchTime() + " ] - ");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(Commentary);
+            Console.Write(Commentary);
 
             if(EventType == MatchEventType.None)
             {
@@ -54,7 +80,8 @@ namespace GoalLine.ConsoleApp
             {
                 System.Threading.Thread.Sleep(500);
             }
-            
+
+            Console.SetCursorPosition(0, Console.CursorTop);
         }
 
         private string DisplayMatchTime()
