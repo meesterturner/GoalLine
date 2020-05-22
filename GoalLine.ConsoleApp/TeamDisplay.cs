@@ -22,7 +22,12 @@ namespace GoalLine.ConsoleApp
             {
                 StandardUI gui = new StandardUI();
                 
+                WorldAdapter wa = new WorldAdapter();
+                int CurrentManager = wa.CurrentManagerID;
+
                 TeamAdapter ta = new TeamAdapter();
+                bool TeamIsCurrentHumanManager = (TeamID == ta.GetTeamByManager(CurrentManager).UniqueID);
+
                 ManagerAdapter ma = new ManagerAdapter();
                 gui.BarText = ta.GetTeam(TeamID).Name + " - " + ma.GetManager(ta.GetTeam(TeamID).ManagerID).Name;
                 if(RedrawAll)
@@ -30,26 +35,37 @@ namespace GoalLine.ConsoleApp
                     gui.SetupScreen();
                 }
                 
-
                 Menu mnu = new Menu();
                 mnu.AddColumn(new MenuColumn("Name", ConsoleColor.White, 40));
                 mnu.AddColumn(new MenuColumn("Position", ConsoleColor.Yellow, 10));
-                mnu.AddColumn(new MenuColumn("Sel", ConsoleColor.Cyan, 7));
+                mnu.AddColumn(new MenuColumn(TeamIsCurrentHumanManager ? "Sel" : "Last", ConsoleColor.Cyan, 7));
 
-                WorldAdapter wa = new WorldAdapter();
-                int CurrentManager = wa.CurrentManagerID;
+                Dictionary<int, TeamPlayer> tp;
 
-                if(TeamID == ta.GetTeamByManager(CurrentManager).UniqueID)
+                if (TeamIsCurrentHumanManager)
                 {
                     mnu.AddExtraKeypress(" ", "Change Start/Sub Selection");
+                    tp = ta.GetTeamPlayerSelections(TeamID); // Show current pick (because we can change it)
+                } else
+                {
+                    tp = ta.GetTeamPlayerSelections(TeamID, false); // Show last known pick
                 }
 
                 List<Player> Players = ta.GetPlayersInTeam(TeamID);
-                Dictionary<int, TeamPlayer> tp = ta.GetTeamPlayerSelections(TeamID);
+                
 
                 foreach (Player p in Players)
                 {
-                    mnu.AddItem(new MenuItem(p.UniqueID.ToString(), new string[] { p.Name, p.PositionAndSideTextCode, SelectionText(tp[p.UniqueID].Selected) }));
+                    string selText;
+
+                    if(tp.ContainsKey(p.UniqueID))
+                    {
+                        selText = SelectionText(tp[p.UniqueID].Selected);
+                    } else
+                    {
+                        selText = SelectionText(PlayerSelectionStatus.None);
+                    }
+                    mnu.AddItem(new MenuItem(p.UniqueID.ToString(), new string[] { p.Name, p.PositionAndSideTextCode, selText }));
                 }
 
                 MenuReturnData menuRet = mnu.RunMenu(lastSelectedPlayer);

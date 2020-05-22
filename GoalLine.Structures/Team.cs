@@ -11,6 +11,7 @@ namespace GoalLine.Structures
         public int UniqueID { get; set; }
         public string Name { get; set; }
         public Dictionary<int, TeamPlayer> Players { get; set; } = new Dictionary<int, TeamPlayer>();
+        public Dictionary<int, TeamPlayer> LastKnownPick { get; set; } = new Dictionary<int, TeamPlayer>();
         public int ManagerID { get; set; }
         public int LeagueID { get; set; }
 

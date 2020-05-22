@@ -19,7 +19,7 @@ namespace GoalLine.Processes
 
         public void MatchDayEnd()
         {
-            throw new NotImplementedException();
+            UpdateLastKnownPicks();
         }
 
         public void MatchDayStart()
@@ -50,6 +50,20 @@ namespace GoalLine.Processes
         public void StartOfDay()
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Loop round all teams, updating the last known selections. This is so the human manager can see the last known starting pick for the AI teams.
+        /// </summary>
+        private void UpdateLastKnownPicks()
+        {
+            TeamAdapter ta = new TeamAdapter();
+            List<Team> Teams = ta.GetTeams();
+
+            foreach(Team T in Teams)
+            {
+                ta.UpdateLastKnownPick(T.UniqueID);
+            }
         }
 
         /// <summary>

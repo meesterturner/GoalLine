@@ -23,12 +23,30 @@ namespace GoalLine.Data
 
         public Dictionary<int, TeamPlayer> GetTeamPlayerSelections(int TeamID)
         {
-            return World.Teams[TeamID].Players;
+            return GetTeamPlayerSelections(TeamID, true);
+        }
+
+        public Dictionary<int, TeamPlayer> GetTeamPlayerSelections(int TeamID, bool CurrentSelection)
+        {
+            if(CurrentSelection)
+            {
+                return World.Teams[TeamID].Players;
+            }
+            else
+            {
+                return World.Teams[TeamID].LastKnownPick;
+            }
+            
         }
 
         public void SetTeamPlayerSelection(int TeamID, int PlayerID, PlayerSelectionStatus Status)
         {
             World.Teams[TeamID].Players[PlayerID].Selected = Status;
+        }
+
+        public void UpdateLastKnownPick(int TeamID)
+        {
+            World.Teams[TeamID].LastKnownPick = World.Teams[TeamID].Players;
         }
 
         public PlayerSelectionStatus CycleTeamPlayerSelection(int TeamID, int PlayerID)
@@ -83,6 +101,11 @@ namespace GoalLine.Data
             return (from team in World.Teams
                     where team.LeagueID == LeagueID
                     select team).ToList();
+        }
+
+        public List<Team> GetTeams()
+        {
+            return World.Teams;
         }
     }
 }
