@@ -26,7 +26,12 @@ namespace GoalLine.ConsoleApp
                 int CurrentManager = wa.CurrentManagerID;
 
                 TeamAdapter ta = new TeamAdapter();
-                bool TeamIsCurrentHumanManager = (TeamID == ta.GetTeamByManager(CurrentManager).UniqueID);
+                Team ThisManagersTeam = ta.GetTeamByManager(CurrentManager);
+                bool TeamIsCurrentHumanManager = false;
+                if(ThisManagersTeam != null && TeamID == ThisManagersTeam.UniqueID)
+                {
+                    TeamIsCurrentHumanManager = true;
+                }
 
                 ManagerAdapter ma = new ManagerAdapter();
                 gui.BarText = ta.GetTeam(TeamID).Name + " - " + ma.GetManager(ta.GetTeam(TeamID).ManagerID).Name;
@@ -39,7 +44,7 @@ namespace GoalLine.ConsoleApp
                 mnu.AddColumn(new MenuColumn("Name", ConsoleColor.White, 40));
                 mnu.AddColumn(new MenuColumn("Position", ConsoleColor.Yellow, 10));
                 mnu.AddColumn(new MenuColumn(TeamIsCurrentHumanManager ? "Sel" : "Last", ConsoleColor.Cyan, 7));
-
+                mnu.AddColumn(new MenuColumn("Stars", ConsoleColor.Cyan, 10));
                 Dictionary<int, TeamPlayer> tp;
 
                 if (TeamIsCurrentHumanManager)
@@ -65,7 +70,7 @@ namespace GoalLine.ConsoleApp
                     {
                         selText = SelectionText(PlayerSelectionStatus.None);
                     }
-                    mnu.AddItem(new MenuItem(p.UniqueID.ToString(), new string[] { p.Name, p.PositionAndSideTextCode, selText }));
+                    mnu.AddItem(new MenuItem(p.UniqueID.ToString(), new string[] { p.Name, p.PositionAndSideTextCode, selText, new string(Convert.ToChar("*"), p.Stars) }));
                 }
 
                 MenuReturnData menuRet = mnu.RunMenu(lastSelectedPlayer);

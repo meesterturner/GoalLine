@@ -83,5 +83,13 @@ namespace GoalLine.Structures
                 return retVal;
             }
         }
+
+        public int Stars
+        {
+            get
+            {
+                return  ((Agility + Attitude + Speed + Stamina) / 4) / 20;
+            }
+        }
     }
 }

@@ -79,7 +79,15 @@ namespace GoalLine.Data
 
         public Team GetTeamByManager(int ManagerID)
         {
-            return World.Teams[World.Managers[ManagerID].CurrentTeam];
+            int CurTeam = World.Managers[ManagerID].CurrentTeam;
+            if(CurTeam > -1)
+            {
+                return World.Teams[CurTeam];
+            } else
+            {
+                return null;
+            }
+            
         }
 
         public Team GetTeamByPlayer(int PlayerID)
