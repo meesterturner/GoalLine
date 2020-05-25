@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GoalLine.Data;
 using GoalLine.Structures;
@@ -11,17 +12,17 @@ namespace GoalLine.Matchday
 {
     class MatchPlayer
     {
+        Utils u = new Utils();
+        private int HomeAdvantage = 10;
+        private int EventCountThisSecond;
+
         public Fixture Fixture { get; set; }
         public bool Interactive { get; set; }
         public IMatchCallback MatchCallback { get; set; }
 
-        List<MatchEventCommentary> Comm;
+        List<MatchEventCommentary> CommentaryList;
 
-        public MatchPlayer()
-        {
-            Comm = GetCommentaries();
-        }
-
+        MatchStatus MatchStatus;
 
         public void StartMatch()
         {
@@ -35,36 +36,65 @@ namespace GoalLine.Matchday
                 throw new ArgumentNullException("MatchCallback not set");
             }
 
-            // TEST CODE!!!
-            MatchCallback.Segment = MatchSegment.FirstHalf;
-            MatchCallback.EventType = MatchEventType.KickOff;
-            MatchCallback.MatchStarting(Fixture);
-
-            for(int s = 0; s <= 45 * 60; s = s + 15)
+            if(Interactive)
             {
-                MatchCallback.SegmentTimeSeconds = s;
-
-                int RandomEvent = new Random().Next(0, 36); // 0-35, Thanks .net ;-) 
-
-                if(RandomEvent <= 9)
-                {
-                    RaiseEvent((MatchEventType)RandomEvent);
-                } else
-                {
-                    RaiseEvent(MatchEventType.None);
-                }
+                CommentaryList = GetCommentaries();
             }
 
+            
+            MatchStatus = new MatchStatus();
+            PopulatePlayerStatuses();
+            MatchCallback.MatchStarting(Fixture);
+
+            for (int h = 1; h <= 2; h++)
+            {
+                if(h == 1)
+                {
+                    MatchStatus.Segment = MatchSegment.FirstHalf;
+                } else
+                {
+                    MatchStatus.Segment = MatchSegment.SecondHalf;
+                }
+
+                MatchStatus.BallX = 0;
+                MatchStatus.PossessionTeam = h - 1; // TODO: Randomise for the start, but opposite team for second half.
+
+                RaiseEvent(MatchEventType.KickOff);
+
+                for (int s = 0; s <= Constants.MinsPerHalf * 60 - Constants.EventIntervalSecs; s = s + Constants.EventIntervalSecs)
+                {
+                    MatchStatus.SegmentTimeSeconds = s;
+                    MatchStatus.MatchTimeSeconds += Constants.EventIntervalSecs;
+
+                    DetermineNextEvent();
+                }
+
+                if (h == 1)
+                {
+                    RaiseEvent(MatchEventType.HalfTime);
+                }
+                else
+                {
+                    RaiseEvent(MatchEventType.FullTime);
+                }
+
+            }
+
+            Fixture.Score[0] = MatchStatus.Score[0];
+            Fixture.Score[1] = MatchStatus.Score[1];
             MatchCallback.MatchFinished(Fixture);
 
         }
 
         private void RaiseEvent(MatchEventType Ev)
         {
+            EventCountThisSecond++;
+
             if(!Interactive)
             {
                 return; // If non-interactive, no point raising events or deciding on commentary for the UI
             }
+
             if(Ev == MatchEventType.None)
             {
                 MatchCallback.Commentary = "";
@@ -72,7 +102,8 @@ namespace GoalLine.Matchday
             {
                 MatchCallback.Commentary = FindCommentary(Ev);
             }
-            
+
+            MatchCallback.MatchStatus = MatchStatus;
             MatchCallback.EventType = Ev;
             MatchCallback.UpdateUI();
         }
@@ -81,8 +112,8 @@ namespace GoalLine.Matchday
         {
             string retVal = "";
 
-            List<MatchEventCommentary> PossComment = (from C in Comm
-                                                      where C.EventType == Ev
+            List<MatchEventCommentary> PossComment = (from C in CommentaryList
+                                                      where C.EventType == Ev && (C.Segment == MatchSegment.None || C.Segment == MatchStatus.Segment)
                                                       select C).ToList();
 
             retVal = PossComment[0].RawText;
@@ -99,11 +130,239 @@ namespace GoalLine.Matchday
             retVal.Add(new MatchEventCommentary(MatchEventType.Goal, "The keeper had no chance with that one!", MatchSegment.None));
             retVal.Add(new MatchEventCommentary(MatchEventType.GoalKick, "The keeper boots it down the pitch", MatchSegment.None));
             retVal.Add(new MatchEventCommentary(MatchEventType.HalfTime, "The end of a thrilling first half", MatchSegment.None));
-            retVal.Add(new MatchEventCommentary(MatchEventType.KickOff, "This hotly anticipated game begins!", MatchSegment.None));
+            retVal.Add(new MatchEventCommentary(MatchEventType.KickOff, "This hotly anticipated game begins!", MatchSegment.FirstHalf));
+            retVal.Add(new MatchEventCommentary(MatchEventType.KickOff, "The second half gets under way!", MatchSegment.SecondHalf));
             retVal.Add(new MatchEventCommentary(MatchEventType.Miss, "Oooh, surely he will be kicking himself for that one!", MatchSegment.None));
             retVal.Add(new MatchEventCommentary(MatchEventType.Save, "Cracking reactions by the keeper there", MatchSegment.None));
-
+            retVal.Add(new MatchEventCommentary(MatchEventType.Dispossessed, "The ball is intercepted by the opposition", MatchSegment.None));
+            retVal.Add(new MatchEventCommentary(MatchEventType.Hoofed, "He hoofs it right up the pitch", MatchSegment.None));
+            retVal.Add(new MatchEventCommentary(MatchEventType.Shot, "He's hit it towards the goal...", MatchSegment.None));
             return retVal;
+        }
+
+        private void PopulatePlayerStatuses()
+        {
+            List<PlayerStatus> StatusList;
+
+            for(int t = 0; t <= 1; t++)
+            {
+                MatchStatus.OverallPlayerEffectiveRating[t] = 0;
+
+                TeamAdapter ta = new TeamAdapter();
+                Team Team = ta.GetTeam(Fixture.TeamIDs[t]);
+
+                PlayerAdapter pa = new PlayerAdapter();
+                StatusList = new List<PlayerStatus>();
+
+                // TODO: This needs putting into a function
+                //       Player status only to be refreshed at start of match
+                //       Needs doing when we have subs/sending off working
+                TacticEvaluation Eval = new TacticEvaluation();
+
+                int Selected = 0;
+                int TotalEffectiveRating = 0;
+
+                foreach(KeyValuePair<int, TeamPlayer> kvp in Team.Players)
+                {
+                
+                    PlayerStatus ps = new PlayerStatus();
+                    ps.PlayerID = kvp.Value.PlayerID;
+                    ps.Playing = kvp.Value.Selected;
+
+                    if(ps.Playing == PlayerSelectionStatus.Starting)
+                    {
+                        Selected++;
+
+                        Player p = pa.GetPlayer(ps.PlayerID);
+                        ps.EffectiveRating = p.EffectiveRating;
+                        TotalEffectiveRating += ps.EffectiveRating;
+
+                        Eval.AddRatingForPosition(p.Position, p.EffectiveRating); 
+                    }
+
+                    if(ps.Playing != PlayerSelectionStatus.None)
+                    {
+                        StatusList.Add(ps);
+                    }
+                    
+                    ps = null;
+                }
+
+                MatchStatus.OverallPlayerEffectiveRating[t] = TotalEffectiveRating / Selected;
+                MatchStatus.PlayerStatuses[t] = StatusList;
+                MatchStatus.Evaluation[t] = Eval;
+                StatusList = null;
+            }
+        }
+
+        public void DetermineNextEvent()
+        {
+            //MatchEventType LastEvent = s.MostRecentEvent;
+            EventCountThisSecond = 0;
+
+            bool PossessionChange = u.RandomInclusive(0, MatchStatus.OverallPlayerEffectiveRating[1 - MatchStatus.PossessionTeam]) > u.RandomInclusive(0, MatchStatus.OverallPlayerEffectiveRating[MatchStatus.PossessionTeam]);
+
+            if (MatchStatus.PossessionTeam == Constants.HomeTeam && PossessionChange == true)
+            {
+                if (u.RandomInclusive(0, 100) <= HomeAdvantage)
+                {
+                    PossessionChange = false; 
+                }
+            }
+
+            if (PossessionChange)
+            {
+                if(SuccessfulEvent())
+                {
+                    MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
+                    RaiseEvent(MatchEventType.Dispossessed);
+                }
+            }
+
+            int ballDirection = MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1;
+
+            bool ShotAttempt = false;
+            bool ShotSuccess = false;
+            int ShotDistance = 3 - Math.Abs(MatchStatus.BallX);
+
+            if ((MatchStatus.BallX < 0 && MatchStatus.PossessionTeam == Constants.AwayTeam) || (MatchStatus.BallX > 0 && MatchStatus.PossessionTeam == Constants.HomeTeam))
+            {
+                ShotAttempt = u.RandomInclusive(0, 100 * ShotDistance) < MatchStatus.Evaluation[MatchStatus.PossessionTeam].Attack / ShotDistance;
+            }
+
+            if (ShotAttempt)
+            {
+                RaiseEvent(MatchEventType.Shot);
+
+                int AttChance = ((MatchStatus.Evaluation[MatchStatus.PossessionTeam].Striker * 5) + MatchStatus.Evaluation[MatchStatus.PossessionTeam].Attack) / 6;
+                int GKChance = MatchStatus.Evaluation[1 - MatchStatus.PossessionTeam].Goalkeeping;
+                
+                ShotSuccess = u.RandomInclusive(0, AttChance) > u.RandomInclusive(0, GKChance * ShotDistance);
+
+                if (ShotSuccess)
+                {
+                    MatchStatus.Score[MatchStatus.PossessionTeam]++;
+                    RaiseEvent(MatchEventType.Goal);
+
+                    MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
+                    MatchStatus.BallX = 0;
+                }
+                else
+                {
+                    MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
+                    MatchStatus.BallX = (MatchStatus.PossessionTeam == Constants.HomeTeam ? -2 : -2);
+
+                    if (AttChance > GKChance) // TODO: If it's close, maybe go for a corner?
+                    {
+                        RaiseEvent(MatchEventType.Miss);
+                        DoGoalKick();
+                    }
+                    else
+                    {
+                        RaiseEvent(MatchEventType.Save);
+                        DoGoalKick();
+                    }
+
+                }
+
+            }
+            else
+            {
+                if (PossessionChange)
+                {
+                    if ((MatchStatus.PossessionTeam == Constants.AwayTeam && MatchStatus.BallX == 2) || (MatchStatus.PossessionTeam == Constants.HomeTeam && MatchStatus.BallX == -2))
+                    {
+                        bool hoofedAway = u.RandomInclusive(0, 100) < MatchStatus.Evaluation[MatchStatus.PossessionTeam].Defence / 2;
+                        if (hoofedAway)
+                        {
+                            RaiseEvent(MatchEventType.Hoofed);
+                            MatchStatus.BallX = 0;
+                        }
+                    }
+                }
+
+                bool ballMovesInDirection = SuccessfulEvent();
+
+                if (ballMovesInDirection)
+                {
+                    if ((MatchStatus.BallX > -2 && ballDirection == -1) || (MatchStatus.BallX < 2 && ballDirection == 1))
+                    {
+                        MatchStatus.BallX += ballDirection;
+                    }
+                }
+            }
+
+            if (EventCountThisSecond == 0)
+            {
+                RaiseEvent(MatchEventType.None);
+            }
+        }
+
+        private bool SuccessfulEvent()
+        {
+            int For = 0;
+            int Against = 0;
+
+            switch (MatchStatus.BallX)
+            {
+                case -2:
+                    For = MatchStatus.Evaluation[Constants.HomeTeam].Defence;
+                    Against = MatchStatus.Evaluation[Constants.AwayTeam].Striker;
+                    break;
+
+                case -1:
+                    For = MatchStatus.Evaluation[Constants.HomeTeam].Midfield;
+                    Against = MatchStatus.Evaluation[Constants.AwayTeam].Attack;
+                    break;
+
+                case 0:
+                    if (MatchStatus.PossessionTeam == Constants.HomeTeam)
+                    {
+                        For = MatchStatus.Evaluation[Constants.HomeTeam].Midfield + HomeAdvantage;
+                        Against = MatchStatus.Evaluation[Constants.AwayTeam].Midfield;
+                    }
+                    else
+                    {
+                        For = MatchStatus.Evaluation[Constants.AwayTeam].Midfield;
+                        Against = MatchStatus.Evaluation[Constants.HomeTeam].Midfield;
+                    }
+
+                    break;
+
+                case 1:
+                    For = MatchStatus.Evaluation[Constants.AwayTeam].Midfield;
+                    Against = MatchStatus.Evaluation[Constants.HomeTeam].Attack; 
+                    break;
+
+                case 2:
+                    For = MatchStatus.Evaluation[Constants.AwayTeam].Defence; 
+                    Against = MatchStatus.Evaluation[Constants.HomeTeam].Striker;
+                    break;
+
+            }
+
+
+            return u.RandomInclusive(0, For) >= u.RandomInclusive(0, Against);
+        }
+
+        void DoGoalKick()
+        {
+            RaiseEvent(MatchEventType.GoalKick);
+            int strength = u.RandomInclusive(0, MatchStatus.Evaluation[MatchStatus.PossessionTeam].Goalkeeping);
+            int ballDirection = MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1;
+            MatchStatus.BallX = (MatchStatus.PossessionTeam == Constants.HomeTeam ? -2 : 2);
+            if (strength <= 30)
+            {
+                MatchStatus.BallX += 1 * ballDirection; // Light kick
+            } else if(strength >= 31 && strength <= 66)
+            {
+                MatchStatus.BallX += 2 * ballDirection; // Medium kick
+            } else
+            {
+                RaiseEvent(MatchEventType.Hoofed);
+                MatchStatus.BallX += 3 * ballDirection; // Hard kick
+            }
+
         }
     }
 }

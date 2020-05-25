@@ -33,18 +33,19 @@ namespace GoalLine.ConsoleApp
     class MatchdayCallback : IMatchCallback
     {
         public string Commentary { get; set; }
-        public MatchSegment Segment { get; set; }
         public MatchEventType EventType { get; set; }
-        public int SegmentTimeSeconds { get; set; }
+        public MatchStatus MatchStatus { get; set; }
 
         public void MatchFinished(Fixture f)
         {
+            Console.Write(new string(Convert.ToChar(" "), Console.WindowWidth - 1));
+            Console.SetCursorPosition(0, Console.CursorTop);
             PrintFixture(f, false);
         }
 
         public void MatchStarting(Fixture f)
         {
-            PrintFixture(f, true);
+            //PrintFixture(f, true);
         }
 
         private void PrintFixture(Fixture f, bool Starting)
@@ -55,7 +56,14 @@ namespace GoalLine.ConsoleApp
             Console.Write(ta.GetTeam(f.TeamIDs[0]).Name);
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write(" v ");
+            if(Starting)
+            {
+                Console.Write(" v ");
+            } else
+            {
+                Console.Write(String.Format(" {0} : {1} ", f.Score[0], f.Score[1] ));
+            }
+            
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(ta.GetTeam(f.TeamIDs[1]).Name);
@@ -70,15 +78,19 @@ namespace GoalLine.ConsoleApp
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("[ " + DisplayMatchTime() + " ] - ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write(String.Format(" {0} : {1} ", MatchStatus.Score[0], MatchStatus.Score[1] ));
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(Commentary);
 
+            Console.Title = MatchStatus.BallX.ToString();
+
             if(EventType == MatchEventType.None)
             {
-                System.Threading.Thread.Sleep(50);
+                System.Threading.Thread.Sleep(75);
             } else
             {
-                System.Threading.Thread.Sleep(500);
+                System.Threading.Thread.Sleep(750);
             }
 
             Console.SetCursorPosition(0, Console.CursorTop);
@@ -86,7 +98,7 @@ namespace GoalLine.ConsoleApp
 
         private string DisplayMatchTime()
         {
-            return LeadingZero(SegmentTimeSeconds / 60, 2) + ":" + LeadingZero(SegmentTimeSeconds % 60, 2);
+            return LeadingZero(MatchStatus.MatchTimeSeconds / 60, 2) + ":" + LeadingZero(MatchStatus.MatchTimeSeconds % 60, 2);
         }
 
         private string LeadingZero(int NumberToDisplay, int Length)

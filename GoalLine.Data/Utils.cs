@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GoalLine.Data
 {
-    class Utils
+    public class Utils
     {
         private Random rng;
 

@@ -88,7 +88,15 @@ namespace GoalLine.Structures
         {
             get
             {
-                return  ((Agility + Attitude + Speed + Stamina) / 4) / 20;
+                return EffectiveRating / 20;
+            }
+        }
+
+        public int EffectiveRating
+        {
+            get
+            {
+                return (Agility + Attitude + Speed + Stamina) / 4;
             }
         }
     }

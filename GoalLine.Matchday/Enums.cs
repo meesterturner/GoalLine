@@ -17,7 +17,10 @@ namespace GoalLine.Matchday
         FreeKick,
         HalfTime,
         FullTime,
-        KickOff
+        KickOff,
+        Dispossessed,
+        Hoofed,
+        Shot
     }
 
     public enum MatchSegment

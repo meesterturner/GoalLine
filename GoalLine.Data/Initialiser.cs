@@ -25,7 +25,7 @@ namespace GoalLine.Data
         {
             World.CurrentDate = new DateTime(STARTYEAR, 7, 1);
             World.PreSeasonDate = World.CurrentDate;
-            World.MainSeasonDate = World.PreSeasonDate.AddMonths(1);
+            World.MainSeasonDate = World.PreSeasonDate; //.AddMonths(1);
         }
 
         private void CreateTeams()
@@ -73,7 +73,6 @@ namespace GoalLine.Data
                     NewManager.LastName = NewTeam.Name.Split(Convert.ToChar(" "))[0];
                     NewManager.DateOfBirth = new DateTime(1966, 9, 26);
                     NewManager.Reputation = rand.RandomInclusive(30, 90);
-                    NewManager.CurrentTeam = -1;
 
                     ManagerAdapter ma = new ManagerAdapter();
                     int NewManagerID = ma.AddManager(NewManager);

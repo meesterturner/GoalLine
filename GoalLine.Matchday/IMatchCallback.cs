@@ -10,9 +10,8 @@ namespace GoalLine.Matchday
     public interface IMatchCallback
     {
         string Commentary { get; set; }
-        MatchSegment Segment { get; set; }
+        MatchStatus MatchStatus { get; set; }
         MatchEventType EventType { get; set; }
-        int SegmentTimeSeconds { get; set; }
         void UpdateUI();
         void MatchStarting(Fixture f);
         void MatchFinished(Fixture f);
