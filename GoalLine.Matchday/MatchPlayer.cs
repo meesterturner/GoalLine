@@ -142,6 +142,7 @@ namespace GoalLine.Matchday
             retVal.Add(new MatchEventCommentary(MatchEventType.CornerStart, "He runs up to the corner", MatchSegment.None));
             retVal.Add(new MatchEventCommentary(MatchEventType.Cross, "The ball is crossed in", MatchSegment.None));
             retVal.Add(new MatchEventCommentary(MatchEventType.CornerOpposition, "The ball is safely taken by the opposition", MatchSegment.None));
+            retVal.Add(new MatchEventCommentary(MatchEventType.OppositionGotThereFirst, "Their opponents got to the ball before they could", MatchSegment.None));
             return retVal;
         }
 
@@ -224,7 +225,7 @@ namespace GoalLine.Matchday
                 }
             }
 
-            int ballDirection = MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1;
+            
 
             bool ShotAttempt = false;
             int ShotDistance;
@@ -265,10 +266,16 @@ namespace GoalLine.Matchday
                         {
                             RaiseEvent(MatchEventType.Hoofed);
                             MatchStatus.BallX = 0;
+                            if(u.RandomInclusive(0,1) == 1)
+                            {
+                                MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
+                                RaiseEvent(MatchEventType.OppositionGotThereFirst);
+                            }
                         }
                     }
                 }
 
+                int ballDirection = MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1;
                 bool ballMovesInDirection = SuccessfulEvent();
 
                 if (ballMovesInDirection)
@@ -332,7 +339,7 @@ namespace GoalLine.Matchday
             }
 
 
-            return u.RandomInclusive(0, For) >= u.RandomInclusive(0, Against);
+            return u.RandomInclusive(0, For) >= u.RandomInclusive(0, Against * 2 );
         }
 
         void DoGoalKick()

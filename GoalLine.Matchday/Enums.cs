@@ -24,7 +24,8 @@ namespace GoalLine.Matchday
         BadSave,
         CornerStart,
         CornerOpposition,
-        Cross
+        Cross,
+        OppositionGotThereFirst
     }
 
     public enum MatchSegment
