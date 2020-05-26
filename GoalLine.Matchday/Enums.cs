@@ -20,7 +20,11 @@ namespace GoalLine.Matchday
         KickOff,
         Dispossessed,
         Hoofed,
-        Shot
+        Shot,
+        BadSave,
+        CornerStart,
+        CornerOpposition,
+        Cross
     }
 
     public enum MatchSegment

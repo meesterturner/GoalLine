@@ -83,9 +83,20 @@ namespace GoalLine.ConsoleApp
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write(Commentary);
 
-            Console.Title = MatchStatus.BallX.ToString();
+            Console.Title = String.Format("X: {0}  Possess: {1} [{2} : {3}]  Shots: [{4} : {5}]", 
+                                        MatchStatus.BallX, 
+                                        MatchStatus.PossessionTeam,
+                                        MatchStatus.PossessionPercentage(0),
+                                        MatchStatus.PossessionPercentage(1),
+                                        MatchStatus.Shots[0],
+                                        MatchStatus.Shots[1]);
 
-            if(EventType == MatchEventType.None)
+            if(EventType == MatchEventType.Goal)
+            {
+                Console.Write("   *** GOAL ***");
+                Console.ReadKey(true);
+            }
+            else if(EventType == MatchEventType.None)
             {
                 System.Threading.Thread.Sleep(75);
             } else
