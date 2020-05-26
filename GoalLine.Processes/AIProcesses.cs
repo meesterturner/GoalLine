@@ -135,10 +135,11 @@ namespace GoalLine.Processes
                                 switch (p.Position)
                                 {
                                     case PlayerPosition.Goalkeeper:
+                                        
+
                                         if (CountGK == 0)
                                         {
                                             ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Starting);
-                                            CountGK++;
                                             CountStarting++;
                                         }
                                         else if (CountGK == 1)
@@ -146,10 +147,11 @@ namespace GoalLine.Processes
                                             ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Sub);
                                             CountSubs++;
                                         }
+                                        CountGK++;
                                         break;
 
                                     case PlayerPosition.Defender:
-                                        if (CountDef <= 4)
+                                        if (CountDef < 4)
                                         {
                                             if (p.PreferredSide == PlayerPositionSide.Left || p.PreferredSide == PlayerPositionSide.Right)
                                             {
@@ -173,7 +175,7 @@ namespace GoalLine.Processes
                                         break;
 
                                     case PlayerPosition.Midfielder:
-                                        if (CountMid <= 4)
+                                        if (CountMid < 4)
                                         {
                                             if (p.PreferredSide == PlayerPositionSide.Left || p.PreferredSide == PlayerPositionSide.Right)
                                             {
@@ -198,7 +200,7 @@ namespace GoalLine.Processes
 
 
                                     case PlayerPosition.Attacker:
-                                        if (CountAtt <= 4)
+                                        if (CountAtt < 2)
                                         {
                                             if (p.PreferredSide == PlayerPositionSide.Left || p.PreferredSide == PlayerPositionSide.Right)
                                             {

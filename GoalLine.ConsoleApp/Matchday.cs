@@ -94,7 +94,7 @@ namespace GoalLine.ConsoleApp
             if(EventType == MatchEventType.Goal)
             {
                 Console.Write("   *** GOAL ***");
-                Console.ReadKey(true);
+                //Console.ReadKey(true);
             }
             else if(EventType == MatchEventType.None)
             {
