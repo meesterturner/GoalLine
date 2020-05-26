@@ -83,6 +83,11 @@ namespace GoalLine.Matchday
 
             Fixture.Score[0] = MatchStatus.Score[0];
             Fixture.Score[1] = MatchStatus.Score[1];
+            Fixture.Played = true;
+
+            FixtureAdapter fa = new FixtureAdapter();
+            fa.UpdateFixture(Fixture);
+
             MatchCallback.MatchFinished(Fixture);
 
         }

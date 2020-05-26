@@ -30,12 +30,17 @@ namespace GoalLine.ConsoleApp
                 Menu mnu = new Menu();
                 mnu.AddColumn(new MenuColumn("Date", ConsoleColor.White, 12));
                 mnu.AddColumn(new MenuColumn("Home", ConsoleColor.White, 40));
-                mnu.AddColumn(new MenuColumn(" ", ConsoleColor.Yellow, 3));
+                mnu.AddColumn(new MenuColumn(" ", ConsoleColor.Yellow, 10));
                 mnu.AddColumn(new MenuColumn("Away", ConsoleColor.White, 40));
 
                 foreach (Fixture f in Fixtures)
                 {
-                    mnu.AddItem(new MenuItem(f.UniqueID.ToString(), new string[] { f.Date.ToString("dd/MM/yyyy"), ta.GetTeam(f.TeamIDs[0]).Name, "v", ta.GetTeam(f.TeamIDs[1]).Name }));
+                    string Result = "v";
+                    if (f.Played)
+                    {
+                        Result = String.Format("{0} : {1}", f.Score[0], f.Score[1]);
+                    }
+                    mnu.AddItem(new MenuItem(f.UniqueID.ToString(), new string[] { f.Date.ToString("dd/MM/yyyy"), ta.GetTeam(f.TeamIDs[0]).Name, Result, ta.GetTeam(f.TeamIDs[1]).Name }));
                 }
 
                 MenuReturnData menuRet = mnu.RunMenu();

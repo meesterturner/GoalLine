@@ -112,5 +112,11 @@ namespace GoalLine.Data
 
             return fixtures.ToList();
         }
+
+        public void UpdateFixture(Fixture f)
+        {
+            int id = f.UniqueID;
+            World.Fixtures[id] = f;
+        }
     }
 }
