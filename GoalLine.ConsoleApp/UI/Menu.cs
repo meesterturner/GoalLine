@@ -98,7 +98,14 @@ namespace GoalLine.ConsoleApp.UI
             {
                 ConsoleKeyInfo k = Console.ReadKey(true);
 
-                retVal.ItemID = Items[CurrentOptionIndex].Id;
+                if(Items.Count > 0)
+                {
+                    retVal.ItemID = Items[CurrentOptionIndex].Id;
+                } else
+                {
+                    retVal.ItemID = "";
+                }
+                
 
                 switch(k.Key)
                 {
