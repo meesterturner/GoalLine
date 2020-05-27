@@ -23,9 +23,9 @@ namespace GoalLine.Data
 
         private void AssignDates()
         {
-            World.CurrentDate = new DateTime(STARTYEAR, 7, 1);
-            World.PreSeasonDate = World.CurrentDate;
-            World.MainSeasonDate = World.PreSeasonDate; //.AddMonths(1);
+            World.WorldState.CurrentDate = new DateTime(STARTYEAR, 7, 1);
+            World.WorldState.PreSeasonDate = World.WorldState.CurrentDate;
+            World.WorldState.MainSeasonDate = World.WorldState.PreSeasonDate; //.AddMonths(1);
         }
 
         private void CreateTeams()

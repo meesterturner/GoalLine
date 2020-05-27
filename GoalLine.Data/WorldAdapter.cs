@@ -12,7 +12,7 @@ namespace GoalLine.Data
         {
             get
             {
-                return World.CurrentDate;
+                return World.WorldState.CurrentDate;
             }
         }
 
@@ -20,11 +20,11 @@ namespace GoalLine.Data
         { 
             get 
             {
-                return World.MainSeasonDate;
+                return World.WorldState.MainSeasonDate;
             }
             set
             {
-                World.MainSeasonDate = value;
+                World.WorldState.MainSeasonDate = value;
             }
         }
 
@@ -32,11 +32,11 @@ namespace GoalLine.Data
         {
             get
             {
-                return World.PreSeasonDate;
+                return World.WorldState.PreSeasonDate;
             }
             set
             {
-                World.PreSeasonDate = value;
+                World.WorldState.PreSeasonDate = value;
             }
         }
 
@@ -44,11 +44,11 @@ namespace GoalLine.Data
         {
             get
             {
-                return World.CurrentManagerID;
+                return World.WorldState.CurrentManagerID;
             }
             set
             {
-                World.CurrentManagerID = value;
+                World.WorldState.CurrentManagerID = value;
             }
         }
 
@@ -59,8 +59,8 @@ namespace GoalLine.Data
 
         public DateTime AdvanceDate(int Days)
         {
-            World.CurrentDate = World.CurrentDate.AddDays(Days);
-            return World.CurrentDate;
+            World.WorldState.CurrentDate = World.WorldState.CurrentDate.AddDays(Days);
+            return World.WorldState.CurrentDate;
         }
     }
 }

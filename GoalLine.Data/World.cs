@@ -10,11 +10,8 @@ namespace GoalLine.Data
 {
     static class World
     {
-        public static DateTime CurrentDate { get; set; }
-        public static DateTime PreSeasonDate { get; set; }
-        public static DateTime MainSeasonDate { get; set; }
 
-        public static int CurrentManagerID { get; set; }
+        public static State WorldState = new State();  
 
         public static List<Player> Players { get; set; } = new List<Player>();
         public static List<Team> Teams { get; set; } = new List<Team>();

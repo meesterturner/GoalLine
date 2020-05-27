@@ -68,7 +68,7 @@ namespace GoalLine.Data
 
         public DateTime GetNextDateForLeagueMatches(int LeagueID, bool AllowCurrentDate)
         {
-            DateTime testDate = World.CurrentDate;
+            DateTime testDate = World.WorldState.CurrentDate;
             if (!AllowCurrentDate)
             {
                 testDate = testDate.AddDays(1);
