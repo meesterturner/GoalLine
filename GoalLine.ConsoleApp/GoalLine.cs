@@ -5,17 +5,54 @@ using GoalLine.ConsoleApp.UI;
 using GoalLine.Data;
 using GoalLine.Structures;
 using GoalLine.Processes;
+using System.Runtime.CompilerServices;
 
 namespace GoalLine.ConsoleApp
 {
     public static class GoalLine
     {
+        private static bool LoadFromSaveGame = false;
+
         static void Main(string[] args)
         {
             Console.WindowHeight = 55;
 
             Welcome();
-            MainGameLoop(false); // TODO: If loading a savegame, this needs to be true.
+            MainGameLoop(LoadFromSaveGame);
+        }
+
+        private static bool LoadFromSave()
+        {
+            bool retVal = false;
+            GameIO io = new GameIO();
+
+            List<SaveGameInfo> Saves = io.ListSaveGames();
+
+            StandardUI gui = new StandardUI();
+            gui.BarText = "Load a Save Game";
+            gui.SetupScreen();
+
+            Menu mnu = new Menu();
+            mnu.AddColumn(new MenuColumn("ID", ConsoleColor.Yellow, 5));
+            mnu.AddColumn(new MenuColumn("Save Game Name", ConsoleColor.White, 50));
+            mnu.AddColumn(new MenuColumn("Save Date", ConsoleColor.White, 20));
+
+            for (int s = 0; s < Saves.Count; s++)
+            {
+                mnu.AddItem(new MenuItem(Saves[s].Name, new string[] { s.ToString(), Saves[s].Name, Saves[s].SaveDate.ToString("dd/MM/yyyy hh:mm") }));
+            }
+
+            MenuReturnData menuRet = mnu.RunMenu();
+            if (menuRet.Keypress == MenuKeypressConstants.ESC)
+            {
+                return false;
+            }
+
+            io.SaveGameName = menuRet.ItemID;
+            io.LoadGame();
+
+            retVal = true;
+            return retVal;
         }
 
         private static void Welcome()
@@ -27,11 +64,28 @@ namespace GoalLine.ConsoleApp
             Progress("");
             Console.Clear();
 
-            Console.WriteLine("Welcome to GoalLine");
-            Console.WriteLine("===================");
-            Console.WriteLine("");
+            StandardUI gui = new StandardUI();
+            gui.BarText = "Welcome to GoalLine";
+            gui.SetupScreen();
+
+            Console.Write("Load a save game? ");
+            string Load = Console.ReadLine();
+            if(Load != "")
+            {
+                if(Load.ToUpper().StartsWith("Y"))
+                {
+                    if(LoadFromSave())
+                    {
+                        LoadFromSaveGame = true;
+                        return;
+                    }
+                }
+            }
 
             // Who are ya?
+            gui.BarText = "Start a New Game";
+            gui.SetupScreen();
+
             Console.Write("Enter your first name: ");
             FirstName = Console.ReadLine();
 
@@ -65,7 +119,6 @@ namespace GoalLine.ConsoleApp
 
             while(TeamID == -1)
             {
-                StandardUI gui = new StandardUI();
                 gui.BarText = "Select a Team";
                 gui.SetupScreen();
 

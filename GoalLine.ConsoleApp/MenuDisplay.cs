@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GoalLine.ConsoleApp.UI;
 using GoalLine.Structures;
 using GoalLine.Data;
+using System.IO;
 
 namespace GoalLine.ConsoleApp
 {
@@ -48,7 +49,7 @@ namespace GoalLine.ConsoleApp
                 mnu.AddItem(new MenuItem("FIX", new string[] { "View League Fixtures" }));
 
 
-
+                mnu.AddItem(new MenuItem("SAVE", new string[] { "Save Game" }));
                 mnu.AddItem(new MenuItem("QUIT", new string[] { "Quit Game" }));
 
                 MenuReturnData menuRet = mnu.RunMenu();
@@ -74,6 +75,33 @@ namespace GoalLine.ConsoleApp
                         md.Run();
                         EndOfDay = true;
                         break;
+
+                    case "SAVE":
+                        GameIO i = new GameIO();
+
+                        if(wa.SaveGameName == "" || wa.SaveGameName == null)
+                        {
+                            gui.BarText = "Save Game";
+                            gui.SetupScreen();
+
+                            Console.Write("Enter name for this save game: ");
+                            string Name = Console.ReadLine().Trim();
+
+                            if(Name == "")
+                            {
+                                Name = "Unnamed Save " + DateTime.Now.ToString("yyyy-MM-dd-hhmmss");
+                            }
+
+                            wa.SaveGameName = Name.Replace(Path.DirectorySeparatorChar.ToString(), "")
+                                                  .Replace(Path.VolumeSeparatorChar.ToString(), "")
+                                                  .Replace(Path.AltDirectorySeparatorChar.ToString(), "")
+                                                  .Trim();
+                        }
+
+                        i.SaveGameName = wa.SaveGameName;
+                        i.SaveGame();
+
+                        break; 
 
                     case "QUIT":
                         Environment.Exit(0);

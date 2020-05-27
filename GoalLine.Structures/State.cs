@@ -12,5 +12,6 @@ namespace GoalLine.Structures
         public DateTime PreSeasonDate { get; set; }
         public DateTime MainSeasonDate { get; set; }
         public int CurrentManagerID { get; set; }
+        public string SaveGameName { get; set; } = "";
     }
 }

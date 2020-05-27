@@ -10,6 +10,7 @@ namespace GoalLine.Data
 {
     static class World
     {
+        // REMEMBER! When adding classes here, update the GameIO.LoadGame() and GameIO.SaveGame() methods
 
         public static State WorldState = new State();  
 

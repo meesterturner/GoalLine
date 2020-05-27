@@ -52,6 +52,18 @@ namespace GoalLine.Data
             }
         }
 
+        public string SaveGameName
+        {
+            get
+            {
+                return World.WorldState.SaveGameName;
+            }
+            set
+            {
+                World.WorldState.SaveGameName = value;
+            }
+        }
+
         public DateTime AdvanceDate()
         {
             return AdvanceDate(1);
