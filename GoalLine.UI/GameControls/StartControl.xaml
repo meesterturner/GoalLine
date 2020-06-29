@@ -1,0 +1,44 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GoalLine.UI"
+             xmlns:SingleControls="clr-namespace:GoalLine.UI.SingleControls" x:Class="GoalLine.UI.StartControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1000">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="400" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="lblFirstName" Text="First Name" Grid.Column="0" Grid.Row="0" />
+        <TextBox x:Name="txtFirstName" Grid.Column="1" Grid.Row="0" />
+
+        <TextBlock x:Name="lblSurname" Text="Surname" Grid.Column="0" Grid.Row="1" />
+        <TextBox x:Name="txtSurname" Grid.Column="1" Grid.Row="1" />
+
+        <TextBlock x:Name="lblDOB" Text="Date of Birth" Grid.Column="0" Grid.Row="2" />
+        <TextBox x:Name="txtDOB" Grid.Column="1" Grid.Row="2" />
+        <ListView x:Name="lvwTeams" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" HorizontalAlignment="Stretch">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding UniqueID}" />
+                    <GridViewColumn Header="Team" Width="auto" DisplayMemberBinding="{Binding Name}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <SingleControls:PagingControl x:Name="LeaguePaging" Grid.Column="2" HorizontalAlignment="Stretch" Grid.RowSpan="3" EitherDirectionClicked="LeaguePaging_EitherDirectionClicked" />
+
+
+    </Grid>
+</UserControl>
