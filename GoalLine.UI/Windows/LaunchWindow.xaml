@@ -4,10 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GoalLine.UI"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Style="{StaticResource GameWindow}"
         Title="LaunchWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="cmdStart" Content="Start Game" Click="cmdStart_Click" HorizontalAlignment="Left" Height="74" Margin="210,145,0,0" VerticalAlignment="Top" Width="226"/>
+        <Button x:Name="cmdStart" Content="Start Game" Click="cmdStart_Click" Height="36" Margin="210,145,356,0" VerticalAlignment="Top" d:LayoutOverrides="VerticalAlignment"/>
 
     </Grid>
 </Window>

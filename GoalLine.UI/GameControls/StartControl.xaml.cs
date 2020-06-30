@@ -63,5 +63,11 @@ namespace GoalLine.UI
         {
             UpdateTeams();
         }
+
+        private void lvwTeams_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Team t = (Team)lvwTeams.SelectedItem;
+            MessageBox.Show(t.Name + " " + ta.GetPlayersInTeam(t.UniqueID)[0].Name);
+        }
     }
 }

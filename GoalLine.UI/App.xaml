@@ -4,27 +4,112 @@
              xmlns:local="clr-namespace:GoalLine.UI"
              StartupUri="Windows\LaunchWindow.xaml">
     <Application.Resources>
+
+        <Style TargetType="Window" x:Key="GameWindow">
+            <Setter Property="Background" Value="#dfe0e2" />
+        </Style>
+       
+        
         <!-- Default for text blocks -->
         <Style TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Arial"/>
+            <Setter Property="FontFamily" Value="fonts/#Roboto Light"/>
             <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#44494f" />
         </Style>
 
-        <Style BasedOn="{StaticResource {x:Type TextBlock}}"
-           TargetType="TextBlock"
-           x:Key="Title1">
+        <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock" x:Key="Title1">
             <Setter Property="FontSize" Value="32"/>
-            <Setter Property="FontFamily" Value="Impact" />
+            <Setter Property="FontFamily" Value="fonts/#Roboto Black" />
         </Style>
-        <Style BasedOn="{StaticResource {x:Type TextBlock}}"
-           TargetType="TextBlock"
-           x:Key="Title2">
-            <Setter Property="FontSize" Value="18"/>
+        
+        <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock" x:Key="Title2">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="fonts/#Roboto Regular"/>
         </Style>
         
         <!-- Buttons -->
+        <!-- Greys 
+        <SolidColorBrush x:Key="ButtonNormalBackground">Transparent</SolidColorBrush>
+        <SolidColorBrush x:Key="ButtonNormalBorder">#d1d2d4</SolidColorBrush>
+        <SolidColorBrush x:Key="ButtonPressedBackground">#ced3d7</SolidColorBrush>
+        <SolidColorBrush x:Key="ButtonMouseOverBorder">#a1a2a4</SolidColorBrush>
+        <SolidColorBrush x:Key="ButtonText">#44494f</SolidColorBrush>
+        -->
+
+        <SolidColorBrush x:Key="ButtonNormalBackground">#2dcc70</SolidColorBrush>
+        <SolidColorBrush x:Key="ButtonNormalBorder">#23b15e</SolidColorBrush>
+        <SolidColorBrush x:Key="ButtonPressedBackground">#27ae61</SolidColorBrush>
+        <SolidColorBrush x:Key="ButtonMouseOverBorder">#03913e</SolidColorBrush>
+        <SolidColorBrush x:Key="ButtonText">#ffffff</SolidColorBrush>
+        
         <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <StackPanel x:Name="ButtonStack" Cursor="Hand" Height="32" Width="{TemplateBinding Width}" Margin="2" Background="{StaticResource ButtonNormalBackground}">
+                            <Border x:Name="ButtonBorder" BorderBrush="{StaticResource ButtonNormalBorder}" BorderThickness="0,0,0,3" Height="32" Cursor="Hand">
+                                <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" FontFamily="fonts/#Roboto Bold" VerticalAlignment="Center" Foreground="{StaticResource ButtonText}">
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect ShadowDepth="3" Direction="330" Color="Black" Opacity="0.2" BlurRadius="3"/>
+                                    </TextBlock.Effect>
+                                </TextBlock>
+                            </Border>
+                        </StackPanel>
+                        
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource ButtonMouseOverBorder}" />
+                            </Trigger>
+                            <Trigger Property="Button.IsPressed" Value="True">
+                                <Setter TargetName="ButtonStack" Property="Background" Value="{StaticResource ButtonPressedBackground}" />
+                                <Setter TargetName="ButtonBorder" Property="BorderThickness" Value="0,3,0,0" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Listviews -->
+        <Style TargetType="{x:Type ListView}">
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="Margin" Value="10,10,10,10"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Padding" Value="0,0,50,0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Foreground" Value="White" />
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Background.Opacity" To="0.5" Duration="0:0:0"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type ListViewItem}">
             <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        
+        <Style TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Setter Property="IsEnabled" Value="False" />
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </Application.Resources>
 </Application>
