@@ -5,40 +5,70 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GoalLine.UI"
         mc:Ignorable="d" Style="{StaticResource GameWindow}"
-        Title="GoalLine" Height="450" Width="800">
+        Title="GoalLine" Height="450" Width="1200">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="10"></ColumnDefinition>
-            <ColumnDefinition Width="150"></ColumnDefinition>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="150"></ColumnDefinition>
-            <ColumnDefinition Width="10"></ColumnDefinition>
+            <ColumnDefinition Width="0"></ColumnDefinition>
+            <ColumnDefinition Width="300"></ColumnDefinition>
+            <ColumnDefinition Width="*" MinWidth="50"></ColumnDefinition>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="720"></ColumnDefinition>
+            <ColumnDefinition Width="0"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="0"></RowDefinition>
             <RowDefinition Height="75"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
-            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="0"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2">
-            <TextBlock x:Name="Title1" Style="{StaticResource Title1}">Big Bold Title</TextBlock>
-            <TextBlock x:Name="Title2" Style="{StaticResource Title2}">Small Title</TextBlock>
+        <!-- Navbar -->
+        <StackPanel Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="30,0,0,0">
+            <Image Source="https://www.startupsavior.com/wp-content/uploads/2019/12/circle-1.png" />
+            <Button Style="{StaticResource NavButton}">Home</Button>
+            <Button Style="{StaticResource NavButton}">Team</Button>
+            <Button Style="{StaticResource NavButton}">League</Button>
         </StackPanel>
 
-        <TextBlock x:Name="GameDate" Grid.Column="2" Grid.Row="4" VerticalAlignment="Center">06 November 1979</TextBlock>
-        
-        <StackPanel Grid.Column="3" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Right" Orientation="Horizontal">
-            <Button Width="100">Temp 1</Button>
-            <Button Width="100">Temp 0</Button>
+        <Polygon Grid.Column="3" Grid.Row="1" Points="100,0 100,75 40,75" Stroke="{StaticResource DarkerPurple_Brush}" Fill="{StaticResource DarkerPurple_Brush}" />
+
+        <Border Grid.Column="4" Grid.Row="1">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <LinearGradientBrush.Transform>
+                        <RotateTransform CenterX="60" CenterY="30" Angle="270" />
+                    </LinearGradientBrush.Transform>
+                    <GradientStop Color="{StaticResource DarkerPurple_Colour}" Offset="0" />
+                    <GradientStop Color="{StaticResource LighterPurple_Colour}" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6" Grid.RowSpan="2" BorderThickness="0,0,0,2" BorderBrush="{StaticResource FaintGrey_Brush}" />
+
+
+        <StackPanel Grid.Column="4" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,30,0">
+            <StackPanel Orientation="Vertical" Margin="0,0,15,0">
+                <TextBlock x:Name="Title1" Style="{StaticResource NavTitle1}">
+                    <TextBlock.Effect>
+                        <DropShadowEffect ShadowDepth="3" Direction="330" Color="Black" Opacity="0.4" BlurRadius="1"/>
+                    </TextBlock.Effect>
+                    Big Bold Title
+                </TextBlock>
+                <TextBlock x:Name="Title2" Style="{StaticResource NavTitle2}">
+                    <TextBlock.Effect>
+                        <DropShadowEffect ShadowDepth="3" Direction="330" Color="Black" Opacity="0.4" BlurRadius="1"/>
+                    </TextBlock.Effect>
+                    Small Title
+                </TextBlock>
+            </StackPanel>
+            <Button Style="{StaticResource NavButton2}">Test</Button>
         </StackPanel>
-        
-        <WrapPanel Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="2">
+
+        <WrapPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="5">
             <WrapPanel.Background>
                 <ImageBrush ImageSource="https://daily.jstor.org/wp-content/uploads/2018/06/soccer_europe_1050x700.jpg" />
             </WrapPanel.Background>
@@ -46,9 +76,29 @@
             <WrapPanel x:Name="MainArea" Margin="5">
                 <local:StartControl HorizontalAlignment="Stretch" />
             </WrapPanel>
-            
+
         </WrapPanel>
 
+        <Border Grid.Column="1" Grid.Row="3">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <LinearGradientBrush.Transform>
+                        <RotateTransform CenterX="60" CenterY="30" Angle="90" />
+                    </LinearGradientBrush.Transform>
+                    <GradientStop Color="{StaticResource DarkerPurple_Colour}" Offset="0" />
+                    <GradientStop Color="{StaticResource LighterPurple_Colour}" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
 
+        <Polygon Grid.Column="2" Grid.Row="3" Points="0,0 45,0 0,40" Stroke="{StaticResource DarkerPurple_Brush}" Fill="{StaticResource DarkerPurple_Brush}" />
+
+        <TextBlock x:Name="GameDate" FontFamily="../Fonts/#Roboto Bold" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White">06 November 1979</TextBlock>
+
+        <StackPanel Grid.Column="4" Grid.Row="3" HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button>Temp 1</Button>
+            <Button>Temp 0</Button>
+        </StackPanel>
+        
     </Grid>
 </Window>

@@ -6,26 +6,50 @@
     <Application.Resources>
 
         <Style TargetType="Window" x:Key="GameWindow">
-            <Setter Property="Background" Value="#dfe0e2" />
+            <Setter Property="Background" Value="White" />
         </Style>
-       
-        
+
+        <!-- Colours -->
+        <SolidColorBrush x:Key="NavbarBG_Brush">White</SolidColorBrush>
+
+        <SolidColorBrush x:Key="DarkerPurple_Brush">#6050ae</SolidColorBrush>
+        <SolidColorBrush x:Key="LighterPurple_Brush">#88548e</SolidColorBrush>
+        <SolidColorBrush x:Key="FaintGrey_Brush">#eeeeee</SolidColorBrush>
+        <SolidColorBrush x:Key="LighterGrey_Brush">#bbbbbb</SolidColorBrush>
+        <SolidColorBrush x:Key="MidGrey_Brush">#888888</SolidColorBrush>
+        <SolidColorBrush x:Key="DarkerGrey_Brush">#333333</SolidColorBrush>
+
+        <Color x:Key="NavbarBG_Colour">White</Color>
+
+        <Color x:Key="DarkerPurple_Colour">#6050ae</Color>
+        <Color x:Key="LighterPurple_Colour">#88548e</Color>
+        <Color x:Key="FaintGrey_Colour">#eeeeee</Color>
+        <Color x:Key="LighterGrey_Colour">#bbbbbb</Color>
+        <Color x:Key="MidGrey_Colour">#888888</Color>
+        <Color x:Key="DarkerGrey_Colour">#333333</Color>
+
         <!-- Default for text blocks -->
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="fonts/#Roboto Light"/>
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontSize" Value="18"/>
             <Setter Property="Foreground" Value="#44494f" />
         </Style>
 
-        <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock" x:Key="Title1">
+        <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock" x:Key="NavTitle1">
+            <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="FontSize" Value="32"/>
             <Setter Property="FontFamily" Value="fonts/#Roboto Black" />
+            <Setter Property="Foreground" Value="White" />
         </Style>
         
-        <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock" x:Key="Title2">
+        <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock" x:Key="NavTitle2">
+            <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontFamily" Value="fonts/#Roboto Regular"/>
+            <Setter Property="Foreground" Value="White" />
         </Style>
+        
+
         
         <!-- Buttons -->
         <!-- Greys 
@@ -41,36 +65,99 @@
         <SolidColorBrush x:Key="ButtonPressedBackground">#27ae61</SolidColorBrush>
         <SolidColorBrush x:Key="ButtonMouseOverBorder">#03913e</SolidColorBrush>
         <SolidColorBrush x:Key="ButtonText">#ffffff</SolidColorBrush>
-        
-        <Style TargetType="Button">
+
+        <!-- Navbar Button (Main) -->
+        <Style TargetType="Button" x:Key="NavButton">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <StackPanel x:Name="ButtonStack" Cursor="Hand" Height="32" Width="{TemplateBinding Width}" Margin="2" Background="{StaticResource ButtonNormalBackground}">
-                            <Border x:Name="ButtonBorder" BorderBrush="{StaticResource ButtonNormalBorder}" BorderThickness="0,0,0,3" Height="32" Cursor="Hand">
-                                <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" FontFamily="fonts/#Roboto Bold" VerticalAlignment="Center" Foreground="{StaticResource ButtonText}">
-                                    <TextBlock.Effect>
-                                        <DropShadowEffect ShadowDepth="3" Direction="330" Color="Black" Opacity="0.2" BlurRadius="3"/>
-                                    </TextBlock.Effect>
-                                </TextBlock>
+                        <StackPanel x:Name="ButtonStack" Cursor="Hand" Height="32" Width="100" Margin="2" Background="{StaticResource NavbarBG_Brush}">
+                            <Border x:Name="ButtonBorder" BorderBrush="{StaticResource NavbarBG_Brush}" BorderThickness="0,0,0,3" Height="32" Cursor="Hand">
+                                <TextBlock x:Name="ButtonText" Text="{TemplateBinding Content}" HorizontalAlignment="Center" FontFamily="fonts/#Roboto Bold" FontSize="18" VerticalAlignment="Center" Foreground="{StaticResource MidGrey_Brush}" />
                             </Border>
                         </StackPanel>
-                        
+
 
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource ButtonMouseOverBorder}" />
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource DarkerPurple_Brush}" />
+                                <Setter TargetName="ButtonText" Property="Foreground" Value="{StaticResource DarkerGrey_Brush}" />
                             </Trigger>
                             <Trigger Property="Button.IsPressed" Value="True">
-                                <Setter TargetName="ButtonStack" Property="Background" Value="{StaticResource ButtonPressedBackground}" />
-                                <Setter TargetName="ButtonBorder" Property="BorderThickness" Value="0,3,0,0" />
+                                <Setter TargetName="ButtonStack" Property="Background" Value="{StaticResource LighterGrey_Brush}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
+        <!-- Navbar Button (inside coloured area) -->
+        <Style TargetType="Button" x:Key="NavButton2">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Canvas Width="100" Height="32" Cursor="Hand">
+                            <Ellipse Width="32" Height="32" Fill="{StaticResource NavbarBG_Brush}" Canvas.Left="0" Canvas.Top="0" />
+                            <Ellipse Width="32" Height="32" Fill="{StaticResource NavbarBG_Brush}" Canvas.Left="68" Canvas.Top="0" />
+                            <Rectangle Width="68" Height="32" Fill="{StaticResource NavbarBG_Brush}" Canvas.Left="16" Canvas.Top="0" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="32" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" x:Name="ButtonText" Text="{TemplateBinding Content}" FontFamily="fonts/#Roboto Bold" FontSize="18" Foreground="{StaticResource MidGrey_Brush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Grid>
+                        </Canvas>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="ButtonText" Property="Foreground" Value="{StaticResource DarkerGrey_Brush}" />
+                            </Trigger>
+                            <!-- <Trigger Property="Button.IsPressed" Value="True">
+                                <Setter TargetName="ButtonStack" Property="Background" Value="{StaticResource NavButtonPressedBackground}" />
+                            </Trigger> -->
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Generic Button -->
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Canvas Width="175" Height="32" Cursor="Hand" Margin="2">
+                            <Ellipse x:Name="S1" Width="32" Height="32" Fill="{StaticResource DarkerPurple_Brush}" Canvas.Left="0" Canvas.Top="0" />
+                            <Ellipse x:Name="S2" Width="32" Height="32" Fill="{StaticResource DarkerPurple_Brush}" Canvas.Left="143" Canvas.Top="0" />
+                            <Rectangle x:Name="S3" Width="143" Height="32" Fill="{StaticResource DarkerPurple_Brush}" Canvas.Left="16" Canvas.Top="0" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="175" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="32" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" x:Name="ButtonText" Text="{TemplateBinding Content}" FontFamily="fonts/#Roboto Bold" FontSize="18" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Grid>
+                        </Canvas>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="S1" Property="Fill" Value="{StaticResource LighterPurple_Brush}" />
+                                <Setter TargetName="S2" Property="Fill" Value="{StaticResource LighterPurple_Brush}" />
+                                <Setter TargetName="S3" Property="Fill" Value="{StaticResource LighterPurple_Brush}" />
+                            </Trigger>
+                            <!-- <Trigger Property="Button.IsPressed" Value="True">
+                                <Setter TargetName="ButtonStack" Property="Background" Value="{StaticResource NavButtonPressedBackground}" />
+                            </Trigger> -->
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- Listviews -->
         <Style TargetType="{x:Type ListView}">
             <Setter Property="Background" Value="Black"/>
