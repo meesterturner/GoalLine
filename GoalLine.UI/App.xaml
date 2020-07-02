@@ -15,6 +15,7 @@
         <SolidColorBrush x:Key="DarkerPurple_Brush">#6050ae</SolidColorBrush>
         <SolidColorBrush x:Key="LighterPurple_Brush">#88548e</SolidColorBrush>
         <SolidColorBrush x:Key="FaintGrey_Brush">#eeeeee</SolidColorBrush>
+        <SolidColorBrush x:Key="MidLightGrey_Brush">#e0e0e0</SolidColorBrush>
         <SolidColorBrush x:Key="LighterGrey_Brush">#bbbbbb</SolidColorBrush>
         <SolidColorBrush x:Key="MidGrey_Brush">#888888</SolidColorBrush>
         <SolidColorBrush x:Key="DarkerGrey_Brush">#333333</SolidColorBrush>
@@ -24,6 +25,7 @@
         <Color x:Key="DarkerPurple_Colour">#6050ae</Color>
         <Color x:Key="LighterPurple_Colour">#88548e</Color>
         <Color x:Key="FaintGrey_Colour">#eeeeee</Color>
+        <Color x:Key="MidLightGrey_Colour">#e0e0e0</Color>
         <Color x:Key="LighterGrey_Colour">#bbbbbb</Color>
         <Color x:Key="MidGrey_Colour">#888888</Color>
         <Color x:Key="DarkerGrey_Colour">#333333</Color>
@@ -72,7 +74,7 @@
                                 </LinearGradientBrush>
                             </Border.BorderBrush>
                             <Border.Background>
-                                <SolidColorBrush Color="White" Opacity="0.5" />
+                                <SolidColorBrush Color="White" Opacity="0.5"/>
                             </Border.Background>
                             <ScrollViewer Margin="8,3,8,3" x:Name="PART_ContentHost" />
                         </Border>
@@ -175,8 +177,9 @@
 
         <!-- Listviews -->
         <Style TargetType="{x:Type ListView}">
-            <Setter Property="Background" Value="Black"/>
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource DarkerGrey_Brush}" />
+            <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="Margin" Value="10,10,10,10"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
@@ -197,21 +200,25 @@
 
         <Style TargetType="{x:Type ListViewItem}">
             <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Foreground" Value="{StaticResource DarkerGrey_Brush}" />
+            <Setter Property="FontFamily" Value="Fonts/#Roboto Regular" />
         </Style>
-        
+
         <Style TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Background" Value="{x:Null}" />
-            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Foreground" Value="Red" />
             <Setter Property="HorizontalContentAlignment" Value="Left" />
             <Setter Property="BorderBrush" Value="{x:Null}" />
             <Setter Property="IsEnabled" Value="False" />
+            <Setter Property="FontFamily" Value="Fonts/#Roboto Bold" />
 
-            <Style.Triggers>
+            <Setter Property="BorderBrush" Value="{StaticResource LighterGrey_Brush}" />
+            <Setter Property="BorderThickness" Value="0,0,0,2" />
+            <!--<Style.Triggers>
                 <Trigger Property="IsEnabled" Value="false">
                     <Setter Property="Foreground" Value="White"/>
                 </Trigger>
-            </Style.Triggers>
+            </Style.Triggers>-->
         </Style>
     </Application.Resources>
 </Application>
