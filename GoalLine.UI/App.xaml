@@ -175,6 +175,38 @@
             </Setter>
         </Style>
 
+        <!-- Paging Control Button -->
+        <Style TargetType="Button" x:Key="PagingButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Canvas Width="21" Height="21" Cursor="Hand" Margin="2">
+                            <Ellipse x:Name="S1" Width="21" Height="21" Fill="White" Canvas.Left="0" Canvas.Top="0" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="21" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="21" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" x:Name="ButtonText" Text="{TemplateBinding Content}" FontFamily="Wingdings 3" FontSize="24" Foreground="{StaticResource DarkerPurple_Brush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Grid>
+                        </Canvas>
+                        <ControlTemplate.Triggers>
+                            <!-- <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="S1" Property="Fill" Value="{StaticResource LighterPurple_Brush}" />
+                                <Setter TargetName="S2" Property="Fill" Value="{StaticResource LighterPurple_Brush}" />
+                                <Setter TargetName="S3" Property="Fill" Value="{StaticResource LighterPurple_Brush}" />
+                            </Trigger> -->
+                            <Trigger Property="Button.IsPressed" Value="True">
+                                <Setter TargetName="ButtonText" Property="Foreground" Value="{StaticResource LighterPurple_Brush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- Listviews -->
         <Style TargetType="{x:Type ListView}">
             <Setter Property="Background" Value="White"/>

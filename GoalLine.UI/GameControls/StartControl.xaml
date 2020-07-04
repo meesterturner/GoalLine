@@ -37,7 +37,7 @@
             </ListView.View>
         </ListView>
 
-        <SingleControls:PagingControl x:Name="LeaguePaging" Grid.Column="2" HorizontalAlignment="Stretch" Grid.RowSpan="3" EitherDirectionClicked="LeaguePaging_EitherDirectionClicked" />
+        <SingleControls:PagingControl x:Name="LeaguePaging" Grid.Column="2" HorizontalAlignment="Stretch" EitherDirectionClicked="LeaguePaging_EitherDirectionClicked" />
 
 
     </Grid>

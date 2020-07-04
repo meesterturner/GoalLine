@@ -50,7 +50,7 @@ namespace GoalLine.UI.SingleControls
             InitializeComponent();
         }
 
-        private void GoForward_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void GoForward_Click(object sender, RoutedEventArgs e)
         {
             _CurrentItem++;
             if(CurrentItem >= Items.Count)
@@ -63,7 +63,7 @@ namespace GoalLine.UI.SingleControls
             EitherDirectionClicked?.Invoke(this, EventArgs.Empty);
         }
 
-        private void GoBack_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void GoBack_Click(object sender, RoutedEventArgs e)
         {
             _CurrentItem--;
             if (CurrentItem < 0)

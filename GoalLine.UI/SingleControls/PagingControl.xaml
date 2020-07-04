@@ -13,8 +13,8 @@
             <ColumnDefinition Width="25" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock x:Name="GoBack" Text="&lt;" Grid.Column="0" HorizontalAlignment="Left" MouseLeftButtonUp="GoBack_MouseLeftButtonUp" Cursor="Hand" />
-        <TextBlock x:Name="lblCaption" Text="CAPTION!" Grid.Column="1" HorizontalAlignment="Center" />
-        <TextBlock x:Name="GoForward" Text="&gt;" Grid.Column="2" HorizontalAlignment="Right" MouseLeftButtonUp="GoForward_MouseLeftButtonUp" Cursor="Hand" />
+        <Button Style="{StaticResource PagingButton}" x:Name="GoBack" Click="GoBack_Click" Grid.Column="0">µ</Button>
+        <TextBlock x:Name="lblCaption" Text="CAPTION!" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="..\Fonts\#Roboto Bold" />
+        <Button Style="{StaticResource PagingButton}" x:Name="GoForward" Click="GoForward_Click" Grid.Column="2">¶</Button>
     </Grid>
 </UserControl>
