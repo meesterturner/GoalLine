@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,19 @@ namespace GoalLine.UI
         public StartControl()
         {
             InitializeComponent();
+
+            for(int i = 1; i<= 31; i++)
+            {
+                cboDOBDay.Items.Add(i.ToString());
+            }
+            for (int i = 1; i <= 12; i++)
+            {
+                cboDOBMonth.Items.Add(new DateTime(1979, i, 1).ToString("MMM", CultureInfo.InvariantCulture));
+            }
+            for (int i = 1900; i <= DateTime.Now.Year; i++)
+            {
+                cboDOBYear.Items.Add(i.ToString());
+            }
 
             LeagueAdapter la = new LeagueAdapter();
             Leagues = la.GetLeagues();

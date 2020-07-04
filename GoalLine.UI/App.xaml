@@ -37,47 +37,138 @@
             <Setter Property="Foreground" Value="#44494f" />
         </Style>
 
-        <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock" x:Key="NavTitle1">
+        <Style TargetType="TextBlock" x:Key="NavTitle1">
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="FontSize" Value="32"/>
             <Setter Property="FontFamily" Value="fonts/#Roboto Black" />
             <Setter Property="Foreground" Value="White" />
         </Style>
 
-        <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock" x:Key="NavTitle2">
+        <Style TargetType="TextBlock" x:Key="NavTitle2">
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontFamily" Value="fonts/#Roboto Regular"/>
             <Setter Property="Foreground" Value="White" />
         </Style>
-        
+
+        <Style TargetType="TextBlock" x:Key="ComboText">
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="fonts/#Roboto Bold" />
+            <Setter Property="Margin" Value="8,0,0,0" />
+        </Style>
+
+        <!-- Resuable templates -->
+        <ControlTemplate x:Key="TextboxMainTemplate">
+            <Border CornerRadius="16" BorderThickness="2">
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <LinearGradientBrush.Transform>
+                            <RotateTransform CenterX="60" CenterY="30" Angle="270" />
+                        </LinearGradientBrush.Transform>
+                        <GradientStop Color="{StaticResource DarkerPurple_Colour}" Offset="0" />
+                        <GradientStop Color="{StaticResource LighterPurple_Colour}" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
+                <Border.Background>
+                    <SolidColorBrush Color="White" Opacity="0.5"/>
+                </Border.Background>
+                <ScrollViewer Margin="8,3,8,3" x:Name="PART_ContentHost" />
+            </Border>
+        </ControlTemplate>
+
         <!-- Text Boxes -->
-        <Style TargetType="TextBox">
+        <Style TargetType="TextBox" x:Name="TextBox">
             <Setter Property="Height" Value="32" />
             <Setter Property="Width" Value="400" />
-            <Setter Property="Text" Value="Weebles" />
+            <Setter Property="Text" Value="" />
             <Setter Property="Foreground" Value="Black" />
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontFamily" Value="fonts/#Roboto Bold" />
             <Setter Property="Margin" Value="0,0,2,2" />
+            <Setter Property="Template" Value="{StaticResource TextboxMainTemplate}">
+            </Setter>
+        </Style>
+        
+        <!-- Combo boxes -->
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
+            <Grid Cursor="Hand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+                <Border BorderBrush="{StaticResource LighterPurple_Brush}" BorderThickness="2" CornerRadius="24" Width="23" Height="23" VerticalAlignment="Center">
+                    <TextBlock x:Name="ButtonText" Grid.Column="1" FontFamily="Wingdings 3" FontSize="24" Text="¸" Foreground="{StaticResource DarkerPurple_Brush}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Border>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="ButtonText" Property="Foreground" Value="{StaticResource LighterPurple_Brush}" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style x:Key="{x:Type ComboBox}" TargetType="{x:Type ComboBox}">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+            <Setter Property="MinWidth" Value="120" />
+            <Setter Property="MinHeight" Value="32" />
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Border CornerRadius="16" BorderThickness="2">
-                            <Border.BorderBrush>
-                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                    <LinearGradientBrush.Transform>
-                                        <RotateTransform CenterX="60" CenterY="30" Angle="270" />
-                                    </LinearGradientBrush.Transform>
-                                    <GradientStop Color="{StaticResource DarkerPurple_Colour}" Offset="0" />
-                                    <GradientStop Color="{StaticResource LighterPurple_Colour}" Offset="1" />
-                                </LinearGradientBrush>
-                            </Border.BorderBrush>
-                            <Border.Background>
-                                <SolidColorBrush Color="White" Opacity="0.5"/>
-                            </Border.Background>
-                            <ScrollViewer Margin="8,3,8,3" x:Name="PART_ContentHost" />
-                        </Border>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+                        <Grid Width="{TemplateBinding Width}">
+                            <Border CornerRadius="16" BorderThickness="2">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <LinearGradientBrush.Transform>
+                                            <RotateTransform CenterX="60" CenterY="30" Angle="270" />
+                                        </LinearGradientBrush.Transform>
+                                        <GradientStop Color="{StaticResource DarkerPurple_Colour}" Offset="0" />
+                                        <GradientStop Color="{StaticResource LighterPurple_Colour}" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <Border.Background>
+                                    <SolidColorBrush Color="White" Opacity="0.5"/>
+                                </Border.Background>
+                                <ScrollViewer Margin="8,3,8,3" x:Name="PART_ContentHost" />
+                            </Border>
+                            <ToggleButton x:Name="ToggleButton"  Focusable="false" Template="{StaticResource ComboBoxToggleButton}" ClickMode="Press" HorizontalAlignment="Right" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="3,3,23,3" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+                                <ContentPresenter.Resources>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource ComboText}"/>
+                                </ContentPresenter.Resources>
+                            </ContentPresenter>
+                            <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                                <Grid x:Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding Width}" Width="{TemplateBinding Width}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder" BorderThickness="1">
+                                        <Border.BorderBrush>
+                                            <SolidColorBrush Color="{StaticResource DarkerPurple_Colour}" />
+                                        </Border.BorderBrush>
+                                        <Border.Background>
+                                            <SolidColorBrush Color="White" Opacity="0.5"/>
+                                        </Border.Background>
+                                    </Border>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True" Cursor="Hand">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
+                            </Trigger>
+                            <Trigger Property="IsGrouping" Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                            </Trigger>
+                            <Trigger SourceName="Popup" Property="AllowsTransparency" Value="true">
+                                <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="4" />
+                                <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -132,9 +223,6 @@
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter TargetName="ButtonText" Property="Foreground" Value="{StaticResource DarkerGrey_Brush}" />
                             </Trigger>
-                            <!-- <Trigger Property="Button.IsPressed" Value="True">
-                                <Setter TargetName="ButtonStack" Property="Background" Value="{StaticResource NavButtonPressedBackground}" />
-                            </Trigger> -->
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -166,9 +254,6 @@
                                 <Setter TargetName="S2" Property="Fill" Value="{StaticResource LighterPurple_Brush}" />
                                 <Setter TargetName="S3" Property="Fill" Value="{StaticResource LighterPurple_Brush}" />
                             </Trigger>
-                            <!-- <Trigger Property="Button.IsPressed" Value="True">
-                                <Setter TargetName="ButtonStack" Property="Background" Value="{StaticResource NavButtonPressedBackground}" />
-                            </Trigger> -->
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -193,12 +278,7 @@
                             </Grid>
                         </Canvas>
                         <ControlTemplate.Triggers>
-                            <!-- <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="S1" Property="Fill" Value="{StaticResource LighterPurple_Brush}" />
-                                <Setter TargetName="S2" Property="Fill" Value="{StaticResource LighterPurple_Brush}" />
-                                <Setter TargetName="S3" Property="Fill" Value="{StaticResource LighterPurple_Brush}" />
-                            </Trigger> -->
-                            <Trigger Property="Button.IsPressed" Value="True">
+                            <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="ButtonText" Property="Foreground" Value="{StaticResource LighterPurple_Brush}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -232,8 +312,8 @@
 
         <Style TargetType="{x:Type ListViewItem}">
             <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Foreground" Value="{StaticResource DarkerGrey_Brush}" />
-            <Setter Property="FontFamily" Value="Fonts/#Roboto Regular" />
+            <Setter Property="Foreground" Value="{StaticResource DarkerPurple_Brush}" />
+            <Setter Property="FontFamily" Value="fonts/#Roboto Regular" />
         </Style>
 
         <Style TargetType="{x:Type GridViewColumnHeader}">

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GoalLine.UI"
-             xmlns:SingleControls="clr-namespace:GoalLine.UI.SingleControls" x:Class="GoalLine.UI.StartControl"
+             xmlns:SingleControls="clr-namespace:GoalLine.UI.SingleControls" xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="GoalLine.UI.StartControl"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
     <Grid>
@@ -27,7 +27,18 @@
         <TextBox x:Name="txtSurname" Grid.Column="1" Grid.Row="1" />
 
         <TextBlock x:Name="lblDOB" Text="Date of Birth" Grid.Column="0" Grid.Row="2" />
-        <TextBox x:Name="txtDOB" Grid.Column="1" Grid.Row="2" />
+
+        <Grid Grid.Column="1" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+            <ComboBox x:Name="cboDOBDay" Grid.Column="0" />
+            <ComboBox x:Name="cboDOBMonth" Grid.Column="1"/>
+            <ComboBox x:Name="cboDOBYear" Grid.Column="2" />
+        </Grid>
+        
         <ListView x:Name="lvwTeams" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" MouseLeftButtonUp="lvwTeams_MouseLeftButtonUp">
             <ListView.View>
                 <GridView>
