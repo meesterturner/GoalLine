@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GoalLine.UI.SingleControls
+namespace GoalLine.UI.Controls
 {
     /// <summary>
     /// Interaction logic for PagingControl.xaml

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GoalLine.UI"
-             xmlns:SingleControls="clr-namespace:GoalLine.UI.SingleControls" xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="GoalLine.UI.StartControl"
+             xmlns:Controls="clr-namespace:GoalLine.UI.Controls" xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="GoalLine.UI.CreateGame"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1000">
     <Grid>
@@ -30,15 +30,15 @@
 
         <Grid Grid.Column="1" Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            <ComboBox x:Name="cboDOBDay" Grid.Column="0" />
-            <ComboBox x:Name="cboDOBMonth" Grid.Column="1"/>
-            <ComboBox x:Name="cboDOBYear" Grid.Column="2" />
+            <ComboBox x:Name="cboDOBDay" Grid.Column="0" Width="105" HorizontalAlignment="Center"/>
+            <ComboBox x:Name="cboDOBMonth" Width="180" HorizontalAlignment="Center" Grid.Column="1"/>
+            <ComboBox x:Name="cboDOBYear" Grid.Column="2"  Width="105" HorizontalAlignment="Center"/>
         </Grid>
-        
+
         <ListView x:Name="lvwTeams" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" MouseLeftButtonUp="lvwTeams_MouseLeftButtonUp">
             <ListView.View>
                 <GridView>
@@ -48,7 +48,7 @@
             </ListView.View>
         </ListView>
 
-        <SingleControls:PagingControl x:Name="LeaguePaging" Grid.Column="2" HorizontalAlignment="Stretch" EitherDirectionClicked="LeaguePaging_EitherDirectionClicked" />
+        <Controls:PagingControl x:Name="LeaguePaging" Grid.Column="2" HorizontalAlignment="Stretch" EitherDirectionClicked="LeaguePaging_EitherDirectionClicked" />
 
 
     </Grid>

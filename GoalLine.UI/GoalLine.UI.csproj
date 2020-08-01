@@ -55,16 +55,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SingleControls\PagingControl.xaml.cs">
+    <Compile Include="GameScreens\Enums.cs" />
+    <Compile Include="GameScreens\GameScreenSetup.cs" />
+    <Compile Include="GameScreens\IGameScreen.cs" />
+    <Compile Include="Controls\PagingControl.xaml.cs">
       <DependentUpon>PagingControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameScreens\ScreenReturnData.cs" />
     <Compile Include="Windows\LaunchWindow.xaml.cs">
       <DependentUpon>LaunchWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GameControls\StartControl.xaml.cs">
-      <DependentUpon>StartControl.xaml</DependentUpon>
+    <Compile Include="GameScreens\CreateGame.xaml.cs">
+      <DependentUpon>CreateGame.xaml</DependentUpon>
     </Compile>
-    <Page Include="SingleControls\PagingControl.xaml">
+    <Page Include="Controls\PagingControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -84,7 +88,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GameControls\StartControl.xaml">
+    <Page Include="GameScreens\CreateGame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -138,6 +142,8 @@
       <Name>GoalLine.Structures</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
