@@ -199,7 +199,8 @@ namespace GoalLine.Matchday
                     ps = null;
                 }
 
-                MatchStatus.OverallPlayerEffectiveRating[t] = TotalEffectiveRating / Selected;
+                MatchStatus.OverallPlayerEffectiveRating[t] = (Selected > 0 ? TotalEffectiveRating / Selected : 0);
+
                 MatchStatus.PlayerStatuses[t] = StatusList;
                 MatchStatus.Evaluation[t] = Eval;
                 StatusList = null;
