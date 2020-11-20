@@ -287,52 +287,6 @@
             </Setter>
         </Style>
 
-        <!-- Listviews -->
-        <Style TargetType="{x:Type ListView}">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="{StaticResource DarkerGrey_Brush}" />
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="Margin" Value="10,10,10,10"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Padding" Value="0,0,50,0"/>
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-            <Setter Property="FontWeight" Value="Normal"/>
-            <Setter Property="Foreground" Value="White" />
-            <Style.Triggers>
-                <EventTrigger RoutedEvent="Loaded">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="Background.Opacity" To="0.5" Duration="0:0:0"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style TargetType="{x:Type ListViewItem}">
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Foreground" Value="{StaticResource DarkerPurple_Brush}" />
-            <Setter Property="FontFamily" Value="fonts/#Roboto Regular" />
-        </Style>
-
-        <Style TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Background" Value="{x:Null}" />
-            <Setter Property="Foreground" Value="Red" />
-            <Setter Property="HorizontalContentAlignment" Value="Left" />
-            <Setter Property="BorderBrush" Value="{x:Null}" />
-            <Setter Property="IsEnabled" Value="False" />
-            <Setter Property="FontFamily" Value="Fonts/#Roboto Bold" />
-
-            <Setter Property="BorderBrush" Value="{StaticResource LighterGrey_Brush}" />
-            <Setter Property="BorderThickness" Value="0,0,0,2" />
-            <!--<Style.Triggers>
-                <Trigger Property="IsEnabled" Value="false">
-                    <Setter Property="Foreground" Value="White"/>
-                </Trigger>
-            </Style.Triggers>-->
-        </Style>
-        
         <!-- Scrollbars -->
         <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
             <Setter Property="SnapsToDevicePixels" Value="True" />
