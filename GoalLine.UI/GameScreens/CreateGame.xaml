@@ -17,6 +17,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -38,18 +39,10 @@
             <ComboBox x:Name="cboDOBMonth" Width="180" HorizontalAlignment="Center" Grid.Column="1"/>
             <ComboBox x:Name="cboDOBYear" Grid.Column="2"  Width="105" HorizontalAlignment="Center"/>
         </Grid>
+        
+        <Controls:ListControl x:Name="lstTeams" Grid.Column="1" Grid.Row="4" RowClicked="lstTeams_RowClicked"/>
 
-        <ListView x:Name="lvwTeams" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" MouseLeftButtonUp="lvwTeams_MouseLeftButtonUp">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding UniqueID}" />
-                    <GridViewColumn Header="Team" Width="auto" DisplayMemberBinding="{Binding Name}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
-
-        <Controls:PagingControl x:Name="LeaguePaging" Grid.Column="2" HorizontalAlignment="Stretch" EitherDirectionClicked="LeaguePaging_EitherDirectionClicked" />
-
+        <Controls:PagingControl x:Name="LeaguePaging" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" EitherDirectionClicked="LeaguePaging_EitherDirectionClicked" />
 
     </Grid>
 </UserControl>

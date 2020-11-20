@@ -67,15 +67,42 @@ namespace GoalLine.UI
 
             LeaguePaging.DisplayItem(0);
 
+            
+            SetupList();
             UpdateTeams();
+        }
 
+
+        private void SetupList()
+        {
+            lstTeams.Title = "";
+            List<ListColumn> c = new List<ListColumn>();
+            c.Add(new ListColumn("Team", 200));
+            c.Add(new ListColumn("Av Rating", 100,HorizontalAlignment.Right));
+
+            lstTeams.Columns = c;
         }
 
         private void UpdateTeams()
         {
             LeagueID = LeaguePaging.Items[LeaguePaging.CurrentItem].ID;
-            LeagueTeams = ta.GetTeamsByLeague(LeagueID);
-            lvwTeams.ItemsSource = LeagueTeams;
+            LeagueTeams = (from tl in ta.GetTeamsByLeague(LeagueID)
+                           orderby tl.Name
+                           select tl).ToList();
+
+            List<ListRow> rows = new List<ListRow>();
+
+            foreach (Team t in LeagueTeams)
+            {
+                List<string> rowData = new List<string>();
+                rowData.Add(t.Name);
+                rowData.Add(ta.AveragePlayerRating(t.UniqueID).ToString("0.00"));
+
+                rows.Add(new ListRow(t.UniqueID, rowData));
+            }
+
+            lstTeams.Rows = rows;
+            lstTeams.Render();
         }
 
         private void LeaguePaging_EitherDirectionClicked(object sender, EventArgs e)
@@ -83,10 +110,15 @@ namespace GoalLine.UI
             UpdateTeams();
         }
 
-        private void lvwTeams_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void lstTeams_RowClicked(object sender, EventArgs e)
         {
-            Team t = (Team)lvwTeams.SelectedItem;
-            MessageBox.Show(t.Name + " " + ta.GetPlayersInTeam(t.UniqueID)[0].Name);
+            ListRow sel = (ListRow)sender;
+            Team t = ta.GetTeam(lstTeams.SelectedID);
+            if(t != null)
+            {
+                MessageBox.Show(t.Name + " " + ta.GetPlayersInTeam(t.UniqueID)[0].Name);
+            }
+            
         }
 
         public ScreenReturnData MainButtonClick(int buttonId) //TODO: Probably needs to return something!
@@ -96,7 +128,6 @@ namespace GoalLine.UI
                 throw new NotImplementedException();
             }
 
-            //TODO: Must do some validation
             ScreenReturnData ValidationResult = ValidateInput();
             if(ValidationResult != null)
             {
@@ -113,11 +144,11 @@ namespace GoalLine.UI
 
             ManagerAdapter ma = new ManagerAdapter();
             int ManagerID = ma.AddManager(you);
-            Team T = (Team)lvwTeams.SelectedItem;
+            Team T = ta.GetTeam(lstTeams.SelectedID);
             ma.AssignToTeam(ManagerID, T.UniqueID);
 
             MessageBox.Show("Assigned you to " + T.Name);
-            return new ScreenReturnData(ScreenReturnCode.Ok);
+            return new ScreenReturnData(ScreenReturnCode.Ok); 
         }
 
         ScreenReturnData ValidateInput()
@@ -127,7 +158,7 @@ namespace GoalLine.UI
                 return new ScreenReturnData(ScreenReturnCode.Error, "Please enter your name.");
             }
 
-            if(lvwTeams.SelectedItem == null)
+            if(lstTeams.SelectedID == -1)
             {
                 return new ScreenReturnData(ScreenReturnCode.Error, "Please select a team to manage.");
             }
@@ -154,6 +185,13 @@ namespace GoalLine.UI
 
             SetupData.Title1 = "Create New Game";
             SetupData.Title2 = "Welcome to GoalLine";
+        }
+
+        private void TestList_RowClicked(object sender, EventArgs e)
+        {
+            ListRow r = (ListRow)sender;
+
+            MessageBox.Show(r.ColumnData[0]);
         }
     }
 }

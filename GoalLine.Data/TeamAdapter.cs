@@ -21,6 +21,27 @@ namespace GoalLine.Data
             return retVal;
         }
 
+        public double AveragePlayerRating(int TeamID)
+        {
+            double retVal = 0f;
+
+            List<Player> players = GetPlayersInTeam(TeamID);
+            int TotalRating = 0;
+
+            foreach (Player p in players)
+            {
+                TotalRating += p.EffectiveRating;
+            }
+                
+
+            if(players.Count != 0) 
+            {
+                retVal = (double)TotalRating / players.Count;
+            }
+
+            return retVal;
+        }
+
         public Dictionary<int, TeamPlayer> GetTeamPlayerSelections(int TeamID)
         {
             return GetTeamPlayerSelections(TeamID, true);
