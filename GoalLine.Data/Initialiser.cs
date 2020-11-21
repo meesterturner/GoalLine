@@ -53,6 +53,7 @@ namespace GoalLine.Data
                     int r;
 
                     Team NewTeam = new Team();
+                    NewTeam.SeasonStatistics = new TeamStats();
 
                     r = rand.RandomInclusive(0, AvailableNames.Count - 1);
                     NewTeam.Name = AvailableNames[r] + " ";

@@ -17,7 +17,8 @@ namespace GoalLine.Processes
 
         public void MatchDayEnd()
         {
-            throw new NotImplementedException();
+            List<Fixture> fixtures = new FixtureAdapter().GetFixtures(new WorldAdapter().CurrentDate);
+            UpdateMatchStats(fixtures);
         }
 
         public void MatchDayStart()
@@ -136,6 +137,63 @@ namespace GoalLine.Processes
                 }
                 
             }
+        }
+
+        private void UpdateMatchStats(List<Fixture> fixtures)
+        {
+            const int POINTS_WON = 3;
+            const int POINTS_DRAWN = 1;
+
+            TeamAdapter ta = new TeamAdapter();
+
+            foreach(Fixture fixture in fixtures)
+            {
+                TeamStats[] stats = new TeamStats[2];
+
+                for (int t = 0; t <= 1; t++)
+                {
+                    stats[t] = ta.GetTeam(fixture.TeamIDs[t]).SeasonStatistics;
+                    stats[t].GoalsScored += fixture.Score[t];
+                    stats[t].GoalsConceded += fixture.Score[1 - t];
+                }
+
+                if (fixture.Score[0] == fixture.Score[1])
+                {
+                    for (int t = 0; t <= 1; t++)
+                    {
+                        stats[t].Drawn += 1;
+                        stats[t].Points += POINTS_DRAWN;
+                    }
+                }
+                else
+                {
+                    int WinningTeam = -1;
+                    int LosingTeam = -1;
+
+                    if (fixture.Score[0] > fixture.Score[1])
+                    {
+                        WinningTeam = 0;
+                        LosingTeam = 1;
+                    }
+                    else
+                    {
+                        WinningTeam = 1;
+                        LosingTeam = 0;
+                    }
+
+                    stats[WinningTeam].Won += 1;
+                    stats[LosingTeam].Lost += 1;
+
+                    stats[WinningTeam].Points += POINTS_WON;
+                }
+
+                for (int t = 0; t <= 1; t++)
+                {
+                    ta.UpdateTeamStatistics(fixture.TeamIDs[t], stats[t]);
+                }
+            }
+
+
         }
     }
 }

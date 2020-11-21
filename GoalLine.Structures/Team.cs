@@ -14,6 +14,7 @@ namespace GoalLine.Structures
         public Dictionary<int, TeamPlayer> LastKnownPick { get; set; } = new Dictionary<int, TeamPlayer>();
         public int ManagerID { get; set; }
         public int LeagueID { get; set; }
+        public TeamStats SeasonStatistics { get; set; }
 
     }
 
@@ -32,5 +33,16 @@ namespace GoalLine.Structures
             this.PlayerID = PlayerID;
             this.Selected = PlayerSelectionStatus.None;
         }
+    }
+
+    public class TeamStats
+    {
+        public int Points { get; set; }
+        public int Won { get; set; }
+        public int Lost { get; set; }
+        public int Drawn { get; set; }
+        public int GamesPlayed { get; set; }
+        public int GoalsScored { get; set; }
+        public int GoalsConceded { get; set; }
     }
 }

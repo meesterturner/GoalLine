@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -135,6 +137,11 @@ namespace GoalLine.Data
         public List<Team> GetTeams()
         {
             return World.Teams;
+        }
+
+        public void UpdateTeamStatistics(int TeamID, TeamStats SeasonStatistics)
+        {
+            World.Teams[TeamID].SeasonStatistics = SeasonStatistics;
         }
     }
 }
