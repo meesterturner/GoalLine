@@ -139,7 +139,7 @@ namespace GoalLine.Data
             return World.Teams;
         }
 
-        public void UpdateTeamStatistics(int TeamID, TeamStats SeasonStatistics)
+        public void UpdateTeamSeasonStatistics(int TeamID, TeamStats SeasonStatistics)
         {
             World.Teams[TeamID].SeasonStatistics = SeasonStatistics;
         }

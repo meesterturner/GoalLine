@@ -43,7 +43,7 @@ namespace GoalLine.Processes
 
         public void SeasonStart()
         {
-            throw new NotImplementedException();
+            ResetSeasonStatistics();
         }
 
         public void StartOfDay()
@@ -139,6 +139,17 @@ namespace GoalLine.Processes
             }
         }
 
+        private void ResetSeasonStatistics()
+        {
+            TeamAdapter ta = new TeamAdapter();
+            List<Team> teams = ta.GetTeams();
+
+            foreach(Team t in teams)
+            {
+                ta.UpdateTeamSeasonStatistics(t.UniqueID, new TeamStats());
+            }
+        }
+
         private void UpdateMatchStats(List<Fixture> fixtures)
         {
             const int POINTS_WON = 3;
@@ -190,7 +201,7 @@ namespace GoalLine.Processes
 
                 for (int t = 0; t <= 1; t++)
                 {
-                    ta.UpdateTeamStatistics(fixture.TeamIDs[t], stats[t]);
+                    ta.UpdateTeamSeasonStatistics(fixture.TeamIDs[t], stats[t]);
                 }
             }
 
