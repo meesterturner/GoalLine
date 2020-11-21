@@ -153,6 +153,7 @@ namespace GoalLine.Processes
                 for (int t = 0; t <= 1; t++)
                 {
                     stats[t] = ta.GetTeam(fixture.TeamIDs[t]).SeasonStatistics;
+                    stats[t].GamesPlayed++;
                     stats[t].GoalsScored += fixture.Score[t];
                     stats[t].GoalsConceded += fixture.Score[1 - t];
                 }
