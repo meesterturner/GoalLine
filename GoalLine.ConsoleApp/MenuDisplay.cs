@@ -47,7 +47,7 @@ namespace GoalLine.ConsoleApp
 
                 mnu.AddItem(new MenuItem("TEAM", new string[] { "View My Team" }));
                 mnu.AddItem(new MenuItem("FIX", new string[] { "View League Fixtures" }));
-
+                mnu.AddItem(new MenuItem("TAB", new string[] { "View League Table" }));
 
                 mnu.AddItem(new MenuItem("SAVE", new string[] { "Save Game" }));
                 mnu.AddItem(new MenuItem("QUIT", new string[] { "Quit Game" }));
@@ -74,6 +74,11 @@ namespace GoalLine.ConsoleApp
                         Matchday md = new Matchday();
                         md.Run();
                         EndOfDay = true;
+                        break;
+
+                    case "TAB":
+                        LeagueTableDisplay ltd = new LeagueTableDisplay();
+                        ltd.Display(CurrentTeam.LeagueID);
                         break;
 
                     case "SAVE":

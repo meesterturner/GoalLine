@@ -190,8 +190,18 @@ namespace GoalLine.ConsoleApp.UI
             {
                 Console.ForegroundColor = col.Colour;
 
-                string DisplayText = ThisItem.DisplayText[c] + new string(Convert.ToChar(" "), col.Width);
-                DisplayText = DisplayText.Substring(0, col.Width);
+                string DisplayText = "";
+
+                if (col.Alignment == MenuColumnAlignment.Left)
+                {
+                    DisplayText = ThisItem.DisplayText[c] + new string(Convert.ToChar(" "), col.Width);
+                    DisplayText = DisplayText.Substring(0, col.Width);
+
+                } else if(col.Alignment == MenuColumnAlignment.Right)
+                {
+                    DisplayText = new string(Convert.ToChar(" "), col.Width - ThisItem.DisplayText[c].Length) + ThisItem.DisplayText[c];
+                }
+                
 
                 Console.SetCursorPosition(x, y);
                 Console.Write(DisplayText);
@@ -212,11 +222,21 @@ namespace GoalLine.ConsoleApp.UI
 
             foreach (MenuColumn col in Columns)
             {
-                string DisplayText = col.Title + new string(Convert.ToChar(" "), col.Width);
-                DisplayText = DisplayText.Substring(0, col.Width);
+                string DisplayText = "";
+
+                if (col.Alignment == MenuColumnAlignment.Left)
+                {
+                    DisplayText = col.Title + new string(Convert.ToChar(" "), col.Width);
+                    DisplayText = DisplayText.Substring(0, col.Width);
+
+                }
+                else if (col.Alignment == MenuColumnAlignment.Right)
+                {
+                    DisplayText = new string(Convert.ToChar(" "), col.Width - col.Title.Length) + col.Title;
+                }
 
                 Console.SetCursorPosition(x, TopY);
-                Console.Write(col.Title);
+                Console.Write(DisplayText);
                 x += col.Width;
             }
         }

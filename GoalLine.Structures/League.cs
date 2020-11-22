@@ -11,4 +11,10 @@ namespace GoalLine.Structures
         public int UniqueID { get; set; }
         public string Name { get; set; }
     }
+
+    public class LeagueTableRecord : TeamStats
+    {
+        public int TeamID { get; set; }
+        public string Name { get; set; }
+    }
 }

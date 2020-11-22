@@ -44,5 +44,12 @@ namespace GoalLine.Structures
         public int GamesPlayed { get; set; }
         public int GoalsScored { get; set; }
         public int GoalsConceded { get; set; }
+        public int GoalDifference
+        {
+            get
+            {
+                return GoalsScored - GoalsConceded;
+            }
+        }
     }
 }

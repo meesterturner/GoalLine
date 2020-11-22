@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="FixtureDisplay.cs" />
     <Compile Include="GoalLine.cs" />
+    <Compile Include="LeagueTableDisplay.cs" />
     <Compile Include="Matchday.cs" />
     <Compile Include="MenuDisplay.cs" />
     <Compile Include="PlayerDisplay.cs" />
