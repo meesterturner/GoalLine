@@ -53,8 +53,10 @@ namespace GoalLine.UI.Controls
                                 where r.ID == SelectedID
                                 select r).First();
 
-
-            RowClicked.Invoke(selected, e);
+            if(RowClicked != null)
+            {
+                RowClicked.Invoke(selected, e);
+            }   
         }
 
         public void Render()
