@@ -43,8 +43,12 @@ namespace GoalLine.ConsoleApp
 
                 foreach (LeagueTableRecord r in Records)
                 {
-                    mnu.AddItem(new MenuItem(Pos.ToString(), new string[] { Pos.ToString(), r.Name, r.GamesPlayed.ToString(), r.Won.ToString(), r.Drawn.ToString(), r.Lost.ToString(), 
-                                                                            r.GoalsScored.ToString(), r.GoalsConceded.ToString(), r.GoalDifference.ToString(), r.Points.ToString()}));
+                    mnu.AddItem(new MenuItem(Pos.ToString(), new string[] { Pos.ToString(), r.Name, 
+                        r.SeasonStatistics.GamesPlayed.ToString(), r.SeasonStatistics.Won.ToString(), 
+                        r.SeasonStatistics.Drawn.ToString(), r.SeasonStatistics.Lost.ToString(), 
+                        r.SeasonStatistics.GoalsScored.ToString(), r.SeasonStatistics.GoalsConceded.ToString(), 
+                        r.SeasonStatistics.GoalDifference.ToString(), r.SeasonStatistics.Points.ToString()
+                    }));
                     Pos++;
                 }
 

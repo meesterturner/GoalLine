@@ -46,24 +46,16 @@ namespace GoalLine.Data
                 LeagueTableRecord ltr = new LeagueTableRecord();
                 ltr.TeamID = t.UniqueID;
                 ltr.Name = t.Name;
-
-                // TODO: There must be a better way to do this block here.... :-/
-                ltr.Drawn = t.SeasonStatistics.Drawn;
-                ltr.GamesPlayed = t.SeasonStatistics.GamesPlayed;
-                ltr.GoalsConceded = t.SeasonStatistics.GoalsConceded;
-                ltr.GoalsScored = t.SeasonStatistics.GoalsScored;
-                ltr.Lost = t.SeasonStatistics.Lost;
-                ltr.Points = t.SeasonStatistics.Points;
-                ltr.Won = t.SeasonStatistics.Won;
-
+                ltr.SeasonStatistics = t.SeasonStatistics;
 
                 Records.Add(ltr);
                 ltr = null;
             }
 
             List<LeagueTableRecord> retVal = (from ltr in Records
-                                              orderby ltr.Points descending, 
-                                                      ltr.GoalDifference descending,
+                                              orderby ltr.SeasonStatistics.Points descending, 
+                                                      ltr.SeasonStatistics.GoalDifference descending,
+                                                      ltr.SeasonStatistics.GoalsScored descending,
                                                       ltr.Name ascending
                                               select ltr).ToList();
 
