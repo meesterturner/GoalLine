@@ -65,7 +65,7 @@
                     Small Title
                 </TextBlock>
             </StackPanel>
-            <Button Style="{StaticResource NavButton2}" x:Name="ContinueButton">Test</Button>
+            <Button Style="{StaticResource NavButton2}" x:Name="ContinueButton" Click="ContinueButton_Click">Test</Button>
         </StackPanel>
 
         <WrapPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="5">

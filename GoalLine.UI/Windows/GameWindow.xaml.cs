@@ -25,24 +25,45 @@ namespace GoalLine.UI
     public partial class GameWindow : Window
     {
         IGameScreen CurrentScreen;
+        bool ShowingNewGame = false;
+        bool SaveGameJustLoaded = false;
+
+        List<Manager> HumanManagers;
+        int PlayingHumanManager = 0;
 
         public GameWindow()
         {
             InitializeComponent();
-            ShowGameScreen();
         }
 
-        private void ShowGameScreen()
+        public void StartGame(bool SaveGameLoaded)
+        {
+            SaveGameJustLoaded = SaveGameLoaded;
+
+            if (!SaveGameLoaded)
+            {
+                ShowingNewGame = true;
+                ShowGameScreen(new CreateGame());
+            }
+
+            // TODO: Stuff to do when loading a new game
+
+        }
+
+
+        private void ShowGameScreen(IGameScreen NewGameScreen)
+        {
+            ShowGameScreen(NewGameScreen, new GameScreenSetup());
+        }
+
+        private void ShowGameScreen(IGameScreen NewGameScreen, GameScreenSetup Data)
         {
             while(MainArea.Children.Count > 0)
             {
                 MainArea.Children.RemoveAt(0);
             }
 
-            IGameScreen NewGameScreen;
-
-            NewGameScreen = new CreateGame();
-            NewGameScreen.SetupGameScreenData(new GameScreenSetup());
+            NewGameScreen.SetupGameScreenData(Data);
             MainArea.Children.Add((UIElement)NewGameScreen);
 
             CurrentScreen = NewGameScreen;
@@ -94,7 +115,16 @@ namespace GoalLine.UI
             switch(result.ReturnCode)
             {
                 case ScreenReturnCode.Ok:
-                    MessageBox.Show("Got to do the OK shizzle here!");
+                case ScreenReturnCode.Cancel:
+                    // Special Case for new game...
+                    if (ShowingNewGame)
+                    {
+                        ShowingNewGame = false;
+                        NextManagerOrContinueDay(); // Start manager loop
+                    } else
+                    {
+                        MessageBox.Show("TODO: Go back to prev screen");
+                    }
                     break;
 
                 case ScreenReturnCode.Error:
@@ -104,7 +134,52 @@ namespace GoalLine.UI
                 default:
                     throw new NotImplementedException();
             }
+
+            
            
+        }
+
+        private void ContinueButton_Click(object sender, RoutedEventArgs e)
+        {
+            NextManagerOrContinueDay();
+        }
+
+        private void NextManagerOrContinueDay()
+        {
+            ManagerAdapter ma = new ManagerAdapter();
+
+            if (HumanManagers == null)
+            {
+                // Going to first manager, which means we have to run Start Of Day, unless loading from a savegame
+                ProcessManager.RunStartOfDay(SaveGameJustLoaded);
+                SaveGameJustLoaded = false;
+
+                HumanManagers = ma.GetHumanManagers();
+                PlayingHumanManager = 0;
+
+                if(HumanManagers.Count() < 1)
+                {
+                    throw new Exception("No human managers");
+                }
+            } else
+            {
+                PlayingHumanManager++;
+                if(PlayingHumanManager >= HumanManagers.Count())
+                {
+                    HumanManagers = null;
+                }
+            }
+
+            if(HumanManagers != null)
+            {
+                // Display home screen for the current manager
+                GameScreenSetup data = new GameScreenSetup();
+                data.ManagerData = HumanManagers[PlayingHumanManager];
+                ShowGameScreen(new Home(), data);
+            } else
+            {
+                MessageBox.Show("Go to matches");
+            }
         }
     }
 }

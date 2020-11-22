@@ -37,6 +37,7 @@ namespace GoalLine.UI
             g.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             g.WindowState = WindowState.Maximized;
             g.Show();
+            g.StartGame(false);
 
             this.Close();
         }
