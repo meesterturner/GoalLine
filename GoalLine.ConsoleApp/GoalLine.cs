@@ -175,6 +175,7 @@ namespace GoalLine.ConsoleApp
             while(running)
             {
                 ProcessManager.RunStartOfDay(SaveGameJustLoaded);
+                SaveGameJustLoaded = false; // Need to reset this as we only need to skip this the first time
 
                 ManagerAdapter ma = new ManagerAdapter();
                 List<Manager> HumanManagers = ma.GetHumanManagers();
