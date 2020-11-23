@@ -67,6 +67,17 @@ namespace GoalLine.UI
         {
             Title1.Text = CurrentScreen.SetupData.Title1;
             Title2.Text = CurrentScreen.SetupData.Title2;
+
+            if(CurrentScreen.SetupData.ShowDate)
+            {
+                WorldAdapter wa = new WorldAdapter();
+
+                GameDate.Visibility = Visibility.Visible;
+                GameDate.Text = wa.CurrentDate.ToString("dd MMMM yyyy");
+            } else
+            {
+                GameDate.Visibility = Visibility.Hidden;
+            }
         }
 
         private void CreateButtons()

@@ -171,6 +171,7 @@ namespace GoalLine.UI
             SetupData.MainButtons.Add("Ok");
 
             SetupData.ShowContinueButton = false;
+            SetupData.ShowDate = false;
 
             SetupData.Title1 = "Create New Game";
             SetupData.Title2 = "Welcome to GoalLine";

@@ -11,7 +11,7 @@ namespace GoalLine.UI.GameScreens
     {
         public List<String> MainButtons { get; set; } = new List<String>();
         public bool ShowContinueButton { get; set; }
-
+        public bool ShowDate { get; set; } = true;
         public string Title1 { get; set; }
         public string Title2 { get; set; }
 
