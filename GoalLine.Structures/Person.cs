@@ -17,7 +17,6 @@ namespace GoalLine.Structures
         public int CurrentTeam { get; set; } = -1;
 
 
-        [Obsolete("Please use Person.DisplayName() instead.")]
         public string Name 
         { 
             get
