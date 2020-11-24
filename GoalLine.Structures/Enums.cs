@@ -29,4 +29,14 @@ namespace GoalLine.Structures
         Starting = 1,
         Sub = 2
     }
+
+    public enum PersonNameReturnType
+    {
+        FirstnameLastname,
+        InitialLastname,
+        InitialOptionalLastname,
+        LastnameFirstname,
+        LastnameInitial,
+        LastnameInitialOptional
+    }
 }
