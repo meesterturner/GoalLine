@@ -224,6 +224,9 @@ namespace GoalLine.Data
             AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Attacker, PlayerPositionSide.Right, rand.RandomInclusive(0, 1));
 
             AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Striker, PlayerPositionSide.Centre, rand.RandomInclusive(0, 2));
+
+            PlayerAdapter pa = new PlayerAdapter();
+            pa.SetUseInitialOnPlayers(TeamID); // Run here instead of in PlayerAdapter.AssignToTeam() so it's only run once per team
         }
 
         private void AssignPlayersToTeam_Worker(int TeamID, PlayerPosition pos, PlayerPositionSide side, int max)
@@ -245,7 +248,7 @@ namespace GoalLine.Data
                 int which = rand.RandomInclusive(0, found - 1);
                 PlayerAdapter pad = new PlayerAdapter();
 
-                pad.AssignToTeam(playerList[which].UniqueID, TeamID);
+                pad.AssignToTeam(playerList[which].UniqueID, TeamID, true);
             }
         }
 
