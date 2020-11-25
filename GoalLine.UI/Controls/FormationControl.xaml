@@ -12,13 +12,13 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="600" />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Column="0" Grid.Row="0" x:Name="grdPitch">
             <Grid.Background>
-                <ImageBrush ImageSource="C:\Users\pault\source\repos\GoalLine\GoalLine.Resources\Images\Pitch.jpg" Stretch="UniformToFill" />
+                <ImageBrush ImageSource="C:\Users\pault\source\repos\GoalLine\GoalLine.Resources\Images\Pitch.jpg" Stretch="Fill" />
             </Grid.Background>
             
             <Grid.ColumnDefinitions>
@@ -32,7 +32,7 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="12" />
+                <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -41,7 +41,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="14" />
+                <RowDefinition Height="32" />
             </Grid.RowDefinitions>
         </Grid>
 
