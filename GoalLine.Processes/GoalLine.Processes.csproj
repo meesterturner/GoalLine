@@ -42,6 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AIProcesses.cs" />
+    <Compile Include="ProcessLogic\AITeamAndTactics.cs" />
+    <Compile Include="ProcessLogic\SeasonFixtures.cs" />
+    <Compile Include="ProcessLogic\SeasonStats.cs" />
     <Compile Include="ProcessManager.cs" />
     <Compile Include="IProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
