@@ -11,6 +11,10 @@
             <ColumnDefinition Width="400" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
 
         <Grid Grid.Column="0" Grid.Row="0" x:Name="grdPitch">
             <Grid.Background>
@@ -47,6 +51,8 @@
            
             </StackPanel>
         </ScrollViewer>
+
+        <Button x:Name="cmdSave" Grid.Column="1" Grid.Row="1" Click="cmdSave_Click">Save</Button>
     </Grid>
 
     

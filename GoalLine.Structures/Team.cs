@@ -22,7 +22,9 @@ namespace GoalLine.Structures
     {
         public int PlayerID { get; set; }
         public PlayerSelectionStatus Selected { get; set; }
-
+        public int PlayerGridX { get; set; } = -1;
+        public int PlayerGridY { get; set; } = -1;
+        public int SubSequence { get; set; } = -1;
         public TeamPlayer()
         {
 

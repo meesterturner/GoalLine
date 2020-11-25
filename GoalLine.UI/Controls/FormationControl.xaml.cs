@@ -46,24 +46,51 @@ namespace GoalLine.UI.Controls
             }
         }
 
+        public bool SaveFormation()
+        {
+            bool retVal = false;
+
+            TeamAdapter ta = new TeamAdapter();
+            ta.SavePlayerFormation(team.UniqueID, PlayerGridPositions);
+            MessageBox.Show("Formation Saved - SAVING GAME");
+
+            WorldAdapter wa = new WorldAdapter();
+            GameIO i = new GameIO();
+            i.SaveGameName = "TEST FORMATION SAVE";
+            i.SaveGame();
+
+            retVal = true;
+            return retVal;
+        }
+
         private void SetupTeam()
         {
             PlayerAdapter pa = new PlayerAdapter();
             
             foreach(KeyValuePair<int, TeamPlayer> p in team.Players)
             {
+                TeamPlayer tp = p.Value;
+                Player player = pa.GetPlayer(tp.PlayerID);
+
                 TextBlock playerLabel = new TextBlock();
                 playerLabel.Width = 150;
                 playerLabel.Height = 30;
-                playerLabel.Text = pa.GetPlayer(p.Value.PlayerID).DisplayName(PersonNameReturnType.LastnameInitial);
+                playerLabel.Text = player.DisplayName(PersonNameReturnType.LastnameInitial);
                 playerLabel.MouseMove += new MouseEventHandler(PlayerName_MouseMove);
-                playerLabel.Tag = p.Value.PlayerID;
+                playerLabel.Tag = tp.PlayerID;
 
                 PlayerLabels.Add(playerLabel);
 
                 stkNames.Children.Add(PlayerLabels[PlayerLabels.Count - 1]);
                 playerLabel = null;
 
+
+                if(tp.Selected == PlayerSelectionStatus.Starting && tp.PlayerGridX > -1 && tp.PlayerGridY > -1)
+                {
+                    MarkerText[tp.PlayerGridX, tp.PlayerGridY].Text = player.DisplayName(PersonNameReturnType.InitialOptionalLastname);
+                    MarkerText[tp.PlayerGridX, tp.PlayerGridY].Visibility = Visibility.Visible;
+                    PlayerGridPositions[tp.PlayerGridX, tp.PlayerGridY] = tp.PlayerID;
+                 }
             }
         }
 
@@ -91,21 +118,34 @@ namespace GoalLine.UI.Controls
         {
             base.OnDrop(e);
 
-            if(e.Data.GetDataPresent(DataFormats.StringFormat))
+            if (e.Data.GetDataPresent(DataFormats.StringFormat))
             {
                 int PlayerID = Convert.ToInt32((string)e.Data.GetData(DataFormats.StringFormat)); // Should be player ID
                 Ellipse DropControl = (Ellipse)sender;
                 //TextBlock DropControl = (TextBlock)sender;
 
                 string[] coords = DropControl.Tag.ToString().Split(new string[] { "," }, StringSplitOptions.None);
-                int x = Convert.ToInt32(coords[0]);
-                int y = Convert.ToInt32(coords[1]);
+                int xPos = Convert.ToInt32(coords[0]);
+                int yPos = Convert.ToInt32(coords[1]);
 
                 PlayerAdapter pa = new PlayerAdapter();
-                MarkerText[x, y].Text = pa.GetPlayer(PlayerID).DisplayName(PersonNameReturnType.LastnameInitialOptional);
-                MarkerText[x, y].Visibility = Visibility.Visible;
+                MarkerText[xPos, yPos].Text = pa.GetPlayer(PlayerID).DisplayName(PersonNameReturnType.LastnameInitialOptional);
+                MarkerText[xPos, yPos].Visibility = Visibility.Visible;
 
-                PlayerGridPositions[x, y] = PlayerID;
+                PlayerGridPositions[xPos, yPos] = PlayerID;
+
+                // Scan other positions to ensure we don't duplicate the player
+                for (int x = 0; x < GRIDWIDTH; x++)
+                {
+                    for (int y = 0; y < GRIDHEIGHT; y++)
+                    {
+                        if (x != xPos && y != yPos && PlayerGridPositions[x, y] == PlayerID)
+                        {
+                            MarkerText[x, y].Visibility = Visibility.Hidden;
+                            PlayerGridPositions[x, y] = -1;
+                        }
+                    }
+                }
             }
         }
 
@@ -130,8 +170,8 @@ namespace GoalLine.UI.Controls
                     Markers[x, y] = new Ellipse();
                     Markers[x, y].Height = 50;
                     Markers[x, y].Width = 50;
-                    Markers[x, y].Stroke = Brushes.DarkGray;
-                    Markers[x, y].Fill = Brushes.Transparent;
+                    Markers[x, y].Stroke = Brushes.DarkGreen;
+                    Markers[x, y].Fill = Brushes.LightGreen;
                     Markers[x, y].AllowDrop = true;
                     Markers[x, y].Drop += new DragEventHandler(Marker_Drop);
                     Markers[x, y].Tag = x.ToString() + "," + y.ToString();
@@ -158,7 +198,7 @@ namespace GoalLine.UI.Controls
                 }
             }
 
-            grdPitch.ShowGridLines = true;
+            //grdPitch.ShowGridLines = true;
         }
 
         public void SetupFormationTemplate(string Formation)
@@ -168,6 +208,8 @@ namespace GoalLine.UI.Controls
                 for (int y = 0; y < GRIDHEIGHT; y++)
                 {
                     SetMarkerTemplate(x, y, false);
+                    MarkerText[x, y].Visibility = Visibility.Hidden;
+                    PlayerGridPositions[x, y] = -1;
                 }
             }
 
@@ -197,7 +239,12 @@ namespace GoalLine.UI.Controls
 
         private void SetMarkerTemplate(int x, int y, bool set)
         {
-            Markers[x, y].Fill = (set ? Brushes.LightGreen : Brushes.Transparent);
+            Markers[x, y].Visibility = (set ? Visibility.Visible : Visibility.Hidden);
+        }
+
+        private void cmdSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFormation();
         }
     }
 }

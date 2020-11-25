@@ -62,9 +62,39 @@ namespace GoalLine.Data
             
         }
 
+
+        [Obsolete("Use new functions instead")]
         public void SetTeamPlayerSelection(int TeamID, int PlayerID, PlayerSelectionStatus Status)
         {
             World.Teams[TeamID].Players[PlayerID].Selected = Status;
+        }
+
+        public void SetTeamPlayerStarting(int TeamID, int PlayerID, int GridX, int GridY)
+        {
+            TeamPlayer tp = new TeamPlayer();
+            tp.PlayerID = PlayerID;
+            tp.Selected = PlayerSelectionStatus.Starting;
+            tp.PlayerGridX = GridX;
+            tp.PlayerGridY = GridY;
+            World.Teams[TeamID].Players[PlayerID] = tp;
+        }
+
+        public void SetTeamPlayerDeselected(int TeamID, int PlayerID)
+        {
+            TeamPlayer tp = new TeamPlayer();
+            tp.PlayerID = PlayerID;
+            tp.Selected = PlayerSelectionStatus.None;
+            World.Teams[TeamID].Players[PlayerID] = tp;
+        }
+
+        public void SetTeamPlayerSub(int TeamID, int PlayerID, int SubSequence)
+        {
+            TeamPlayer tp = new TeamPlayer();
+            tp.PlayerID = PlayerID;
+            tp.Selected = PlayerSelectionStatus.Sub;
+            tp.SubSequence = SubSequence;
+            World.Teams[TeamID].Players[PlayerID] = tp;
+            
         }
 
         public void UpdateLastKnownPick(int TeamID)
@@ -142,6 +172,27 @@ namespace GoalLine.Data
         public void UpdateTeamSeasonStatistics(int TeamID, TeamStats SeasonStatistics)
         {
             World.Teams[TeamID].SeasonStatistics = SeasonStatistics;
+        }
+
+        public void SavePlayerFormation(int TeamID, int[,] PlayerGridPositions)
+        {
+            List<int> PlayerIDs = World.Teams[TeamID].Players.Keys.ToList();
+            foreach(int PlayerID in PlayerIDs)
+            {
+                SetTeamPlayerDeselected(TeamID, PlayerID);
+            }
+
+            for (int x = 0; x <= PlayerGridPositions.GetUpperBound(0); x++)
+            {
+                for (int y = 0; y <= PlayerGridPositions.GetUpperBound(1); y++)
+                {
+                    int PlayerID = PlayerGridPositions[x, y];
+                    if(PlayerID > -1)
+                    {
+                        SetTeamPlayerStarting(TeamID, PlayerID, x, y);
+                    }
+                }
+            }
         }
     }
 }
