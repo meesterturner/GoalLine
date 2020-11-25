@@ -42,11 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums.cs" />
+    <Compile Include="Formation.cs" />
     <Compile Include="League.cs" />
     <Compile Include="Manager.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Fixture.cs" />
+    <Compile Include="Point2.cs" />
+    <Compile Include="ResultData.cs" />
     <Compile Include="SaveGameInfo.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

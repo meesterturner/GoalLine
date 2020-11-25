@@ -100,6 +100,7 @@ namespace GoalLine.Data
         public void UpdateLastKnownPick(int TeamID)
         {
             World.Teams[TeamID].LastKnownPick = World.Teams[TeamID].Players;
+            World.Teams[TeamID].LastKnownFormation = World.Teams[TeamID].CurrentFormation;
         }
 
         public PlayerSelectionStatus CycleTeamPlayerSelection(int TeamID, int PlayerID)
@@ -174,9 +175,11 @@ namespace GoalLine.Data
             World.Teams[TeamID].SeasonStatistics = SeasonStatistics;
         }
 
-        public void SavePlayerFormation(int TeamID, int[,] PlayerGridPositions)
+        public void SavePlayerFormation(int TeamID, int FormationID, int[,] PlayerGridPositions)
         {
             List<int> PlayerIDs = World.Teams[TeamID].Players.Keys.ToList();
+            World.Teams[TeamID].CurrentFormation = FormationID;
+
             foreach(int PlayerID in PlayerIDs)
             {
                 SetTeamPlayerDeselected(TeamID, PlayerID);

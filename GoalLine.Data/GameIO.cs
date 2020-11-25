@@ -10,6 +10,13 @@ namespace GoalLine.Data
     public class GameIO
     {
         private const string FileExtension = ".zip";
+        private const string FILE_WORLDSTATE = "worldstate.json";
+        private const string FILE_FORMATIONS = "formations.json";
+        private const string FILE_PLAYERS = "players.json";
+        private const string FILE_TEAMS = "teams.json";
+        private const string FILE_MANAGERS = "managers.json";
+        private const string FILE_LEAGUES = "leagues.json";
+        private const string FILE_FIXTURES = "fixtures.json";
 
         public string SaveGameName { get; set; }
         
@@ -59,12 +66,13 @@ namespace GoalLine.Data
 
             Directory.CreateDirectory(TempFolder);
 
-            SerialiseToDisk(World.WorldState, "worldstate.json");
-            SerialiseToDisk(World.Players, "players.json");
-            SerialiseToDisk(World.Teams, "teams.json");
-            SerialiseToDisk(World.Managers, "managers.json");
-            SerialiseToDisk(World.Leagues, "leagues.json");
-            SerialiseToDisk(World.Fixtures, "fixtures.json");
+            SerialiseToDisk(World.WorldState, FILE_WORLDSTATE);
+            SerialiseToDisk(World.Formations, FILE_FORMATIONS);
+            SerialiseToDisk(World.Players, FILE_PLAYERS);
+            SerialiseToDisk(World.Teams, FILE_TEAMS);
+            SerialiseToDisk(World.Managers, FILE_MANAGERS);
+            SerialiseToDisk(World.Leagues, FILE_LEAGUES);
+            SerialiseToDisk(World.Fixtures, FILE_FIXTURES);
 
 
             ZipFile.CreateFromDirectory(TempFolder, Filename);
@@ -111,12 +119,13 @@ namespace GoalLine.Data
 
             ZipFile.ExtractToDirectory(Filename, TempFolder);
 
-            World.WorldState = JsonConvert.DeserializeObject<State>(SerialisedData("worldstate.json"));
-            World.Players = JsonConvert.DeserializeObject<List<Player>>(SerialisedData("players.json"));
-            World.Teams = JsonConvert.DeserializeObject<List<Team>>(SerialisedData("teams.json"));
-            World.Managers = JsonConvert.DeserializeObject<List<Manager>>(SerialisedData("managers.json"));
-            World.Leagues = JsonConvert.DeserializeObject<List<League>>(SerialisedData("leagues.json"));
-            World.Fixtures = JsonConvert.DeserializeObject<List<Fixture>>(SerialisedData("fixtures.json"));
+            World.WorldState = JsonConvert.DeserializeObject<State>(SerialisedData(FILE_WORLDSTATE));
+            World.Formations = JsonConvert.DeserializeObject<List<Formation>>(SerialisedData(FILE_FORMATIONS));
+            World.Players = JsonConvert.DeserializeObject<List<Player>>(SerialisedData(FILE_PLAYERS));
+            World.Teams = JsonConvert.DeserializeObject<List<Team>>(SerialisedData(FILE_TEAMS));
+            World.Managers = JsonConvert.DeserializeObject<List<Manager>>(SerialisedData(FILE_MANAGERS));
+            World.Leagues = JsonConvert.DeserializeObject<List<League>>(SerialisedData(FILE_LEAGUES));
+            World.Fixtures = JsonConvert.DeserializeObject<List<Fixture>>(SerialisedData(FILE_FIXTURES));
 
             Directory.Delete(TempFolder, true);
 

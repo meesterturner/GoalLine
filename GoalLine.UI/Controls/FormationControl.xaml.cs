@@ -46,12 +46,14 @@ namespace GoalLine.UI.Controls
             }
         }
 
+        public int CurrentFormationID { get; private set; }
+
         public bool SaveFormation()
         {
             bool retVal = false;
 
             TeamAdapter ta = new TeamAdapter();
-            ta.SavePlayerFormation(team.UniqueID, PlayerGridPositions);
+            ta.SavePlayerFormation(team.UniqueID, CurrentFormationID, PlayerGridPositions);
             MessageBox.Show("Formation Saved - SAVING GAME");
 
             WorldAdapter wa = new WorldAdapter();
@@ -65,6 +67,9 @@ namespace GoalLine.UI.Controls
 
         private void SetupTeam()
         {
+            FormationPaging.DisplayItem(team.CurrentFormation);
+            SetupFormationTemplate(team.CurrentFormation);
+
             PlayerAdapter pa = new PlayerAdapter();
             
             foreach(KeyValuePair<int, TeamPlayer> p in team.Players)
@@ -153,16 +158,24 @@ namespace GoalLine.UI.Controls
         {
             InitializeComponent();
             SetupControl();
-            SetupFormationTemplate("442");
         }
 
 
 
         private void SetupControl()
         {
+            // Paging control for formations
+            FormationAdapter fa = new FormationAdapter();
+
+            foreach (Formation f in fa.GetFormations())
+            {
+                FormationPaging.Items.Add(new PagingItem() { ID =  f.UniqueID, Name = f.Name });
+            }
+
+
             // Create empty circles inside the grid
             // Set the PlayerGridPositions to blanks
-            for(int x = 0; x < GRIDWIDTH; x++)
+            for (int x = 0; x < GRIDWIDTH; x++)
             {
                 for(int y = 0; y < GRIDHEIGHT; y++)
                 {
@@ -201,9 +214,11 @@ namespace GoalLine.UI.Controls
             //grdPitch.ShowGridLines = true;
         }
 
-        public void SetupFormationTemplate(string Formation)
+        public void SetupFormationTemplate(int FormationID)
         {
-            for(int x = 0; x < GRIDWIDTH; x++)
+            CurrentFormationID = FormationID;
+
+            for (int x = 0; x < GRIDWIDTH; x++)
             {
                 for (int y = 0; y < GRIDHEIGHT; y++)
                 {
@@ -213,25 +228,10 @@ namespace GoalLine.UI.Controls
                 }
             }
 
-            List<Point> points = new List<Point>();
-            // Goalkeeper always same
-            points.Add(new Point(2, 0));
+            FormationAdapter fa = new FormationAdapter();
+            List<Point2> points = fa.GetFormation(FormationID).Points;
 
-            // Our best rendition of a 4-4-2
-            points.Add(new Point(0, 1));
-            points.Add(new Point(1, 1));
-            points.Add(new Point(3, 1));
-            points.Add(new Point(4, 1));
-
-            points.Add(new Point(0, 3));
-            points.Add(new Point(1, 3));
-            points.Add(new Point(3, 3));
-            points.Add(new Point(4, 3));
-
-            points.Add(new Point(1, 6));
-            points.Add(new Point(3, 6));
-
-            foreach(Point p in points)
+            foreach(Point2 p in points)
             {
                 SetMarkerTemplate((int)p.X, (int)p.Y, true);
             }
@@ -245,6 +245,12 @@ namespace GoalLine.UI.Controls
         private void cmdSave_Click(object sender, RoutedEventArgs e)
         {
             SaveFormation();
+        }
+
+        private void FormationPaging_EitherDirectionClicked(object sender, EventArgs e)
+        {
+            int FormationID = FormationPaging.Items[FormationPaging.CurrentItem].ID;
+            SetupFormationTemplate(FormationID);
         }
     }
 }

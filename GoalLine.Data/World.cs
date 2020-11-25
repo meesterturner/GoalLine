@@ -20,5 +20,6 @@ namespace GoalLine.Data
         public static List<League> Leagues { get; set; } = new List<League>();
 
         public static List<Fixture> Fixtures { get; set; } = new List<Fixture>();
+        public static List<Formation> Formations { get; set; } = new List<Formation>(); // TODO: Load and save later (maybe)
     }
 }

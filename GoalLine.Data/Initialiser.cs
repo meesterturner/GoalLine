@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GoalLine.Structures;
 using GoalLine.Resources;
+using System.Drawing;
 
 namespace GoalLine.Data
 {
@@ -16,6 +17,7 @@ namespace GoalLine.Data
         {
             AssignDates();
 
+            CreateFormations();
             CreatePlayers();
             CreateLeagues();
             CreateTeams();
@@ -250,6 +252,80 @@ namespace GoalLine.Data
 
                 pad.AssignToTeam(playerList[which].UniqueID, TeamID, true);
             }
+        }
+
+        private void CreateFormations()
+        {
+            List<Point2> p;
+            FormationAdapter fa = new FormationAdapter();
+
+            // 442 ----------------------------
+            p = new List<Point2>();
+
+            p.Add(new Point2(2, 0)); // GK
+
+            p.Add(new Point2(0, 1)); // Def
+            p.Add(new Point2(1, 1));
+            p.Add(new Point2(3, 1));
+            p.Add(new Point2(4, 1));
+
+            p.Add(new Point2(0, 3)); // Mid
+            p.Add(new Point2(1, 3));
+            p.Add(new Point2(3, 3));
+            p.Add(new Point2(4, 3));
+
+            p.Add(new Point2(1, 6)); // Att/Stk
+            p.Add(new Point2(3, 6));
+
+            fa.AddFormation("442", p, true);
+            p = null;
+            // --------------------------------
+
+
+            // 532 ----------------------------
+            p = new List<Point2>();
+
+            p.Add(new Point2(2, 0)); // GK
+
+            p.Add(new Point2(0, 2)); // Def
+            p.Add(new Point2(1, 2));
+            p.Add(new Point2(2, 2));
+            p.Add(new Point2(3, 2));
+            p.Add(new Point2(4, 2));
+
+            p.Add(new Point2(0, 4)); // Mid
+            p.Add(new Point2(2, 4));
+            p.Add(new Point2(4, 4));
+
+            p.Add(new Point2(1, 6)); // Att/Stk
+            p.Add(new Point2(3, 6));
+
+            fa.AddFormation("532", p, true);
+            p = null;
+            // --------------------------------
+
+
+            // Diamond ------------------------
+            p = new List<Point2>();
+
+            p.Add(new Point2(2, 0)); // GK
+
+            p.Add(new Point2(0, 2)); // Def
+            p.Add(new Point2(1, 2));
+            p.Add(new Point2(3, 2));
+            p.Add(new Point2(4, 2));
+
+            p.Add(new Point2(2, 3)); // Mid
+            p.Add(new Point2(1, 4));
+            p.Add(new Point2(3, 4));
+
+            p.Add(new Point2(2, 5)); // Att/Stk
+            p.Add(new Point2(1, 6));
+            p.Add(new Point2(3, 6));
+
+            fa.AddFormation("Diamond", p, true);
+            p = null;
+            // --------------------------------
         }
 
     }

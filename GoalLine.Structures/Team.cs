@@ -10,6 +10,8 @@ namespace GoalLine.Structures
     {
         public int UniqueID { get; set; }
         public string Name { get; set; }
+        public int CurrentFormation { get; set; } = 0;
+        public int LastKnownFormation { get; set; } = 0;
         public Dictionary<int, TeamPlayer> Players { get; set; } = new Dictionary<int, TeamPlayer>();
         public Dictionary<int, TeamPlayer> LastKnownPick { get; set; } = new Dictionary<int, TeamPlayer>();
         public int ManagerID { get; set; }
