@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GoalLine.Structures;
 using GoalLine.Data;
+using GoalLine.Resources;
 
 namespace GoalLine.UI.Controls
 {
@@ -164,6 +165,8 @@ namespace GoalLine.UI.Controls
 
         private void SetupControl()
         {
+            imgPitch.ImageSource = ImageResources.GetImage(ImageResourceList.Pitch);
+
             // Paging control for formations
             FormationAdapter fa = new FormationAdapter();
 

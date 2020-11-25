@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -157,6 +158,10 @@
     <ProjectReference Include="..\GoalLine.Processes\GoalLine.Processes.csproj">
       <Project>{e508150d-c0ca-42c6-b011-1cdf6de116f8}</Project>
       <Name>GoalLine.Processes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GoalLine.Resources\GoalLine.Resources.csproj">
+      <Project>{42ec3efe-ad3a-465b-8dc2-961e23a97e6e}</Project>
+      <Name>GoalLine.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\GoalLine.Structures\GoalLine.Structures.csproj">
       <Project>{59791ade-64e6-445c-8069-7ad27c82f5f9}</Project>
