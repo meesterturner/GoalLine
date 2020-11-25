@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\FormationControl.xaml.cs">
+      <DependentUpon>FormationControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ListControl.xaml.cs">
       <DependentUpon>ListControl.xaml</DependentUpon>
     </Compile>
@@ -74,6 +77,10 @@
     <Compile Include="GameScreens\CreateGame.xaml.cs">
       <DependentUpon>CreateGame.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\FormationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ListControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

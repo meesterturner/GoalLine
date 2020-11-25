@@ -9,6 +9,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -16,5 +17,6 @@
 
 
         <Controls:ListControl x:Name="lstLeague" Grid.Column="0" Grid.Row="0"/>
+        <Controls:FormationControl x:Name="ctlTactics" Grid.Column="1" Grid.Row="0" />
     </Grid>
 </UserControl>

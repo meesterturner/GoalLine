@@ -42,6 +42,7 @@ namespace GoalLine.UI.GameScreens
             SetupData.Title2 = SetupData.ManagerData.Name;
 
             UpdateLeagueTable();
+            ctlTactics.team = SetupData.TeamData;
         }
 
         private void UpdateLeagueTable()
