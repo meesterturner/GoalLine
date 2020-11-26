@@ -29,7 +29,7 @@ namespace GoalLine.UI.Controls
         const int GRIDWIDTH = 5; // 0-4
         const int GRIDHEIGHT = 8; // 0-7
 
-        Ellipse[,] Markers = new Ellipse[GRIDWIDTH, GRIDHEIGHT];
+        Polygon[,] Markers = new Polygon[GRIDWIDTH, GRIDHEIGHT];
         TextBlock[,] MarkerText = new TextBlock[GRIDWIDTH, GRIDHEIGHT];
         int[,] PlayerGridPositions = new int[GRIDWIDTH, GRIDHEIGHT];
         List<TextBlock> PlayerLabels = new List<TextBlock>();
@@ -183,11 +183,9 @@ namespace GoalLine.UI.Controls
                 for(int y = 0; y < GRIDHEIGHT; y++)
                 {
                     // --- Marker symbol ---
-                    Markers[x, y] = new Ellipse();
-                    Markers[x, y].Height = 50;
-                    Markers[x, y].Width = 50;
-                    Markers[x, y].Stroke = Brushes.DarkGreen;
-                    Markers[x, y].Fill = Brushes.LightGreen;
+                    Markers[x, y] = Shirt();
+                    Markers[x, y].VerticalAlignment = VerticalAlignment.Center;
+                    Markers[x, y].HorizontalAlignment = HorizontalAlignment.Center;
                     Markers[x, y].AllowDrop = true;
                     Markers[x, y].Drop += new DragEventHandler(Marker_Drop);
                     Markers[x, y].Tag = x.ToString() + "," + y.ToString();
@@ -200,8 +198,10 @@ namespace GoalLine.UI.Controls
                     MarkerText[x, y] = new TextBlock();
                     MarkerText[x, y].Text = "";
                     MarkerText[x, y].Visibility = Visibility.Hidden;
-                    MarkerText[x, y].Foreground = Brushes.Black;
-                    MarkerText[x, y].FontSize = 10;
+                    MarkerText[x, y].Foreground = Brushes.White;
+                    MarkerText[x, y].FontSize = 12;
+                    MarkerText[x, y].FontFamily = new FontFamily("Roboto Black");
+
                     MarkerText[x, y].VerticalAlignment = VerticalAlignment.Center;
                     MarkerText[x, y].HorizontalAlignment = HorizontalAlignment.Center;
 
@@ -213,8 +213,6 @@ namespace GoalLine.UI.Controls
                     PlayerGridPositions[x, y] = -1;
                 }
             }
-
-            //grdPitch.ShowGridLines = true;
         }
 
         public void SetupFormationTemplate(int FormationID)
@@ -254,6 +252,30 @@ namespace GoalLine.UI.Controls
         {
             int FormationID = FormationPaging.Items[FormationPaging.CurrentItem].ID;
             SetupFormationTemplate(FormationID);
+        }
+
+        private Polygon Shirt()
+        {
+            Polygon p = new Polygon();
+            p.Stroke = Brushes.Black;
+            p.Fill = Brushes.BlueViolet;
+            p.StrokeThickness = 1;
+            p.HorizontalAlignment = HorizontalAlignment.Left;
+            p.VerticalAlignment = VerticalAlignment.Center;
+            p.Points = new PointCollection() { new Point(8, 0),
+                new Point(42, 0),
+                new Point(50, 12.5),
+                new Point(43.75, 25),
+                new Point(37.5, 12.5),
+                new Point(37.5, 50),
+                new Point(12.5, 50),
+                new Point(12.5, 12.5),
+                new Point(6.25, 25),
+                new Point(0, 12.5),
+                new Point(8, 0)
+            };
+
+            return p;
         }
     }
 }
