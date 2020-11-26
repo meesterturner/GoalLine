@@ -115,6 +115,11 @@ namespace GoalLine.UI
             int id = Convert.ToInt32(b.Name.Substring(10));
             ScreenReturnData result = CurrentScreen.MainButtonClick(id);
 
+            if(result == null)
+            {
+                return;
+            }
+
             switch(result.ReturnCode)
             {
                 case ScreenReturnCode.Ok:
@@ -126,6 +131,7 @@ namespace GoalLine.UI
                         NextManagerOrContinueDay(); // Start manager loop
                     } else
                     {
+                        // TODO: Go back to prev screen
                         MessageBox.Show("TODO: Go back to prev screen");
                     }
                     break;
@@ -181,7 +187,24 @@ namespace GoalLine.UI
                 ShowGameScreen(new Home(), data);
             } else
             {
-                MessageBox.Show("Go to matches");
+                FixtureAdapter fa = new FixtureAdapter();
+
+                if (fa.IsTodayAMatchDay())
+                {
+                    ShowGameScreen(new MatchdayMain());
+
+                    // TODO: End of day - after a match
+                    MessageBox.Show("TODO: End of day - after a match");
+                } else
+                {
+                    // TODO: End of day - after a match, and when no matches.
+                    ProcessManager.RunEndOfDay();
+
+                    // Goto Next day
+                    WorldAdapter wa = new WorldAdapter();
+                    GameDate.Text = wa.CurrentDate.ToString("dd MMMM yyyy");
+                    NextManagerOrContinueDay();
+                }
             }
         }
     }

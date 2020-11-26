@@ -71,7 +71,11 @@
     <Compile Include="Controls\PagingControl.xaml.cs">
       <DependentUpon>PagingControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameScreens\MatchdayMain.xaml.cs">
+      <DependentUpon>MatchdayMain.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GameScreens\ScreenReturnData.cs" />
+    <Compile Include="Utils\MatchdayCallback.cs" />
     <Compile Include="Windows\LaunchWindow.xaml.cs">
       <DependentUpon>LaunchWindow.xaml</DependentUpon>
     </Compile>
@@ -91,6 +95,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GameScreens\Home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GameScreens\MatchdayMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -168,8 +176,6 @@
       <Name>GoalLine.Structures</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
