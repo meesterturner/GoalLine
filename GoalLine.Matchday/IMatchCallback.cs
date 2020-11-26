@@ -12,8 +12,10 @@ namespace GoalLine.Matchday
         string Commentary { get; set; }
         MatchStatus MatchStatus { get; set; }
         MatchEventType EventType { get; set; }
+
         void UpdateUI();
-        void MatchStarting(Fixture f);
-        void MatchFinished(Fixture f);
+        void MatchStarting(Fixture f, bool Interactive);
+        void MatchFinished(Fixture f, bool Interactive);
+        void MatchdayComplete();
     }
 }

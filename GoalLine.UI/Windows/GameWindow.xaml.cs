@@ -140,6 +140,10 @@ namespace GoalLine.UI
                     MessageBox.Show(result.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     break;
 
+                case ScreenReturnCode.MatchdayComplete:
+                    RunEndOfDayAndGoToNextDay();
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -192,20 +196,21 @@ namespace GoalLine.UI
                 if (fa.IsTodayAMatchDay())
                 {
                     ShowGameScreen(new MatchdayMain());
-
-                    // TODO: End of day - after a match
-                    MessageBox.Show("TODO: End of day - after a match");
                 } else
                 {
-                    // TODO: End of day - after a match, and when no matches.
-                    ProcessManager.RunEndOfDay();
-
-                    // Goto Next day
-                    WorldAdapter wa = new WorldAdapter();
-                    GameDate.Text = wa.CurrentDate.ToString("dd MMMM yyyy");
-                    NextManagerOrContinueDay();
+                    RunEndOfDayAndGoToNextDay();
                 }
             }
+        }
+
+        private void RunEndOfDayAndGoToNextDay()
+        {
+            ProcessManager.RunEndOfDay();
+
+            // Goto Next day
+            WorldAdapter wa = new WorldAdapter();
+            GameDate.Text = wa.CurrentDate.ToString("dd MMMM yyyy");
+            NextManagerOrContinueDay();
         }
     }
 }

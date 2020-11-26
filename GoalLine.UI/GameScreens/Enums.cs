@@ -11,6 +11,7 @@ namespace GoalLine.UI.GameScreens
         None = 0,
         Ok = 1,
         Cancel = 2,
+        MatchdayComplete = 100,
         Error = 255
     }
 }

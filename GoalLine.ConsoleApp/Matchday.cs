@@ -36,14 +36,19 @@ namespace GoalLine.ConsoleApp
         public MatchEventType EventType { get; set; }
         public MatchStatus MatchStatus { get; set; }
 
-        public void MatchFinished(Fixture f)
+        public void MatchdayComplete()
+        {
+            // Does nothing here at the moment. Not needed for console app.
+        }
+
+        public void MatchFinished(Fixture f, bool Interactive)
         {
             Console.Write(new string(Convert.ToChar(" "), Console.WindowWidth - 1));
             Console.SetCursorPosition(0, Console.CursorTop);
             PrintFixture(f, false);
         }
 
-        public void MatchStarting(Fixture f)
+        public void MatchStarting(Fixture f, bool Interactive)
         {
             //PrintFixture(f, true);
         }

@@ -44,7 +44,8 @@ namespace GoalLine.Matchday
             
             MatchStatus = new MatchStatus();
             PopulatePlayerStatuses();
-            MatchCallback.MatchStarting(Fixture);
+            MatchCallback.MatchStarting(Fixture, Interactive);
+           
 
             for (int h = 1; h <= 2; h++)
             {
@@ -88,7 +89,7 @@ namespace GoalLine.Matchday
             FixtureAdapter fa = new FixtureAdapter();
             fa.UpdateFixture(Fixture);
 
-            MatchCallback.MatchFinished(Fixture);
+            MatchCallback.MatchFinished(Fixture, Interactive);
 
         }
 

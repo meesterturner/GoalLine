@@ -39,6 +39,8 @@ namespace GoalLine.Matchday
                 mp.MatchCallback = MatchCallback;
                 mp.StartMatch();
             }
+
+            MatchCallback.MatchdayComplete();
         }
     }
 }

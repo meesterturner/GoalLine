@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,6 +26,7 @@ namespace GoalLine.UI.GameScreens
     public partial class MatchdayMain : UserControl, IGameScreen
     {
         public GameScreenSetup SetupData { get; set; }
+        public bool MatchdayComplete { get; set; }
 
         public MatchdayMain()
         {
@@ -33,9 +35,18 @@ namespace GoalLine.UI.GameScreens
 
         public ScreenReturnData MainButtonClick(int buttonId)
         {
-            RunMatchday();
-
-            return null;
+            if(!MatchdayComplete)
+            {
+                Thread rm = new Thread(this.RunMatchday);
+                rm.Start();
+                return null;
+            } else
+            {
+                ScreenReturnData s = new ScreenReturnData();
+                s.ReturnCode = ScreenReturnCode.MatchdayComplete;
+                return s;
+            }
+            
         }
 
         public void SetupGameScreenData(GameScreenSetup dataFromUI)
@@ -44,7 +55,7 @@ namespace GoalLine.UI.GameScreens
             SetupData.MainButtons.Add("Start");
 
             SetupData.ShowContinueButton = false;
-            SetupData.ShowDate = false;
+            SetupData.ShowDate = true;
 
             SetupData.Title1 = "Match Day";
             SetupData.Title2 = "Team One v Team Two";
