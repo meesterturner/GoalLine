@@ -11,6 +11,42 @@ namespace GoalLine.Processes.ProcessLogic
 {
     class AITeamAndTactics
     {
+        private class AvailablePlayer
+        {
+            public int PlayerID { get; set; }
+            public PlayerPosition Pos { get; set; }
+            public PlayerPositionSide Side { get; set; }
+            public int Rating { get; set; }
+        }
+
+        /// <summary>
+        /// Return a list of all eligible players for this match
+        /// </summary>
+        /// <param name="t">Team object</param>
+        /// <param name="f">Fixture object</param>
+        /// <returns>List of </returns>
+        private List<AvailablePlayer> GetEligiblePlayers(Team t, Fixture f)
+        {
+            List<AvailablePlayer> retVal = new List<AvailablePlayer>();
+            PlayerAdapter pa = new PlayerAdapter();
+
+            List<Player> players = pa.GetPlayers(t.UniqueID);
+
+            foreach (Player p in players)
+            {
+                // TODO: When we have injuries, remember to deal with these appropriately.
+                AvailablePlayer ap = new AvailablePlayer();
+                ap.PlayerID = p.UniqueID;
+                ap.Pos = p.Position;
+                ap.Side = p.PreferredSide;
+                ap.Rating = p.EffectiveRating;
+
+                retVal.Add(ap);
+            }
+
+            return retVal;
+        }
+
         /// <summary>
         /// Loop round all AI teams, and select a team appropriate to play the fixture.
         /// </summary>
@@ -40,158 +76,62 @@ namespace GoalLine.Processes.ProcessLogic
                     {
                         Team Opposition = ta.GetTeam(f.TeamIDs[1 - t]);
                         PlayerAdapter pa = new PlayerAdapter();
+                        int[,] PlayerGridPositions = new int[5, 8]; // TODO: Maybe not hard code these...
 
-                        // Reset selection
-                        foreach (KeyValuePair<int, TeamPlayer> kvp in ThisTeam.Players)
+                        Formation TeamFormation = new FormationAdapter().GetFormation(ThisTeam.CurrentFormation);
+                        List<AvailablePlayer> avail = GetEligiblePlayers(ThisTeam, f);
+
+                        foreach (Point2 point in TeamFormation.Points)
                         {
-                            ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.None);
-                        }
-
-                        // TODO: This logic is absolutely rubbish, but it will do for testing, hopefully!
-                        int CountGK = 0;
-                        int CountDef = 0;
-                        int CountDefC = 0;
-                        int CountMid = 0;
-                        int CountMidC = 0;
-                        int CountAtt = 0;
-                        int CountAttC = 0;
-                        int CountStriker = 0;
-                        int CountSubs = 0;
-                        int CountStarting = 0;
-
-                        // Basic selection
-                        foreach (KeyValuePair<int, TeamPlayer> kvp in ThisTeam.Players)
-                        {
-                            Player p = pa.GetPlayer(kvp.Value.PlayerID);
-
-                            if (CountStarting == 11)
+                            AvailablePlayer SelPlayer = FindBestPlayerForPosition(point, avail);
+                            if(SelPlayer == null)
                             {
-                                if (CountSubs < 4)
-                                {
-                                    ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Sub);
-                                    CountSubs++;
-                                }
-                                else
-                                {
-                                    break; // Finish picking
-                                }
-                            }
-                            else
-                            {
-                                switch (p.Position)
-                                {
-                                    case PlayerPosition.Goalkeeper:
-
-
-                                        if (CountGK == 0)
-                                        {
-                                            ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Starting);
-                                            CountStarting++;
-                                        }
-                                        else if (CountGK == 1)
-                                        {
-                                            ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Sub);
-                                            CountSubs++;
-                                        }
-                                        CountGK++;
-                                        break;
-
-                                    case PlayerPosition.Defender:
-                                        if (CountDef < 4)
-                                        {
-                                            if (p.PreferredSide == PlayerPositionSide.Left || p.PreferredSide == PlayerPositionSide.Right)
-                                            {
-                                                ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Starting);
-                                                CountDef++;
-                                                CountStarting++;
-                                            }
-                                            else if (p.PreferredSide == PlayerPositionSide.Centre && CountDefC < 2)
-                                            {
-                                                ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Starting);
-                                                CountDef++;
-                                                CountDefC++;
-                                                CountStarting++;
-                                            }
-                                        }
-                                        else if (CountSubs <= 2)
-                                        {
-                                            ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Sub);
-                                            CountSubs++;
-                                        }
-                                        break;
-
-                                    case PlayerPosition.Midfielder:
-                                        if (CountMid < 4)
-                                        {
-                                            if (p.PreferredSide == PlayerPositionSide.Left || p.PreferredSide == PlayerPositionSide.Right)
-                                            {
-                                                ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Starting);
-                                                CountMid++;
-                                                CountStarting++;
-                                            }
-                                            else if (p.PreferredSide == PlayerPositionSide.Centre && CountMidC < 2)
-                                            {
-                                                ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Starting);
-                                                CountMid++;
-                                                CountMidC++;
-                                                CountStarting++;
-                                            }
-                                        }
-                                        else if (CountSubs <= 2)
-                                        {
-                                            ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Sub);
-                                            CountSubs++;
-                                        }
-                                        break;
-
-
-                                    case PlayerPosition.Attacker:
-                                        if (CountAtt < 2)
-                                        {
-                                            if (p.PreferredSide == PlayerPositionSide.Left || p.PreferredSide == PlayerPositionSide.Right)
-                                            {
-                                                ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Starting);
-                                                CountAtt++;
-                                                CountStarting++;
-                                            }
-                                            else if (p.PreferredSide == PlayerPositionSide.Centre && CountAttC <= 2)
-                                            {
-                                                ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Starting);
-                                                CountAtt++;
-                                                CountAttC++;
-                                                CountStarting++;
-                                            }
-                                        }
-                                        else if (CountSubs < 3)
-                                        {
-                                            ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Sub);
-                                            CountSubs++;
-                                        }
-                                        break;
-
-                                    case PlayerPosition.Striker:
-                                        if (CountStriker == 0)
-                                        {
-                                            ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Starting);
-                                            CountStriker++;
-                                            CountStarting++;
-                                        }
-                                        else if (CountSubs < 4)
-                                        {
-                                            ta.SetTeamPlayerSelection(ThisTeam.UniqueID, kvp.Value.PlayerID, PlayerSelectionStatus.Sub);
-                                            CountSubs++;
-                                        }
-                                        break;
-                                }
+                                throw new Exception("Unable to find a player for this position");
                             }
 
-
+                            PlayerGridPositions[point.X, point.Y] = SelPlayer.PlayerID;
+                            avail.Remove(SelPlayer);
                         }
 
+                        ta.SavePlayerFormation(ThisTeam.UniqueID, TeamFormation.UniqueID, PlayerGridPositions);
 
                     }
                 }
             }
+        }
+
+        private AvailablePlayer FindBestPlayerForPosition(Point2 GridPos, List<AvailablePlayer> avail)
+        {
+            PlayerAdapter pa = new PlayerAdapter();
+            FormationAdapter fa = new FormationAdapter();
+
+            SuitablePlayerInfo suit = fa.SuitablePlayerPositions(GridPos);
+            AvailablePlayer best = null;
+
+            foreach(PlayerPosition pos in suit.Positions)
+            {
+                foreach(PlayerPositionSide side in suit.Sides)
+                {
+                    best = (from ap in avail
+                            where ap.Side == side && ap.Pos == pos
+                            select ap).FirstOrDefault();
+
+                    if (best != null)
+                        break;
+                }
+
+                if(best != null)
+                    break;
+            }
+
+            if(best == null)
+            {
+                best = (from ap in avail
+                        orderby ap.Rating descending
+                        select ap).FirstOrDefault();
+            }
+
+            return best;
         }
     }
 }

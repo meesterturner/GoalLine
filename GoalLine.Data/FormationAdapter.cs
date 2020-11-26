@@ -61,5 +61,88 @@ namespace GoalLine.Data
 
             return true;
         }
+
+        public SuitablePlayerInfo SuitablePlayerPositions(Point2 p)
+        {
+            return SuitablePlayerPositions(p.X, p.Y);
+        }
+
+        public SuitablePlayerInfo SuitablePlayerPositions(int x, int y)
+        {
+            List<PlayerPosition> BestPos = new List<PlayerPosition>();
+            List<PlayerPositionSide> BestSide = new List<PlayerPositionSide>();
+
+            switch (y)
+            {
+                case 0:
+                    BestPos.Add(PlayerPosition.Goalkeeper);
+                    break;
+
+                case 1:
+                    BestPos.Add(PlayerPosition.Defender);
+                    break;
+
+                case 2:
+                    BestPos.Add(PlayerPosition.Defender);
+                    BestPos.Add(PlayerPosition.Midfielder);
+                    break;
+
+                case 3:
+                    BestPos.Add(PlayerPosition.Midfielder);
+                    BestPos.Add(PlayerPosition.Midfielder);
+                    break;
+
+                case 4:
+                    BestPos.Add(PlayerPosition.Midfielder);
+                    BestPos.Add(PlayerPosition.Attacker);
+                    break;
+
+                case 5:
+                    BestPos.Add(PlayerPosition.Attacker);
+                    break;
+
+                case 6:
+                    BestPos.Add(PlayerPosition.Striker);
+                    break;
+
+                default:
+                    BestPos.Add(PlayerPosition.None);
+                    break;
+
+            }
+
+            switch (x)
+            {
+                case 0:
+                    BestSide.Add(PlayerPositionSide.Left);
+                    break;
+
+                case 1:
+                    BestSide.Add(PlayerPositionSide.Centre);
+                    BestSide.Add(PlayerPositionSide.Left);
+                    break;
+
+                case 2:
+                    BestSide.Add(PlayerPositionSide.Centre);
+                    break;
+
+                case 3:
+                    BestSide.Add(PlayerPositionSide.Centre);
+                    BestSide.Add(PlayerPositionSide.Right);
+                    break;
+
+                case 4:
+                    BestSide.Add(PlayerPositionSide.Right);
+                    break;
+
+            }
+
+            SuitablePlayerInfo retVal = new SuitablePlayerInfo();
+            retVal.Positions = BestPos;
+            retVal.Sides = BestSide;
+
+            return retVal;
+
+        }
     }
 }

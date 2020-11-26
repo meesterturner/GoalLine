@@ -14,4 +14,10 @@ namespace GoalLine.Structures
         public List<Point2> Points { get; set; }
         public bool System { get; set; }
     }
+
+    public class SuitablePlayerInfo
+    {
+        public List<PlayerPosition> Positions { get; set; }
+        public List<PlayerPositionSide> Sides { get; set; }
+    }
 }
