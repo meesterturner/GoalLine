@@ -86,10 +86,17 @@ namespace GoalLine.Data
             return NextID;
         }
 
+        public List<Player> GetPlayers(int TeamID)
+        {
+            return (from player in World.Players
+                    where player.CurrentTeam == TeamID
+                    select player).ToList();
+        }
+
         public List<Player> GetPlayers(int TeamID, PlayerPosition pos, PlayerPositionSide side)
         {
             return (from player in World.Players
-                    where player.CurrentTeam == -1 &&
+                    where player.CurrentTeam == TeamID &&
                           player.Position == pos &&
                           player.PreferredSide == side
                     select player).ToList();
