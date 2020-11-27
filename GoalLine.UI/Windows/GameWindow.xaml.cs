@@ -7,6 +7,9 @@ using GoalLine.Data;
 using GoalLine.Structures;
 using GoalLine.Processes;
 using GoalLine.UI.GameScreens;
+using GoalLine.Resources;
+using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace GoalLine.UI
 {
@@ -25,6 +28,8 @@ namespace GoalLine.UI
         public GameWindow()
         {
             InitializeComponent();
+            grdPopup.Visibility = Visibility.Hidden;
+            imgLogo.Source = ImageResources.GetImage(ImageResourceList.LogoSmall);
         }
 
         public void StartGame(bool SaveGameLoaded)
@@ -211,6 +216,49 @@ namespace GoalLine.UI
             WorldAdapter wa = new WorldAdapter();
             GameDate.Text = wa.CurrentDate.ToString("dd MMMM yyyy");
             NextManagerOrContinueDay();
+        }
+
+        private void imgLogo_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            grdPopup.Visibility = (grdPopup.Visibility == Visibility.Visible ? grdPopup.Visibility = Visibility.Hidden : grdPopup.Visibility = Visibility.Visible);
+        }
+
+        private void PopupButton_Click(object sender, RoutedEventArgs e)
+        {
+            grdPopup.Visibility = Visibility.Hidden;
+
+            switch ((sender as Button).Name.ToUpper())
+            {
+                case "SAVEBUTTON":
+                    WorldAdapter wa = new WorldAdapter();
+
+                    // TODO: Ask user for save name
+                    if (wa.SaveGameName == "" || wa.SaveGameName == null)
+                    {
+                        string Filename = DateTime.Now.ToString("yyyy-MM-dd hhmmss");
+                        wa.SaveGameName = Filename;
+                    }
+
+                    GameIO io = new GameIO();
+                    io.SaveGameName = wa.SaveGameName;
+                    io.SaveGame();
+
+                    // TODO: Nicer messages.... 
+                    MessageBox.Show("Saved as " + wa.SaveGameName);
+                    break;
+
+                case "QUITBUTTON":
+
+                    // TODO: "Are you suuuuure?"
+                    Application.Current.Shutdown();
+                    break;
+
+                default:
+                    throw new Exception("Don't know what to do with this popup");
+            }
+            
+
+
         }
     }
 }

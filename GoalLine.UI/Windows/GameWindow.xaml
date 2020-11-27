@@ -7,7 +7,7 @@
         mc:Ignorable="d" Style="{StaticResource GameWindow}"
         Title="GoalLine" Height="450" Width="1200">
 
-    <Grid>
+    <Grid x:Name="grdMain">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0"></ColumnDefinition>
             <ColumnDefinition Width="300"></ColumnDefinition>
@@ -27,11 +27,22 @@
 
         <!-- Navbar -->
         <StackPanel Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="30,0,0,0">
-            <Image Source="https://www.startupsavior.com/wp-content/uploads/2019/12/circle-1.png" />
+            <Image x:Name="imgLogo" MouseLeftButtonUp="imgLogo_MouseLeftButtonUp" Cursor="Hand" />
+            <!-- Source="https://www.startupsavior.com/wp-content/uploads/2019/12/circle-1.png"-->
             <Button Style="{StaticResource NavButton}">Home</Button>
             <Button Style="{StaticResource NavButton}">Team</Button>
             <Button Style="{StaticResource NavButton}">League</Button>
         </StackPanel>
+        
+        <!-- Popup Menu -->
+        <Grid x:Name="grdPopup" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Panel.ZIndex="99999" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,60,0,0" Height="50">
+            <Rectangle Fill="White" Stroke="White" />
+            <StackPanel>
+                <Button Style="{StaticResource NavPopup}" x:Name="SaveButton" Click="PopupButton_Click">Save Game</Button>
+                <Button Style="{StaticResource NavPopup}" x:Name="QuitButton" Click="PopupButton_Click">Quit Game</Button>
+            </StackPanel>
+        </Grid>
+
 
         <Polygon Grid.Column="3" Grid.Row="1" Points="100,0 100,75 40,75" Stroke="{StaticResource DarkerPurple_Brush}" Fill="{StaticResource DarkerPurple_Brush}" />
 

@@ -199,6 +199,31 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
+        <!-- Popup Menu Buttons -->
+        <Style TargetType="Button" x:Key="NavPopup">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <StackPanel x:Name="ButtonStack" Cursor="Hand" Height="20" Width="80" Margin="2" Background="{StaticResource NavbarBG_Brush}">
+                            <Border x:Name="ButtonBorder" BorderBrush="{StaticResource NavbarBG_Brush}" BorderThickness="3,0,0,0" Height="20" Cursor="Hand">
+                                <TextBlock x:Name="ButtonText" Text="{TemplateBinding Content}" HorizontalAlignment="Left" FontFamily="fonts/#Roboto Bold" FontSize="14" VerticalAlignment="Center" Foreground="{StaticResource MidGrey_Brush}" Margin="3,0,0,0" />
+                            </Border>
+                        </StackPanel>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="ButtonBorder" Property="BorderBrush" Value="{StaticResource DarkerPurple_Brush}" />
+                                <Setter TargetName="ButtonText" Property="Foreground" Value="{StaticResource DarkerGrey_Brush}" />
+                            </Trigger>
+                            <Trigger Property="Button.IsPressed" Value="True">
+                                <Setter TargetName="ButtonStack" Property="Background" Value="{StaticResource LighterGrey_Brush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <!-- Navbar Button (inside coloured area) -->
         <Style TargetType="Button" x:Key="NavButton2">
