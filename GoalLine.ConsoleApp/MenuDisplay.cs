@@ -97,10 +97,7 @@ namespace GoalLine.ConsoleApp
                                 Name = "Unnamed Save " + DateTime.Now.ToString("yyyy-MM-dd-hhmmss");
                             }
 
-                            wa.SaveGameName = Name.Replace(Path.DirectorySeparatorChar.ToString(), "")
-                                                  .Replace(Path.VolumeSeparatorChar.ToString(), "")
-                                                  .Replace(Path.AltDirectorySeparatorChar.ToString(), "")
-                                                  .Trim();
+                            wa.SaveGameName = Name;
                         }
 
                         i.SaveGameName = wa.SaveGameName;

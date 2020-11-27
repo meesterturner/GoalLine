@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace GoalLine.Data
 {
@@ -60,7 +57,10 @@ namespace GoalLine.Data
             }
             set
             {
-                World.WorldState.SaveGameName = value;
+                World.WorldState.SaveGameName = value.Replace(Path.DirectorySeparatorChar.ToString(), "")
+                                                  .Replace(Path.VolumeSeparatorChar.ToString(), "")
+                                                  .Replace(Path.AltDirectorySeparatorChar.ToString(), "")
+                                                  .Trim(); ;
             }
         }
 
