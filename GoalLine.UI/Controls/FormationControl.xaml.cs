@@ -127,7 +127,7 @@ namespace GoalLine.UI.Controls
             if (e.Data.GetDataPresent(DataFormats.StringFormat))
             {
                 int PlayerID = Convert.ToInt32((string)e.Data.GetData(DataFormats.StringFormat)); // Should be player ID
-                Ellipse DropControl = (Ellipse)sender;
+                Polygon DropControl = (Polygon)sender;
                 //TextBlock DropControl = (TextBlock)sender;
 
                 string[] coords = DropControl.Tag.ToString().Split(new string[] { "," }, StringSplitOptions.None);
@@ -145,7 +145,7 @@ namespace GoalLine.UI.Controls
                 {
                     for (int y = 0; y < GRIDHEIGHT; y++)
                     {
-                        if (x != xPos && y != yPos && PlayerGridPositions[x, y] == PlayerID)
+                        if (PlayerGridPositions[x, y] == PlayerID && !(x == xPos && y == yPos))
                         {
                             MarkerText[x, y].Visibility = Visibility.Hidden;
                             PlayerGridPositions[x, y] = -1;
