@@ -88,14 +88,18 @@ namespace GoalLine.Data
         {
             List<SaveGameInfo> retVal = new List<SaveGameInfo>();
 
-            foreach(string Filename in Directory.GetFiles(SavePath, "*" + FileExtension))
+            if(Directory.Exists(SavePath))
             {
-                SaveGameInfo sg = new SaveGameInfo();
-                sg.Name = Path.GetFileNameWithoutExtension(Filename);
-                sg.SaveDate = File.GetLastWriteTime(Filename);
+                foreach(string Filename in Directory.GetFiles(SavePath, "*" + FileExtension))
+                {
+                    SaveGameInfo sg = new SaveGameInfo();
+                    sg.Name = Path.GetFileNameWithoutExtension(Filename);
+                    sg.SaveDate = File.GetLastWriteTime(Filename);
 
-                retVal.Add(sg);
+                    retVal.Add(sg);
+                }
             }
+            
 
             return retVal;
         }
