@@ -61,5 +61,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Images\Pitch.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\LogoSmall.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

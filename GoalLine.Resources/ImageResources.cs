@@ -8,6 +8,8 @@ namespace GoalLine.Resources
 {
     public static class ImageResourceList
     {
+        public const string Logo = "Logo.png";
+        public const string LogoSmall = "LogoSmall.png";
         public const string Pitch = "Pitch.jpg";
     }
 
