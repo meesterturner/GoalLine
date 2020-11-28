@@ -8,6 +8,7 @@ using GoalLine.Structures;
 using GoalLine.Processes;
 using GoalLine.UI.GameScreens;
 using GoalLine.Resources;
+using GoalLine.UI.Utils;
 using System.Windows.Shapes;
 using System.Windows.Media;
 
@@ -230,35 +231,70 @@ namespace GoalLine.UI
             switch ((sender as Button).Name.ToUpper())
             {
                 case "SAVEBUTTON":
-                    WorldAdapter wa = new WorldAdapter();
-
-                    // TODO: Ask user for save name
-                    if (wa.SaveGameName == "" || wa.SaveGameName == null)
-                    {
-                        string Filename = DateTime.Now.ToString("yyyy-MM-dd hhmmss");
-                        wa.SaveGameName = Filename;
-                    }
-
-                    GameIO io = new GameIO();
-                    io.SaveGameName = wa.SaveGameName;
-                    io.SaveGame();
-
-                    // TODO: Nicer messages.... 
-                    MessageBox.Show("Saved as " + wa.SaveGameName);
+                    SaveGame(null);
                     break;
 
                 case "QUITBUTTON":
-
-                    // TODO: "Are you suuuuure?"
-                    Application.Current.Shutdown();
+                    QuitGame();
                     break;
 
                 default:
                     throw new Exception("Don't know what to do with this popup");
             }
             
+        }
 
+        private void SaveGame(string NewName)
+        {
+            WorldAdapter wa = new WorldAdapter();
+            if(NewName != null && NewName != "")
+            {
+                wa.SaveGameName = NewName;
+            }
 
+            UiUtils u = new UiUtils();
+            if (wa.SaveGameName == "" || wa.SaveGameName == null)
+            {
+                u.OpenTextInputDialog(grdMain, "Save Game", "This game has not been saved before, please give it a name.", SaveGameInputCallback);
+
+            } 
+            else
+            {
+                GameIO io = new GameIO();
+                io.SaveGameName = wa.SaveGameName;
+                io.SaveGame();
+
+                List<DialogButton> buttons = new List<DialogButton>();
+                buttons.Add(new DialogButton("OK", null, null));
+
+                u.OpenDialogBox(grdMain, "Save Game", String.Format("Game saved successfully as \"{0}\"", wa.SaveGameName), buttons);
+            }
+
+            
+        }
+
+        private void SaveGameInputCallback(object Data)
+        {
+            if(Data != null)
+            {
+                SaveGame((Data as TextBox).Text);
+            }
+        }
+
+        private void QuitGame()
+        {
+            UiUtils u = new UiUtils();
+            List<DialogButton> buttons = new List<DialogButton>();
+
+            buttons.Add(new DialogButton("Yes", QuitGameCallback, null));
+            buttons.Add(new DialogButton("No", null, null));
+
+            u.OpenDialogBox(grdMain, "Quit Game", "Are you sure you want to quit and lose any unsaved progress?", buttons);
+        }
+
+        private void QuitGameCallback(object Data)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

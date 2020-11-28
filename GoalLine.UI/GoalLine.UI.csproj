@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="GameScreens\ScreenReturnData.cs" />
     <Compile Include="Utils\MatchdayCallback.cs" />
+    <Compile Include="Utils\UiUtils.cs" />
     <Compile Include="Windows\LaunchWindow.xaml.cs">
       <DependentUpon>LaunchWindow.xaml</DependentUpon>
     </Compile>
