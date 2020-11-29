@@ -221,7 +221,7 @@ namespace GoalLine.UI
 
         private void imgLogo_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            grdPopup.Visibility = (grdPopup.Visibility == Visibility.Visible ? grdPopup.Visibility = Visibility.Hidden : grdPopup.Visibility = Visibility.Visible);
+            grdPopup.Visibility = (grdPopup.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible);
         }
 
         private void PopupButton_Click(object sender, RoutedEventArgs e)
