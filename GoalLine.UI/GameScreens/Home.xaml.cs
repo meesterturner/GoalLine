@@ -49,22 +49,21 @@ namespace GoalLine.UI.GameScreens
         {
             LeagueAdapter la = new LeagueAdapter();
             lstLeague.Title = la.GetLeague(SetupData.TeamData.LeagueID).Name;
+            lstLeague.Columns = new List<ListColumn>()
+            {
+                new ListColumn("Pos", 75),
+                new ListColumn("Team", 300),
+                new ListColumn("P", 75, HorizontalAlignment.Right),
+                new ListColumn("W", 75, HorizontalAlignment.Right),
+                new ListColumn("D", 75, HorizontalAlignment.Right),
+                new ListColumn("L", 75, HorizontalAlignment.Right),
+                new ListColumn("F", 75, HorizontalAlignment.Right),
+                new ListColumn("A", 75, HorizontalAlignment.Right),
+                new ListColumn("GD", 75, HorizontalAlignment.Right),
+                new ListColumn("Pts", 75, HorizontalAlignment.Right),
+            };
 
-            List<ListColumn> c = new List<ListColumn>();
-            c.Add(new ListColumn("Pos", 75));
-            c.Add(new ListColumn("Team", 300));
-            c.Add(new ListColumn("P", 75, HorizontalAlignment.Right));
-            c.Add(new ListColumn("W", 75, HorizontalAlignment.Right));
-            c.Add(new ListColumn("D", 75, HorizontalAlignment.Right));
-            c.Add(new ListColumn("L", 75, HorizontalAlignment.Right));
-            c.Add(new ListColumn("F", 75, HorizontalAlignment.Right));
-            c.Add(new ListColumn("A", 75, HorizontalAlignment.Right));
-            c.Add(new ListColumn("GD", 75, HorizontalAlignment.Right));
-            c.Add(new ListColumn("Pts", 75, HorizontalAlignment.Right));
 
-            lstLeague.Columns = c;
-
-            
             List<LeagueTableRecord> table = la.LeagueTable(SetupData.TeamData.LeagueID);
 
             List<ListRow> rows = new List<ListRow>();
@@ -72,23 +71,22 @@ namespace GoalLine.UI.GameScreens
             for(int i = 0; i < table.Count(); i++)
             {
                 LeagueTableRecord t = table[i];
-                List<string> rowData = new List<string>();
-                rowData.Add(i.ToString());
-                rowData.Add(t.Name);
-                rowData.Add(t.SeasonStatistics.GamesPlayed.ToString());
-                rowData.Add(t.SeasonStatistics.Won.ToString());
-                rowData.Add(t.SeasonStatistics.Drawn.ToString());
-                rowData.Add(t.SeasonStatistics.Lost.ToString());
-                rowData.Add(t.SeasonStatistics.GoalsScored.ToString());
-                rowData.Add(t.SeasonStatistics.GoalsConceded.ToString());
-                rowData.Add(t.SeasonStatistics.GoalDifference.ToString());
-                rowData.Add(t.SeasonStatistics.Points.ToString());
 
-                rows.Add(new ListRow(i, rowData));
+                rows.Add(new ListRow(t.TeamID, new List<object>() {
+                    (i + 1).ToString(),
+                    t.Name,
+                    t.SeasonStatistics.GamesPlayed.ToString(),
+                    t.SeasonStatistics.Won.ToString(),
+                    t.SeasonStatistics.Drawn.ToString(),
+                    t.SeasonStatistics.Lost.ToString(),
+                    t.SeasonStatistics.GoalsScored.ToString(),
+                    t.SeasonStatistics.GoalsConceded.ToString(),
+                    t.SeasonStatistics.GoalDifference.ToString(),
+                    t.SeasonStatistics.Points.ToString()
+                }));
             }
 
             lstLeague.Rows = rows;
-            lstLeague.Render();
         }
 
         public ScreenReturnData MainButtonClick(int buttonId)

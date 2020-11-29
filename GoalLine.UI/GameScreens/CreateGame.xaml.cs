@@ -65,11 +65,11 @@ namespace GoalLine.UI
         private void SetupList()
         {
             lstTeams.Title = "";
-            List<ListColumn> c = new List<ListColumn>();
-            c.Add(new ListColumn("Team", 200));
-            c.Add(new ListColumn("Av Rating", 100,HorizontalAlignment.Right));
-
-            lstTeams.Columns = c;
+            lstTeams.Columns = new List<ListColumn>()
+            {
+                new ListColumn("Team", 200),
+                new ListColumn("Av Rating", 100, HorizontalAlignment.Right)
+            };
         }
 
         private void UpdateTeams()
@@ -83,15 +83,14 @@ namespace GoalLine.UI
 
             foreach (Team t in LeagueTeams)
             {
-                List<string> rowData = new List<string>();
-                rowData.Add(t.Name);
-                rowData.Add(ta.AveragePlayerRating(t.UniqueID).ToString("0.00"));
-
-                rows.Add(new ListRow(t.UniqueID, rowData));
+                rows.Add(new ListRow(t.UniqueID, new List<object>()
+                {
+                    t.Name,
+                    ta.AveragePlayerRating(t.UniqueID).ToString("0.00")
+                }));
             }
 
             lstTeams.Rows = rows;
-            lstTeams.Render();
         }
 
         private void LeaguePaging_EitherDirectionClicked(object sender, EventArgs e)
@@ -175,13 +174,6 @@ namespace GoalLine.UI
 
             SetupData.Title1 = "Create New Game";
             SetupData.Title2 = "Welcome to GoalLine";
-        }
-
-        private void TestList_RowClicked(object sender, EventArgs e)
-        {
-            ListRow r = (ListRow)sender;
-
-            MessageBox.Show(r.ColumnData[0]);
         }
     }
 }

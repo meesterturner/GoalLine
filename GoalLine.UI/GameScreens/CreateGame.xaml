@@ -40,7 +40,7 @@
             <ComboBox x:Name="cboDOBYear" Grid.Column="2"  Width="105" HorizontalAlignment="Center"/>
         </Grid>
         
-        <Controls:ListControl x:Name="lstTeams" Grid.Column="1" Grid.Row="4" RowClicked="lstTeams_RowClicked"/>
+        <Controls:ListControl x:Name="lstTeams" Grid.Column="1" Grid.Row="4"/>
 
         <Controls:PagingControl x:Name="LeaguePaging" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" EitherDirectionClicked="LeaguePaging_EitherDirectionClicked" />
 

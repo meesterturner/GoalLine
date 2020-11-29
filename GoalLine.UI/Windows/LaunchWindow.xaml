@@ -7,15 +7,27 @@
         xmlns:Controls="clr-namespace:GoalLine.UI.Controls" x:Class="GoalLine.UI.LaunchWindow"
         mc:Ignorable="d" Style="{StaticResource GameWindow}"
         Title="LaunchWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Button x:Name="cmdStart" Content="Start Game" Click="cmdStart_Click" Height="36" d:LayoutOverrides="VerticalAlignment" Grid.Column="0" Grid.Row="0"/>
+    <Grid x:Name="grdMain">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="210" />
+            <ColumnDefinition Width="15" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-        <Controls:ListControl VerticalAlignment="Top"  Grid.Column="0" Grid.Row="2" x:Name="lstSaves" RowClicked="lstSaves_RowClicked"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <Button x:Name="cmdStart" Content="Start New Game" Click="cmdStart_Click" Height="36" Width="200" Margin="5"/>
+            <Button x:Name="cmdLoad" Content="Load Existing Game" Click="cmdLoad_Click" Height="36" Width="200" Margin="5"/>
+            <Button x:Name="cmdQuit" Content="Quit" Click="cmdQuit_Click" Height="36" Width="200" Margin="5"/>
+        </StackPanel>
+
+        <Controls:ListControl VerticalAlignment="Top"  Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" x:Name="lstSaves"/>
+
+        <Image x:Name="imgLogo" Grid.Row="1" />
 
     </Grid>
 </Window>

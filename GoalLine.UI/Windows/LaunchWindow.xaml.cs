@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using GoalLine.Data;
 using GoalLine.Structures;
-using GoalLine.Processes;
 using GoalLine.UI.Controls;
+using GoalLine.UI.Utils;
+using GoalLine.Resources;
 
 namespace GoalLine.UI
 {
@@ -29,6 +20,7 @@ namespace GoalLine.UI
         {
             InitializeComponent();
             SetupList();
+            imgLogo.Source = ImageResources.GetImage(ImageResourceList.Logo);
         }
 
         private void cmdStart_Click(object sender, RoutedEventArgs e)
@@ -42,32 +34,24 @@ namespace GoalLine.UI
             GameIO io = new GameIO();
             Saves = io.ListSaveGames();
 
-            lstSaves.Title = "Saved Games (Click to load)";
+            lstSaves.Title = "Saved Games";
 
-            List<ListColumn> c = new List<ListColumn>();
-            c.Add(new ListColumn("Name", 500));
-            c.Add(new ListColumn("Date", 200, HorizontalAlignment.Right));
-            lstSaves.Columns = c;
+            lstSaves.Columns = new List<ListColumn>() {
+                new ListColumn("Name", 300),
+                new ListColumn("Date", 200, HorizontalAlignment.Right)
+            };
 
             List<ListRow> rows = new List<ListRow>();
 
             for (int s = 0; s < Saves.Count; s++)
             {
-                List<string> rowData = new List<string>();
-                rowData.Add(Saves[s].Name);
-                rowData.Add(Saves[s].SaveDate.ToString("dd/MM/yyyy hh:mm"));
-                rows.Add(new ListRow(s, rowData));
+                rows.Add(new ListRow(s, new List<object>() {
+                    Saves[s].Name,
+                    Saves[s].SaveDate.ToString("dd/MM/yyyy HH:mm")
+                }));
             }
 
             lstSaves.Rows = rows;
-            lstSaves.Render();
-        }
-
-        private void lstSaves_RowClicked(object sender, EventArgs e)
-        {
-            ListRow sel = (ListRow)sender;
-            string SaveGameName = Saves[sel.ID].Name;
-            StartGame(SaveGameName);
         }
 
         private void StartGame(string SaveGame)
@@ -95,6 +79,26 @@ namespace GoalLine.UI
             g.StartGame(FromSave);
 
             this.Close();
+        }
+
+        private void cmdLoad_Click(object sender, RoutedEventArgs e)
+        {
+            if(lstSaves.SelectedID == -1 )
+            {
+                UiUtils u = new UiUtils();
+                u.OpenDialogBox(grdMain, "Unable to Load Game", "You have not selected a game to load.", new List<DialogButton>() {
+                    new DialogButton("Ok", null, null)
+                });
+                return;
+            }
+
+            string SaveGameName = Saves[lstSaves.SelectedID].Name;
+            StartGame(SaveGameName);
+        }
+
+        private void cmdQuit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

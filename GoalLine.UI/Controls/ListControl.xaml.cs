@@ -19,13 +19,43 @@ namespace GoalLine.UI.Controls
     /// <summary>
     /// Interaction logic for ListControl.xaml
     /// </summary>
+    /// 
+    public delegate void ItemClickCallback();
+
+    public enum SelectMode
+    {
+        Highlight = 0,
+        Callback = 1,
+        HighlightAndCallback = 2
+    }
+
     public partial class ListControl : UserControl
     {
-        public event EventHandler RowClicked;
-        public string Title { get; set; }
+        private Brush DeselectedBackgroundBrush = Brushes.Transparent;
+        private double DeselectedOpacity = 0.1;
 
+        private Brush SelectedBackgroundBrush = Brushes.MediumPurple;
+        private double SelectedOpacity = 0.8;
+
+        public SelectMode SelectionMode { get; set; } = SelectMode.Highlight;
+
+        public string Title { get; set; }
+        public ItemClickCallback Callback_ItemClick { get; set; }
         public List<ListColumn> Columns { get; set; }
-        public List<ListRow> Rows { get; set; }
+
+        private List<ListRow> _Rows;
+        public List<ListRow> Rows { 
+            get 
+            {
+                return _Rows;
+            }
+            
+            set 
+            {
+                _Rows = value;
+                Render();
+            }
+        }
 
         private int _SelectedID = -1;
         public int SelectedID
@@ -44,37 +74,25 @@ namespace GoalLine.UI.Controls
         private Grid grdHeader;
         private Grid grdRows;
 
-        public void ItemClickedEventHandler(object sender, RoutedEventArgs e)
+        private Dictionary<int, Rectangle> RowBackgrounds;
+
+        private void Render()
         {
-            TextBlock t = (TextBlock)sender;
-            SelectedID = (int)t.Tag;
-
-            ListRow selected = (from r in Rows
-                                where r.ID == SelectedID
-                                select r).First();
-
-            if(RowClicked != null)
-            {
-                RowClicked.Invoke(selected, e);
-            }   
-        }
-
-        public void Render()
-        {
-            const bool GridLines = true;
+            const bool GridLines = false;
             int x;
             int y;
 
             lblCaption.Text = Title;
             grdMain.ShowGridLines = GridLines;
-
+            grdMain.RowDefinitions[0].Height = new GridLength((Title == "" ? 0 : 30));
 
             // Initialise Grids
-            if(grdHeader != null)
+            if (grdHeader != null)
             {
                 grdMain.Children.Remove((UIElement)this.FindName("grdHeader"));
                 grdMain.Children.Remove((UIElement)this.FindName("grdRows"));
             }
+
             grdHeader = new Grid();
             grdHeader.Name = "grdHeader";
 
@@ -105,58 +123,115 @@ namespace GoalLine.UI.Controls
                 }
             }
 
-            foreach (ListRow r in Rows)
-            {
-                RowDefinition gridRowDef = new RowDefinition();
-                gridRowDef.Height = new GridLength(25);
-                grdRows.RowDefinitions.Add(gridRowDef);
-            }
-
             // Render Column Headers
             x = 0;
-            foreach (ListColumn c in Columns)
+            for(x = 0; x < Columns.Count(); x++)
             {
                 TextBlock heading = new TextBlock();
-                heading.Text = c.Title;
-                //heading.Width = c.Width;
-                heading.HorizontalAlignment = c.Alignment;
-
-                //Grid.SetRow(heading, 1);
+                heading.Text = Columns[x].Title;
+                heading.HorizontalAlignment = Columns[x].Alignment;
+                heading.Style = Application.Current.FindResource("ListHeader") as Style;
                 Grid.SetColumn(heading, x);
                 grdHeader.Children.Add(heading);
-
-                x++;
             }
+
             Grid.SetRow(grdHeader, 1);
             grdMain.Children.Add(grdHeader);
 
             // Render rows
             y = 0;
-            foreach(ListRow r in Rows)
+            RowBackgrounds = new Dictionary<int, Rectangle>();
+
+            foreach (ListRow r in Rows)
             {
+                RowDefinition gridRowDef = new RowDefinition();
+                gridRowDef.Height = new GridLength(25);
+                grdRows.RowDefinitions.Add(gridRowDef);
+
                 x = 0;
 
-                foreach (string s in r.ColumnData)
+                // Background lowlight/highlight
+                Rectangle rect = new Rectangle();
+                rect.Stroke = DeselectedBackgroundBrush;
+                rect.Fill = DeselectedBackgroundBrush;
+                rect.Opacity = DeselectedOpacity;
+                rect.Height = 28;
+                rect.Width = 2000; // grdRows.ActualWidth;
+                rect.Cursor = Cursors.Hand;
+                rect.Margin = new Thickness(0, 0, 0, 2);
+
+                rect.MouseLeftButtonUp += new MouseButtonEventHandler((object sender, MouseButtonEventArgs e) => SelectItem(r.ID));
+
+                Grid.SetRow(rect, y);
+                Grid.SetColumn(rect, 0);
+                Grid.SetColumnSpan(rect, grdRows.ColumnDefinitions.Count());
+                grdRows.Children.Add(rect);
+
+                RowBackgrounds[r.ID] = rect;
+
+                foreach (object s in r.ColumnData)
                 {
-                    TextBlock cell = new TextBlock();
-                    cell.Text = s;
-                    cell.HorizontalAlignment = Columns[x].Alignment;
+                    if(s.GetType() == typeof(string))
+                    {
+                        TextBlock cell = new TextBlock();
+                        cell.Text = s.ToString();
+                        cell.HorizontalAlignment = Columns[x].Alignment;
+                        cell.Cursor = Cursors.Hand;
+                        cell.Style = Application.Current.FindResource("ListItem") as Style;
 
-                    cell.Tag = r.ID;
-                    cell.MouseLeftButtonUp += new MouseButtonEventHandler(ItemClickedEventHandler);
-
-                    Grid.SetRow(cell, y);
-                    Grid.SetColumn(cell, x);
-                    grdRows.Children.Add(cell);
-
+                        // UI Elements
+                        cell.MouseLeftButtonUp += new MouseButtonEventHandler((object sender, MouseButtonEventArgs e) => SelectItem(r.ID));
+                        
+                        Grid.SetRow(cell, y);
+                        Grid.SetColumn(cell, x);
+                        grdRows.Children.Add(cell);
+                    } else
+                    {
+                        throw new NotImplementedException("Don't know what to do with this object in the grid");
+                    }
+                    
                     x++;
                 }
 
                 y++;
             }
-            //Grid.SetRow(grdRows, 2);
-            scvRows.Content = grdRows;
 
+            scvRows.Content = grdRows;
+            SelectedID = -1;
+        }
+
+        private void SelectItem(int id)
+        {
+            int OldID = SelectedID;
+            SelectedID = id;
+
+            if(SelectionMode == SelectMode.Highlight || SelectionMode == SelectMode.HighlightAndCallback)
+            {
+                if (OldID > -1)
+                {
+                    RowBackgrounds[OldID].Fill = DeselectedBackgroundBrush;
+                    RowBackgrounds[OldID].Stroke = DeselectedBackgroundBrush;
+                    RowBackgrounds[OldID].Opacity = DeselectedOpacity;
+                }
+            
+                RowBackgrounds[SelectedID].Fill = SelectedBackgroundBrush;
+                RowBackgrounds[SelectedID].Stroke = SelectedBackgroundBrush;
+                RowBackgrounds[SelectedID].Opacity = SelectedOpacity;
+            }
+
+            if(SelectionMode == SelectMode.Callback || SelectionMode == SelectMode.HighlightAndCallback)
+            {
+                if(Callback_ItemClick != null)
+                {
+                    Callback_ItemClick();
+                }
+                else
+                {
+                    throw new Exception("Callback_ItemClick() is null");
+                }
+                
+            }
+            
         }
 
         public ListControl()
@@ -200,26 +275,17 @@ namespace GoalLine.UI.Controls
     public class ListRow
     {
         public int ID { get; set; }
-        public List<string> ColumnData { get; set; }
+        public List<object> ColumnData { get; set; }
 
         public ListRow()
         {
 
         }
 
-        public ListRow(int ID, List<string> ColumnData)
+        public ListRow(int ID, List<object> ColumnData)
         {
             this.ID = ID;
             this.ColumnData = ColumnData;
-        }
-
-        public ListRow(int ID, string FirstCellData)
-        {
-            List<string> l = new List<string>();
-            l.Add(FirstCellData);
-
-            this.ID = ID;
-            this.ColumnData = l;
         }
     }
 }

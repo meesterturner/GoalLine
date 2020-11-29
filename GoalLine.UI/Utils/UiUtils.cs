@@ -181,11 +181,10 @@ namespace GoalLine.UI.Utils
 
         private TextBlock QuickTextblock(string Text, bool IsTitle)
         {
+            string Style = (IsTitle ? "DialogTitle" : "DialogBody");
             TextBlock tb = new TextBlock();
             tb.Text = Text;
-            tb.Foreground = Brushes.White;
-            tb.FontSize = 30;
-            tb.HorizontalAlignment = HorizontalAlignment.Center;
+            tb.Style = Application.Current.FindResource(Style) as Style;
             tb.VerticalAlignment = VerticalAlignment.Center;
 
             return tb;
@@ -215,6 +214,7 @@ namespace GoalLine.UI.Utils
         private void QuickAddTitleAndBody(StackPanel sp, string Title, string Body)
         {
             sp.Children.Add(QuickTextblock(Title, true));
+            sp.Children.Add(QuickTextblock(" ", false));
             sp.Children.Add(QuickTextblock(Body, false));
             sp.Children.Add(QuickTextblock(" ", false));
         }

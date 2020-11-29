@@ -13,7 +13,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="lblCaption" Text="TITLE OF LIST" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="..\Fonts\#Roboto Bold" />
+        <TextBlock x:Name="lblCaption" Text="TITLE OF LIST" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource DialogTitle}" />
         
         <ScrollViewer x:Name="scvRows" Grid.Row="2" VerticalScrollBarVisibility="Visible">
         

@@ -58,6 +58,36 @@
             <Setter Property="Margin" Value="8,0,0,0" />
         </Style>
 
+        <Style TargetType="TextBlock" x:Key="DialogTitle">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Foreground" Value="{StaticResource LighterPurple_Brush}" />
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontFamily" Value="fonts/#Roboto Light" />
+            <Setter Property="Margin" Value="3,0,3,0" />
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="DialogBody">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{StaticResource FaintGrey_Brush}" />
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontFamily" Value="fonts/#Roboto Regular" />
+            <Setter Property="Margin" Value="3,0,3,0" />
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="ListHeader">
+            <Setter Property="FontFamily" Value="fonts/#Roboto Bold"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="#44494f" />
+            <Setter Property="Margin" Value="3,0,3,0" />
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="ListItem">
+            <Setter Property="FontFamily" Value="fonts/#Roboto Regular"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="#44494f" />
+            <Setter Property="Margin" Value="3,0,3,0" />
+        </Style>
+        
         <!-- Resuable templates -->
         <ControlTemplate x:Key="TextboxMainTemplate">
             <Border CornerRadius="16" BorderThickness="2">
