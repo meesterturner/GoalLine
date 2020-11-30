@@ -76,7 +76,7 @@
                     Small Title
                 </TextBlock>
             </StackPanel>
-            <Button Style="{StaticResource NavButton2}" x:Name="ContinueButton" Click="ContinueButton_Click">Test</Button>
+            <Button Style="{StaticResource NavButton2}" x:Name="ContinueButton" Click="ContinueButton_Click" Content="Next &gt;"/>
         </StackPanel>
 
         <WrapPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="5">
@@ -93,11 +93,11 @@
                     <RowDefinition Height="5" />
                 </Grid.RowDefinitions>
 
-                <Border Grid.Column="1" Grid.Row="1" Background="{StaticResource FaintGrey_Brush}" BorderBrush="Transparent" Margin="5">
-                    <WrapPanel x:Name="MainArea" Margin="5">
-                        <!-- <local:CreateGame HorizontalContentAlignment="Stretch" /> -->
-                    </WrapPanel>
-                </Border>
+                <ScrollViewer Margin="10" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"  Grid.Column="1" Grid.Row="1">
+                    <StackPanel x:Name="MainArea" Orientation="Horizontal">
+
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
             
             <!--<WrapPanel.Background>

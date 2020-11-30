@@ -8,6 +8,7 @@ using GoalLine.Data;
 using GoalLine.Structures;
 using GoalLine.UI.GameScreens;
 using GoalLine.UI.Controls;
+using GoalLine.UI.Utils;
 
 namespace GoalLine.UI
 {
@@ -98,17 +99,6 @@ namespace GoalLine.UI
             UpdateTeams();
         }
 
-        private void lstTeams_RowClicked(object sender, EventArgs e)
-        {
-            ListRow sel = (ListRow)sender;
-            Team t = ta.GetTeam(lstTeams.SelectedID);
-            if(t != null)
-            {
-                MessageBox.Show(t.Name + " " + ta.GetPlayersInTeam(t.UniqueID)[0].Name);
-            }
-            
-        }
-
         public ScreenReturnData MainButtonClick(int buttonId)
         {
             if(buttonId != 0)
@@ -135,8 +125,7 @@ namespace GoalLine.UI
             Team T = ta.GetTeam(lstTeams.SelectedID);
             ma.AssignToTeam(ManagerID, T.UniqueID);
 
-            MessageBox.Show("Assigned you to " + T.Name);
-            return new ScreenReturnData(ScreenReturnCode.Ok); 
+            return new ScreenReturnData(ScreenReturnCode.Ok);
         }
 
         ScreenReturnData ValidateInput()

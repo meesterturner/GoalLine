@@ -36,7 +36,7 @@
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="fonts/#Roboto Regular"/>
             <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Foreground" Value="{StaticResource MidGrey_Brush}" />
+            <Setter Property="Foreground" Value="{StaticResource StandardGrey_Brush}" />
         </Style>
 
         <Style TargetType="TextBlock" x:Key="NavTitle1">

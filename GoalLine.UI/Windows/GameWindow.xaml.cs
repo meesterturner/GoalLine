@@ -32,11 +32,13 @@ namespace GoalLine.UI
             InitializeComponent();
             grdPopup.Visibility = Visibility.Hidden;
             imgLogo.Source = ImageResources.GetImage(ImageResourceList.LogoSmall);
+
         }
 
         public void StartGame(bool SaveGameLoaded)
         {
             SaveGameJustLoaded = SaveGameLoaded;
+            CreateBackground();
 
             if (!SaveGameLoaded)
             {
@@ -49,6 +51,22 @@ namespace GoalLine.UI
 
         }
 
+        public void CreateBackground()
+        {
+            Canvas c = new Canvas();
+            Panel.SetZIndex(c, -9999);
+            Image i = new Image();
+            i.Stretch = Stretch.Fill;
+            i.Source = ImageResources.GetImage(ImageResourceList.Background);
+            i.Width = this.Width;
+            i.Height = this.Height;
+            Grid.SetColumn(c, 0);
+            Grid.SetRow(c, 2);
+            Grid.SetColumnSpan(c, 6);
+            c.Children.Add(i);
+
+            grdMain.Children.Add(c);
+        }
 
         private void ShowGameScreen(IGameScreen NewGameScreen)
         {
@@ -64,7 +82,7 @@ namespace GoalLine.UI
 
             NewGameScreen.SetupGameScreenData(Data);
             MainArea.Children.Add((UIElement)NewGameScreen);
-
+            
             CurrentScreen = NewGameScreen;
             Headings();
             CreateButtons();
@@ -257,10 +275,9 @@ namespace GoalLine.UI
                 wa.SaveGameName = NewName;
             }
 
-            UiUtils u = new UiUtils();
             if (wa.SaveGameName == "" || wa.SaveGameName == null)
             {
-                u.OpenTextInputDialog(grdMain, "Save Game", "This game has not been saved before, please give it a name.", SaveGameInputCallback);
+                UiUtils.OpenTextInputDialog(grdMain, "Save Game", "This game has not been saved before, please give it a name.", SaveGameInputCallback);
 
             } 
             else
@@ -272,7 +289,7 @@ namespace GoalLine.UI
                 List<DialogButton> buttons = new List<DialogButton>();
                 buttons.Add(new DialogButton("OK", null, null));
 
-                u.OpenDialogBox(grdMain, "Save Game", String.Format("Game saved successfully as \"{0}\"", wa.SaveGameName), buttons);
+                UiUtils.OpenDialogBox(grdMain, "Save Game", String.Format("Game saved successfully as \"{0}\"", wa.SaveGameName), buttons);
             }
 
             
@@ -288,13 +305,12 @@ namespace GoalLine.UI
 
         private void QuitGame()
         {
-            UiUtils u = new UiUtils();
             List<DialogButton> buttons = new List<DialogButton>();
 
             buttons.Add(new DialogButton("Yes", QuitGameCallback, null));
             buttons.Add(new DialogButton("No", null, null));
 
-            u.OpenDialogBox(grdMain, "Quit Game", "Are you sure you want to quit and lose any unsaved progress?", buttons);
+            UiUtils.OpenDialogBox(grdMain, "Quit Game", "Are you sure you want to quit and lose any unsaved progress?", buttons);
         }
 
         private void QuitGameCallback(object Data)

@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using GoalLine.Structures;
 using GoalLine.Data;
 using GoalLine.Resources;
+using GoalLine.UI.Utils;
 
 namespace GoalLine.UI.Controls
 {
@@ -56,8 +57,9 @@ namespace GoalLine.UI.Controls
             TeamAdapter ta = new TeamAdapter();
             ta.SavePlayerFormation(team.UniqueID, CurrentFormationID, PlayerGridPositions);
             
-            // TODO: Better message box;
-            MessageBox.Show("Formation Saved - SAVING GAME");
+            UiUtils.OpenDialogBox(UiUtils.MainWindowGrid, "Formation", "Formation has been saved successfully.", new List<DialogButton>() { 
+                new DialogButton("OK", null, null)
+            });
 
             retVal = true;
             return retVal;

@@ -40,10 +40,12 @@ namespace GoalLine.UI.Utils
 
     public delegate void DialogButtonCallback(object Data);
 
-    class UiUtils
+    static class UiUtils
     {
-       
-        public void OpenTextInputDialog(Grid ExistingGrid, string Title, string Body, DialogButtonCallback Callback)
+
+        public static Grid MainWindowGrid { get; set; }
+
+        public static void OpenTextInputDialog(Grid ExistingGrid, string Title, string Body, DialogButtonCallback Callback)
         {
             Grid Overlay = DarkOverlayGrid(ExistingGrid);
 
@@ -71,7 +73,7 @@ namespace GoalLine.UI.Utils
             ti.Focus();
         }
 
-        public void OpenDialogBox(Grid ExistingGrid, string Title, string Body, List<DialogButton> Buttons)
+        public static void OpenDialogBox(Grid ExistingGrid, string Title, string Body, List<DialogButton> Buttons)
         {
             Grid Overlay = DarkOverlayGrid(ExistingGrid);
 
@@ -85,7 +87,7 @@ namespace GoalLine.UI.Utils
             Overlay.Children.Add(sp);
         }
 
-        public Grid DarkOverlayGrid(Grid ExistingGrid)
+        public static Grid DarkOverlayGrid(Grid ExistingGrid)
         {
             Grid newGrid = new Grid();
             newGrid.Height = ExistingGrid.ActualHeight;
@@ -120,7 +122,7 @@ namespace GoalLine.UI.Utils
             return newGrid;
         }
 
-        public Dictionary<string, object> PleaseWait(Grid ExistingGrid, string Text)
+        public static Dictionary<string, object> PleaseWait(Grid ExistingGrid, string Text)
         {
             Grid Overlay = DarkOverlayGrid(ExistingGrid);
 
@@ -150,7 +152,7 @@ namespace GoalLine.UI.Utils
 
         // ----- Helper functions -----
         #region Helper Functions
-        private void ProcessDialogCallback(Grid OverlayToRemove, DialogButtonCallback Callback, object CallbackData)
+        private static void ProcessDialogCallback(Grid OverlayToRemove, DialogButtonCallback Callback, object CallbackData)
         {
             RemoveControl(OverlayToRemove);
             if(Callback != null)
@@ -159,7 +161,7 @@ namespace GoalLine.UI.Utils
             }
         }
 
-        private void RemoveControl(UIElement child)
+        private static void RemoveControl(UIElement child)
         {
             var parent = VisualTreeHelper.GetParent(child);
             var parentAsPanel = parent as Panel;
@@ -179,7 +181,7 @@ namespace GoalLine.UI.Utils
             }
         }
 
-        private TextBlock QuickTextblock(string Text, bool IsTitle)
+        private static TextBlock QuickTextblock(string Text, bool IsTitle)
         {
             string Style = (IsTitle ? "DialogTitle" : "DialogBody");
             TextBlock tb = new TextBlock();
@@ -190,7 +192,7 @@ namespace GoalLine.UI.Utils
             return tb;
         }
 
-        private Grid DialogButtonGrid(Grid Overlay, List<DialogButton> buttons)
+        private static Grid DialogButtonGrid(Grid Overlay, List<DialogButton> buttons)
         {
             Grid buttonContainer = new Grid();
             for(int i = 0; i < buttons.Count(); i++)
@@ -211,7 +213,7 @@ namespace GoalLine.UI.Utils
             return buttonContainer;
         }
 
-        private void QuickAddTitleAndBody(StackPanel sp, string Title, string Body)
+        private static void QuickAddTitleAndBody(StackPanel sp, string Title, string Body)
         {
             sp.Children.Add(QuickTextblock(Title, true));
             sp.Children.Add(QuickTextblock(" ", false));

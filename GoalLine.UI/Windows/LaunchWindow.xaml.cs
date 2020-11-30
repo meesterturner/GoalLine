@@ -73,6 +73,7 @@ namespace GoalLine.UI
 
 
             GameWindow g = new GameWindow();
+            UiUtils.MainWindowGrid = g.grdMain;
             g.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             g.WindowState = WindowState.Maximized;
             g.Show();
@@ -85,8 +86,7 @@ namespace GoalLine.UI
         {
             if(lstSaves.SelectedID == -1 )
             {
-                UiUtils u = new UiUtils();
-                u.OpenDialogBox(grdMain, "Unable to Load Game", "You have not selected a game to load.", new List<DialogButton>() {
+                UiUtils.OpenDialogBox(grdMain, "Unable to Load Game", "You have not selected a game to load.", new List<DialogButton>() {
                     new DialogButton("Ok", null, null)
                 });
                 return;
