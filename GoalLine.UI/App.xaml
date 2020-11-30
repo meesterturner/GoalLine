@@ -19,7 +19,8 @@
         <SolidColorBrush x:Key="LighterGrey_Brush">#bbbbbb</SolidColorBrush>
         <SolidColorBrush x:Key="MidGrey_Brush">#888888</SolidColorBrush>
         <SolidColorBrush x:Key="DarkerGrey_Brush">#333333</SolidColorBrush>
-
+        <SolidColorBrush x:Key="StandardGrey_Brush">#44494f</SolidColorBrush>
+        
         <Color x:Key="NavbarBG_Colour">White</Color>
 
         <Color x:Key="DarkerPurple_Colour">#6050ae</Color>
@@ -29,12 +30,13 @@
         <Color x:Key="LighterGrey_Colour">#bbbbbb</Color>
         <Color x:Key="MidGrey_Colour">#888888</Color>
         <Color x:Key="DarkerGrey_Colour">#333333</Color>
+        <Color x:Key="StandardGrey_Colour">#44494f</Color>
 
         <!-- Default for text blocks -->
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="fonts/#Roboto Regular"/>
             <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Foreground" Value="#44494f" />
+            <Setter Property="Foreground" Value="{StaticResource MidGrey_Brush}" />
         </Style>
 
         <Style TargetType="TextBlock" x:Key="NavTitle1">
@@ -77,14 +79,14 @@
         <Style TargetType="TextBlock" x:Key="ListHeader">
             <Setter Property="FontFamily" Value="fonts/#Roboto Bold"/>
             <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Foreground" Value="#44494f" />
+            <Setter Property="Foreground" Value="{StaticResource StandardGrey_Brush}" />
             <Setter Property="Margin" Value="3,0,3,0" />
         </Style>
 
         <Style TargetType="TextBlock" x:Key="ListItem">
             <Setter Property="FontFamily" Value="fonts/#Roboto Regular"/>
             <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Foreground" Value="#44494f" />
+            <Setter Property="Foreground" Value="{StaticResource StandardGrey_Brush}" />
             <Setter Property="Margin" Value="3,0,3,0" />
         </Style>
         

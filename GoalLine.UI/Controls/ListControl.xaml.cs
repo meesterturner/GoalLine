@@ -78,12 +78,13 @@ namespace GoalLine.UI.Controls
 
         private void Render()
         {
-            const bool GridLines = false;
+            const bool GRIDLINES = false;
+            const int ROWHEIGHT = 25;
             int x;
             int y;
 
             lblCaption.Text = Title;
-            grdMain.ShowGridLines = GridLines;
+            grdMain.ShowGridLines = GRIDLINES;
             grdMain.RowDefinitions[0].Height = new GridLength((Title == "" ? 0 : 30));
 
             // Initialise Grids
@@ -100,9 +101,11 @@ namespace GoalLine.UI.Controls
             grdRows.Name = "grdRows";
 
             grdHeader.Height = 30;
-            grdHeader.ShowGridLines = GridLines;
+            grdHeader.ShowGridLines = GRIDLINES;
 
-            grdRows.ShowGridLines = GridLines;
+            grdRows.ShowGridLines = GRIDLINES;
+
+            int TotWidth = 0;
 
             foreach (ListColumn c in Columns)
             {
@@ -116,6 +119,7 @@ namespace GoalLine.UI.Controls
                     if(i == 1)
                     {
                         grdHeader.ColumnDefinitions.Add(h);
+                        TotWidth += c.Width;
                     } else
                     {
                         grdRows.ColumnDefinitions.Add(h);
@@ -125,6 +129,8 @@ namespace GoalLine.UI.Controls
 
             // Render Column Headers
             x = 0;
+            
+
             for(x = 0; x < Columns.Count(); x++)
             {
                 TextBlock heading = new TextBlock();
@@ -138,62 +144,98 @@ namespace GoalLine.UI.Controls
             Grid.SetRow(grdHeader, 1);
             grdMain.Children.Add(grdHeader);
 
+            Line l = new Line();
+            l.X1 = 0;
+            l.X2 = TotWidth; // grdMain.ActualWidth;
+            l.Y1 = 1;
+            l.Y2 = 1;
+            l.Margin = new Thickness(0, 0, 0, 4);
+            l.Stroke = Application.Current.FindResource("StandardGrey_Brush") as Brush;
+            l.StrokeThickness = 2;
+            l.VerticalAlignment = VerticalAlignment.Bottom;
+            Grid.SetColumnSpan(l, grdHeader.ColumnDefinitions.Count());
+            Grid.SetRow(l, 1);
+            grdMain.Children.Add(l);
+
+
+            //         <Line Grid.Row="1" X1="0" X2="2000" Y1="3" Y2="3" Stroke="{StaticResource StandardGrey_Brush}" StrokeThickness="2" VerticalAlignment="Bottom"/>
+
             // Render rows
             y = 0;
             RowBackgrounds = new Dictionary<int, Rectangle>();
 
-            foreach (ListRow r in Rows)
+            if(Rows != null)
+            {
+                foreach (ListRow r in Rows)
+                {
+                    RowDefinition gridRowDef = new RowDefinition();
+                    gridRowDef.Height = new GridLength(ROWHEIGHT);
+                    grdRows.RowDefinitions.Add(gridRowDef);
+
+                    x = 0;
+
+                    // Background lowlight/highlight
+                    Rectangle rect = new Rectangle();
+                    rect.Stroke = DeselectedBackgroundBrush;
+                    rect.Fill = DeselectedBackgroundBrush;
+                    rect.Opacity = DeselectedOpacity;
+                    rect.Height = 28;
+                    rect.Width = 2000; // grdRows.ActualWidth;
+                    rect.Cursor = Cursors.Hand;
+                    rect.Margin = new Thickness(0, 0, 0, 2);
+
+                    rect.MouseLeftButtonUp += new MouseButtonEventHandler((object sender, MouseButtonEventArgs e) => SelectItem(r.ID));
+
+                    Grid.SetRow(rect, y);
+                    Grid.SetColumn(rect, 0);
+                    Grid.SetColumnSpan(rect, grdRows.ColumnDefinitions.Count());
+                    grdRows.Children.Add(rect);
+
+                    RowBackgrounds[r.ID] = rect;
+
+                    foreach (object s in r.ColumnData)
+                    {
+                        if(s.GetType() == typeof(string))
+                        {
+                            TextBlock cell = new TextBlock();
+                            cell.Text = s.ToString();
+                            cell.HorizontalAlignment = Columns[x].Alignment;
+                            cell.Cursor = Cursors.Hand;
+                            cell.Style = Application.Current.FindResource("ListItem") as Style;
+
+                            // UI Elements
+                            cell.MouseLeftButtonUp += new MouseButtonEventHandler((object sender, MouseButtonEventArgs e) => SelectItem(r.ID));
+                        
+                            Grid.SetRow(cell, y);
+                            Grid.SetColumn(cell, x);
+                            grdRows.Children.Add(cell);
+                        } else
+                        {
+                            throw new NotImplementedException("Don't know what to do with this object in the grid");
+                        }
+                    
+                        x++;
+                    }
+
+                    y++;
+                }
+            }
+
+            if(y == 0)
             {
                 RowDefinition gridRowDef = new RowDefinition();
-                gridRowDef.Height = new GridLength(25);
+                gridRowDef.Height = new GridLength(ROWHEIGHT);
                 grdRows.RowDefinitions.Add(gridRowDef);
 
-                x = 0;
+                TextBlock cell = new TextBlock();
+                cell.Text = "There is no data to show in this list";
+                cell.HorizontalAlignment = HorizontalAlignment.Center;
+                cell.Style = Application.Current.FindResource("ListItem") as Style;
 
-                // Background lowlight/highlight
-                Rectangle rect = new Rectangle();
-                rect.Stroke = DeselectedBackgroundBrush;
-                rect.Fill = DeselectedBackgroundBrush;
-                rect.Opacity = DeselectedOpacity;
-                rect.Height = 28;
-                rect.Width = 2000; // grdRows.ActualWidth;
-                rect.Cursor = Cursors.Hand;
-                rect.Margin = new Thickness(0, 0, 0, 2);
-
-                rect.MouseLeftButtonUp += new MouseButtonEventHandler((object sender, MouseButtonEventArgs e) => SelectItem(r.ID));
-
-                Grid.SetRow(rect, y);
-                Grid.SetColumn(rect, 0);
-                Grid.SetColumnSpan(rect, grdRows.ColumnDefinitions.Count());
-                grdRows.Children.Add(rect);
-
-                RowBackgrounds[r.ID] = rect;
-
-                foreach (object s in r.ColumnData)
-                {
-                    if(s.GetType() == typeof(string))
-                    {
-                        TextBlock cell = new TextBlock();
-                        cell.Text = s.ToString();
-                        cell.HorizontalAlignment = Columns[x].Alignment;
-                        cell.Cursor = Cursors.Hand;
-                        cell.Style = Application.Current.FindResource("ListItem") as Style;
-
-                        // UI Elements
-                        cell.MouseLeftButtonUp += new MouseButtonEventHandler((object sender, MouseButtonEventArgs e) => SelectItem(r.ID));
-                        
-                        Grid.SetRow(cell, y);
-                        Grid.SetColumn(cell, x);
-                        grdRows.Children.Add(cell);
-                    } else
-                    {
-                        throw new NotImplementedException("Don't know what to do with this object in the grid");
-                    }
-                    
-                    x++;
-                }
-
-                y++;
+                Grid.SetRow(cell, 0);
+                Grid.SetColumn(cell, 0);
+                Grid.SetColumnSpan(cell, grdRows.ColumnDefinitions.Count());
+                grdRows.Children.Add(cell);
             }
 
             scvRows.Content = grdRows;
