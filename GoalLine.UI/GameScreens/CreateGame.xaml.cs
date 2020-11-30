@@ -69,7 +69,7 @@ namespace GoalLine.UI
             lstTeams.Columns = new List<ListColumn>()
             {
                 new ListColumn("Team", 200),
-                new ListColumn("Av Rating", 100, HorizontalAlignment.Right)
+                new ListColumn("Av Rating", 150)
             };
         }
 
@@ -84,10 +84,18 @@ namespace GoalLine.UI
 
             foreach (Team t in LeagueTeams)
             {
+                //rows.Add(new ListRow(t.UniqueID, new List<object>()
+                //{
+                //    t.Name,
+                //    ta.AveragePlayerRating(t.UniqueID).ToString("0.00")
+                //}));
+
+                //double avgPlayer = ta.AveragePlayerRating(t.UniqueID);
+
                 rows.Add(new ListRow(t.UniqueID, new List<object>()
                 {
                     t.Name,
-                    ta.AveragePlayerRating(t.UniqueID).ToString("0.00")
+                    GraphicUtils.StarRating(ta.AveragePlayerRating(t.UniqueID) / 20)
                 }));
             }
 

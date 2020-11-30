@@ -182,7 +182,7 @@ namespace GoalLine.UI.Controls
                 for(int y = 0; y < GRIDHEIGHT; y++)
                 {
                     // --- Marker symbol ---
-                    Markers[x, y] = Shirt();
+                    Markers[x, y] = GraphicUtils.Shirt();
                     Markers[x, y].VerticalAlignment = VerticalAlignment.Center;
                     Markers[x, y].HorizontalAlignment = HorizontalAlignment.Center;
                     Markers[x, y].AllowDrop = true;
@@ -251,30 +251,6 @@ namespace GoalLine.UI.Controls
         {
             int FormationID = FormationPaging.Items[FormationPaging.CurrentItem].ID;
             SetupFormationTemplate(FormationID);
-        }
-
-        private Polygon Shirt()
-        {
-            Polygon p = new Polygon();
-            p.Stroke = Brushes.Black;
-            p.Fill = Brushes.BlueViolet;
-            p.StrokeThickness = 1;
-            p.HorizontalAlignment = HorizontalAlignment.Left;
-            p.VerticalAlignment = VerticalAlignment.Center;
-            p.Points = new PointCollection() { new Point(8, 0),
-                new Point(42, 0),
-                new Point(50, 12.5),
-                new Point(43.75, 25),
-                new Point(37.5, 12.5),
-                new Point(37.5, 50),
-                new Point(12.5, 50),
-                new Point(12.5, 12.5),
-                new Point(6.25, 25),
-                new Point(0, 12.5),
-                new Point(8, 0)
-            };
-
-            return p;
         }
     }
 }

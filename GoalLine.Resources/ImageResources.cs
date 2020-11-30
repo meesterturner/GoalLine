@@ -12,6 +12,8 @@ namespace GoalLine.Resources
         public const string Logo = "Logo.png";
         public const string LogoSmall = "LogoSmall.png";
         public const string Pitch = "Pitch.jpg";
+        public const string Star_Half = "Star05.png";
+        public const string Star_Whole = "Star10.png";
     }
 
     public static class ImageResources

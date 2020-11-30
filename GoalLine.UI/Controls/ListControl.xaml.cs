@@ -157,9 +157,6 @@ namespace GoalLine.UI.Controls
             Grid.SetRow(l, 1);
             grdMain.Children.Add(l);
 
-
-            //         <Line Grid.Row="1" X1="0" X2="2000" Y1="3" Y2="3" Stroke="{StaticResource StandardGrey_Brush}" StrokeThickness="2" VerticalAlignment="Bottom"/>
-
             // Render rows
             y = 0;
             RowBackgrounds = new Dictionary<int, Rectangle>();
@@ -195,25 +192,37 @@ namespace GoalLine.UI.Controls
 
                     foreach (object s in r.ColumnData)
                     {
+                        UIElement cell;
+
                         if(s.GetType() == typeof(string))
                         {
-                            TextBlock cell = new TextBlock();
-                            cell.Text = s.ToString();
-                            cell.HorizontalAlignment = Columns[x].Alignment;
-                            cell.Cursor = Cursors.Hand;
-                            cell.Style = Application.Current.FindResource("ListItem") as Style;
+                            TextBlock tb = new TextBlock();
+                            tb.Text = s.ToString();
+                            tb.HorizontalAlignment = Columns[x].Alignment;
+                            tb.Cursor = Cursors.Hand;
+                            tb.Style = Application.Current.FindResource("ListItem") as Style;
 
-                            // UI Elements
-                            cell.MouseLeftButtonUp += new MouseButtonEventHandler((object sender, MouseButtonEventArgs e) => SelectItem(r.ID));
-                        
-                            Grid.SetRow(cell, y);
-                            Grid.SetColumn(cell, x);
-                            grdRows.Children.Add(cell);
-                        } else
+                            cell = tb;
+                        } 
+                        else if(s.GetType() == typeof(StackPanel))
+                        {
+                            StackPanel sp = new StackPanel();
+                            sp = (StackPanel)s;
+                            sp.HorizontalAlignment = Columns[x].Alignment;
+                            sp.Cursor = Cursors.Hand;
+                            cell = sp;
+                        }
+
+                        else
                         {
                             throw new NotImplementedException("Don't know what to do with this object in the grid");
                         }
-                    
+
+                        cell.MouseLeftButtonUp += new MouseButtonEventHandler((object sender, MouseButtonEventArgs e) => SelectItem(r.ID));
+                        Grid.SetRow(cell, y);
+                        Grid.SetColumn(cell, x);
+                        grdRows.Children.Add(cell);
+
                         x++;
                     }
 
