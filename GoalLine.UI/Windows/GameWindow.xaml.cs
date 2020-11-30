@@ -11,6 +11,7 @@ using GoalLine.Resources;
 using GoalLine.UI.Utils;
 using System.Windows.Shapes;
 using System.Windows.Media;
+using System.Windows.Input;
 
 namespace GoalLine.UI
 {
@@ -219,9 +220,13 @@ namespace GoalLine.UI
             NextManagerOrContinueDay();
         }
 
-        private void imgLogo_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void imgLogo_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            grdPopup.Visibility = (grdPopup.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible);
+            if(!e.Handled)
+            {
+                grdPopup.Visibility = (grdPopup.Visibility == Visibility.Visible ? Visibility.Hidden : Visibility.Visible);
+                e.Handled = true;
+            }
         }
 
         private void PopupButton_Click(object sender, RoutedEventArgs e)
@@ -295,6 +300,31 @@ namespace GoalLine.UI
         private void QuitGameCallback(object Data)
         {
             Application.Current.Shutdown();
+        }
+
+        private void Window_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if(grdPopup.Visibility == Visibility.Visible && !e.Handled)
+            {
+                if(CheckObjectIsThePopup(e.Source) == false)
+                {
+                    grdPopup.Visibility = Visibility.Hidden;
+                }
+            }
+        }
+
+        private bool CheckObjectIsThePopup(object src)
+        {
+            if((src as Button) != null)
+            {
+                if ((src as Button).Name.ToUpper() == "SAVEBUTTON" || (src as Button).Name.ToUpper() == "QUITBUTTON")
+                {
+                    return true;
+                }
+            } 
+
+            return false;
+            
         }
     }
 }

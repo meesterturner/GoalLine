@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GoalLine.UI"
         mc:Ignorable="d" Style="{StaticResource GameWindow}"
-        Title="GoalLine" Height="450" Width="1200">
+        Title="GoalLine" Height="450" Width="1200" PreviewMouseLeftButtonUp="Window_PreviewMouseLeftButtonUp">
 
     <Grid x:Name="grdMain">
         <Grid.ColumnDefinitions>
@@ -27,7 +27,7 @@
 
         <!-- Navbar -->
         <StackPanel Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="30,0,0,0">
-            <Image x:Name="imgLogo" MouseLeftButtonUp="imgLogo_MouseLeftButtonUp" Cursor="Hand" />
+            <Image x:Name="imgLogo" PreviewMouseLeftButtonUp="imgLogo_PreviewMouseLeftButtonUp" Cursor="Hand" />
             <!-- Source="https://www.startupsavior.com/wp-content/uploads/2019/12/circle-1.png"-->
             <Button Style="{StaticResource NavButton}">Home</Button>
             <Button Style="{StaticResource NavButton}">Team</Button>
