@@ -74,5 +74,11 @@ namespace GoalLine.Data
             World.WorldState.CurrentDate = World.WorldState.CurrentDate.AddDays(Days);
             return World.WorldState.CurrentDate;
         }
+
+        public int GetNextEmailID()
+        {
+            World.WorldState.NextEmailID++;
+            return World.WorldState.NextEmailID;
+        }
     }
 }

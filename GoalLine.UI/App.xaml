@@ -68,6 +68,14 @@
             <Setter Property="Margin" Value="3,0,3,0" />
         </Style>
 
+        <Style TargetType="TextBlock" x:Key="DialogTitleSmaller">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Foreground" Value="{StaticResource LighterPurple_Brush}" />
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="fonts/#Roboto Regular" />
+            <Setter Property="Margin" Value="3,0,3,0" />
+        </Style>
+
         <Style TargetType="TextBlock" x:Key="DialogBody">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="Foreground" Value="{StaticResource FaintGrey_Brush}" />

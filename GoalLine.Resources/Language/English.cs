@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using GoalLine.Structures;
 
 namespace GoalLine.Resources.Language
 {
@@ -10,16 +7,24 @@ namespace GoalLine.Resources.Language
     {
         public string _Name => "English";
 
+        public List<EmailTemplate> EmailTemplates { get; private set; } = new List<EmailTemplate>()
+        {
+            new EmailTemplate(10000, EmailType.Welcome, "Welcome to the Club", "The board warmly welcomes {0} to {1}. We hope for a long and prosperous future under your management."),
+            new EmailTemplate(10001, EmailType.Welcome, "Welcome to the Club", "Congratulations to {0} on your appointment to {1}. We look forward to seeing your performance this coming season.")
+        };
 
         public string AreYouSureYouWantToQuit => "Are you sure you want to quit, and lose any unsaved progress?";
         public string AverageRating => "Average Rating";
+        public string BoardOfDirectors => "Board of Directors";
         public string Cancel => "Cancel";
         public string Date => "Date";
+        public string DateFormat => "dd/MM/yyyy";
         public string DateOfBirth => "Date of Birth";
         public string FirstName => "First Name";
         public string Formation => "Formation";
         public string FormationExists => "Formation with same name exists.";
         public string FormationInvalid => "Formation must have exactly 11 points";
+        public string From => "From";
         public string FormationSavedSuccessfully => "Formation has been saved successfully.";
         public string GameHasNotBeenSavedBefore => "This game has not been saved before, please give it a name.";
         public string GameSavedSuccessfully => "Game saved successfully as \"{0}\"";
@@ -42,11 +47,11 @@ namespace GoalLine.Resources.Language
         public string SaveGame => "Save Game";
         public string Start => "Start";
         public string StartNewGame => "Start New Game";
+        public string Subject => "Subject";
         public string Team => "Team";
+        public string Unread => "Unr";
         public string WelcomeToGoalLine => "Welcome To GoalLine";
         public string Yes => "Yes";
         public string YouHaveNotSelectedAGame => "You have not selected a game to load.";
-        
-
     }
 }

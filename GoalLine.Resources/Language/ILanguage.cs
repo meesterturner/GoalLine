@@ -1,25 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using GoalLine.Structures;
 
 namespace GoalLine.Resources.Language
 {
     public interface ILanguage
     {
         string _Name { get; }
+        
+        List<EmailTemplate> EmailTemplates { get; }
+
 
         string AreYouSureYouWantToQuit { get; }
         string AverageRating { get; }
+        string BoardOfDirectors { get; }
         string Cancel { get; }
         string Date { get; }
+        string DateFormat { get; }
         string DateOfBirth { get; }
         string FirstName { get; }
         string Formation { get; }
         string FormationExists { get; }
         string FormationInvalid { get; }
         string FormationSavedSuccessfully { get; }
+        string From { get; }
         string GameHasNotBeenSavedBefore { get; }
         string GameSavedSuccessfully { get; }
         string Home { get; }
@@ -41,7 +44,9 @@ namespace GoalLine.Resources.Language
         string SaveGame { get; }
         string Start { get; }
         string StartNewGame { get; }
+        string Subject { get;  }
         string Team { get; }
+        string Unread { get; }
         string WelcomeToGoalLine { get; }
         string Yes { get; }
         string YouHaveNotSelectedAGame { get; }

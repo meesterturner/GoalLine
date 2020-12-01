@@ -10,6 +10,7 @@ using GoalLine.Structures;
 using GoalLine.UI.GameScreens;
 using GoalLine.UI.Controls;
 using GoalLine.Resources;
+using GoalLine.UI.Utils;
 
 namespace GoalLine.UI.GameScreens
 {
@@ -24,6 +25,14 @@ namespace GoalLine.UI.GameScreens
         public Home()
         {
             InitializeComponent();
+            SetupText();
+        }
+
+        private void SetupText()
+        {
+            lblFrom.Text = LangResources.CurLang.From + ":";
+            lblDate.Text = LangResources.CurLang.Date + ":";
+            lblSubject.Text = LangResources.CurLang.Subject + ":";
         }
 
         public void SetupGameScreenData(GameScreenSetup dataFromUI)
@@ -42,8 +51,57 @@ namespace GoalLine.UI.GameScreens
             SetupData.Title1 = SetupData.TeamData.Name;
             SetupData.Title2 = SetupData.ManagerData.Name;
 
+            UpdateEmails();
             UpdateLeagueTable();
             ctlTactics.team = SetupData.TeamData;
+        }
+
+        private void UpdateEmails()
+        {
+            EmailAdapter ea = new EmailAdapter();
+            lstEmails.Title = "Emails";
+            lstEmails.Columns = new List<ListColumn>()
+            {
+                new ListColumn(LangResources.CurLang.Unread, 35),
+                new ListColumn(LangResources.CurLang.Date, 125),
+                new ListColumn(LangResources.CurLang.Subject, 390)
+            };
+
+            List<ListRow> rows = new List<ListRow>();
+            List<Email> emails = ea.GetEmails(SetupData.ManagerData.UniqueID);
+            foreach(Email e in emails)
+            {
+                EmailViewable ev = ea.ConvertEmailToViewable(e);
+
+                rows.Add(new ListRow(e.UniqueID, new List<object>() { 
+                    (ev.Read ? null : GraphicUtils.StarRating(1)),
+                    ev.Date.ToString(LangResources.CurLang.DateFormat),
+                    ev.Subject
+                }));
+            }
+
+            lstEmails.Rows = rows;
+            lstEmails.SelectionMode = SelectMode.HighlightAndCallback;
+            lstEmails.Callback_ItemClick = ShowEmail;
+        }
+
+        private void ShowEmail()
+        {
+
+            int id = lstEmails.SelectedID;
+            if(id > -1)
+            {
+                EmailAdapter ea = new EmailAdapter();
+
+                EmailViewable ev = ea.ConvertEmailToViewable(ea.GetEmail(SetupData.ManagerData.UniqueID, id));
+
+                lblFromDetail.Text = ev.From;
+                lblDateDetail.Text = ev.Date.ToString(LangResources.CurLang.DateFormat);
+                lblSubjectDetail.Text = ev.Subject;
+                lblEmail.Text = ev.Body;
+
+                ea.MarkEmailAsRead(SetupData.ManagerData.UniqueID, ev.UniqueID, true);
+            }
         }
 
         private void UpdateLeagueTable()

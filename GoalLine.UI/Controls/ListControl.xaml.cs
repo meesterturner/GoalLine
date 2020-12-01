@@ -186,32 +186,37 @@ namespace GoalLine.UI.Controls
                     {
                         UIElement cell;
 
-                        if(s.GetType() == typeof(string))
+                        if(s != null)
                         {
-                            TextBlock tb = new TextBlock();
-                            tb.Text = s.ToString();
-                            tb.HorizontalAlignment = Columns[x].Alignment;
-                            tb.Style = Application.Current.FindResource("ListItem") as Style;
+                          
+                            if(s.GetType() == typeof(string))
+                            {
+                                TextBlock tb = new TextBlock();
+                                tb.Text = s.ToString();
+                                tb.HorizontalAlignment = Columns[x].Alignment;
+                                tb.VerticalAlignment = VerticalAlignment.Center;
+                                tb.Style = Application.Current.FindResource("ListItem") as Style;
 
-                            cell = tb;
-                        } 
-                        else if(s.GetType() == typeof(StackPanel))
-                        {
-                            StackPanel sp = new StackPanel();
-                            sp = (StackPanel)s;
-                            sp.HorizontalAlignment = Columns[x].Alignment;
-                            cell = sp;
+                                cell = tb;
+                            } 
+                            else if(s.GetType() == typeof(StackPanel))
+                            {
+                                StackPanel sp = new StackPanel();
+                                sp = (StackPanel)s;
+                                sp.VerticalAlignment = VerticalAlignment.Center;
+                                sp.HorizontalAlignment = Columns[x].Alignment;
+                                cell = sp;
+                            }
+
+                            else
+                            {
+                                throw new NotImplementedException("Don't know what to do with this object in the grid");
+                            }
+
+                            Grid.SetRow(cell, y);
+                            Grid.SetColumn(cell, x);
+                            grdRows.Children.Add(cell);
                         }
-
-                        else
-                        {
-                            throw new NotImplementedException("Don't know what to do with this object in the grid");
-                        }
-
-                        Grid.SetRow(cell, y);
-                        Grid.SetColumn(cell, x);
-                        grdRows.Children.Add(cell);
-
                         x++;
                     }
 

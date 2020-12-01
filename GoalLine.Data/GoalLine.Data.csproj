@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmailAdapter.cs" />
     <Compile Include="FixtureAdapter.cs" />
     <Compile Include="FormationAdapter.cs" />
     <Compile Include="Initialiser.cs" />

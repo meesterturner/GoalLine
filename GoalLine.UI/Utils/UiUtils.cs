@@ -87,7 +87,13 @@ namespace GoalLine.UI.Utils
             Overlay.Children.Add(sp);
         }
 
+
         public static Grid DarkOverlayGrid(Grid ExistingGrid)
+        {
+            return DarkOverlayGrid(ExistingGrid, 0.8);
+        }
+
+        public static Grid DarkOverlayGrid(Grid ExistingGrid, double Opacity)
         {
             Grid newGrid = new Grid();
             newGrid.Height = ExistingGrid.ActualHeight;
@@ -96,7 +102,7 @@ namespace GoalLine.UI.Utils
             Rectangle myRect = new Rectangle();
             myRect.Stroke = Brushes.Black;
             myRect.Fill = Brushes.Black;
-            myRect.Opacity = 0.8;
+            myRect.Opacity = Opacity;
             myRect.HorizontalAlignment = HorizontalAlignment.Left;
             myRect.VerticalAlignment = VerticalAlignment.Center;
             myRect.Height = ExistingGrid.ActualHeight;

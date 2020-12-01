@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GoalLine.Structures;
+using GoalLine.Resources;
+
 namespace GoalLine.Data
 {
     public class ManagerAdapter
@@ -29,6 +29,12 @@ namespace GoalLine.Data
 
             World.Managers[ManagerID].CurrentTeam = TeamID;
             World.Teams[TeamID].ManagerID = ManagerID;
+
+            if(m.Human)
+            {
+                EmailAdapter ea = new EmailAdapter();
+                ea.SendEmail(ManagerID, EmailType.Welcome, new List<int>() { ManagerID, TeamID });
+            }
         }
 
         public List<Manager> GetHumanManagers()

@@ -39,4 +39,15 @@ namespace GoalLine.Structures
         LastnameInitial,
         LastnameInitialOptional
     }
+
+    public enum EmailType
+    {
+        Welcome
+    }
+
+    public enum EmailFrom
+    {
+        BoardOfDirectors = 0,
+        Other = 255
+    }
 }

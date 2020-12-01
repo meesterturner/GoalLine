@@ -17,7 +17,7 @@ namespace GoalLine.Data
         private const string FILE_MANAGERS = "managers.json";
         private const string FILE_LEAGUES = "leagues.json";
         private const string FILE_FIXTURES = "fixtures.json";
-
+        private const string FILE_EMAILS = "emails.json";
         public string SaveGameName { get; set; }
         
         private string Filename;
@@ -73,6 +73,7 @@ namespace GoalLine.Data
             SerialiseToDisk(World.Managers, FILE_MANAGERS);
             SerialiseToDisk(World.Leagues, FILE_LEAGUES);
             SerialiseToDisk(World.Fixtures, FILE_FIXTURES);
+            SerialiseToDisk(World.Emails, FILE_EMAILS);
 
 
             ZipFile.CreateFromDirectory(TempFolder, Filename);
@@ -130,6 +131,7 @@ namespace GoalLine.Data
             World.Managers = JsonConvert.DeserializeObject<List<Manager>>(SerialisedData(FILE_MANAGERS));
             World.Leagues = JsonConvert.DeserializeObject<List<League>>(SerialisedData(FILE_LEAGUES));
             World.Fixtures = JsonConvert.DeserializeObject<List<Fixture>>(SerialisedData(FILE_FIXTURES));
+            World.Emails = JsonConvert.DeserializeObject<Dictionary<int, List<Email>>>(SerialisedData(FILE_EMAILS));
 
             Directory.Delete(TempFolder, true);
 
