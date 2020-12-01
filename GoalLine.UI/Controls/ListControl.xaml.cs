@@ -178,10 +178,7 @@ namespace GoalLine.UI.Controls
                     rect.Opacity = DeselectedOpacity;
                     rect.Height = 28;
                     rect.Width = 2000; // grdRows.ActualWidth;
-                    rect.Cursor = Cursors.Hand;
                     rect.Margin = new Thickness(0, 0, 0, 2);
-
-                    rect.MouseLeftButtonUp += new MouseButtonEventHandler((object sender, MouseButtonEventArgs e) => SelectItem(r.ID));
 
                     Grid.SetRow(rect, y);
                     Grid.SetColumn(rect, 0);
@@ -189,6 +186,7 @@ namespace GoalLine.UI.Controls
                     grdRows.Children.Add(rect);
 
                     RowBackgrounds[r.ID] = rect;
+                    rect = null;
 
                     foreach (object s in r.ColumnData)
                     {
@@ -199,7 +197,6 @@ namespace GoalLine.UI.Controls
                             TextBlock tb = new TextBlock();
                             tb.Text = s.ToString();
                             tb.HorizontalAlignment = Columns[x].Alignment;
-                            tb.Cursor = Cursors.Hand;
                             tb.Style = Application.Current.FindResource("ListItem") as Style;
 
                             cell = tb;
@@ -209,7 +206,6 @@ namespace GoalLine.UI.Controls
                             StackPanel sp = new StackPanel();
                             sp = (StackPanel)s;
                             sp.HorizontalAlignment = Columns[x].Alignment;
-                            sp.Cursor = Cursors.Hand;
                             cell = sp;
                         }
 
@@ -218,13 +214,30 @@ namespace GoalLine.UI.Controls
                             throw new NotImplementedException("Don't know what to do with this object in the grid");
                         }
 
-                        cell.MouseLeftButtonUp += new MouseButtonEventHandler((object sender, MouseButtonEventArgs e) => SelectItem(r.ID));
                         Grid.SetRow(cell, y);
                         Grid.SetColumn(cell, x);
                         grdRows.Children.Add(cell);
 
                         x++;
                     }
+
+                    // Foreground rectangle, transparently painted over each row
+                    // used as the clickable item. This means we only have one event handler
+                    // per row, rather than the background plus one per column in the row
+                    rect = new Rectangle();
+                    rect.Stroke = Brushes.Transparent;
+                    rect.Fill = Brushes.Transparent;
+                    rect.Height = RowBackgrounds[r.ID].Height;
+                    rect.Width = RowBackgrounds[r.ID].Width;
+                    rect.Margin = RowBackgrounds[r.ID].Margin;
+                    rect.Cursor = Cursors.Hand;
+
+                    rect.MouseLeftButtonUp += new MouseButtonEventHandler((object sender, MouseButtonEventArgs e) => ProcessItemClick(r.ID));
+                    
+                    Grid.SetRow(rect, y);
+                    Grid.SetColumn(rect, 0);
+                    Grid.SetColumnSpan(rect, grdRows.ColumnDefinitions.Count());
+                    grdRows.Children.Add(rect);
 
                     y++;
                 }
@@ -251,12 +264,16 @@ namespace GoalLine.UI.Controls
             SelectedID = -1;
         }
 
-        private void SelectItem(int id)
+        /// <summary>
+        /// Highlight the requested item
+        /// </summary>
+        /// <param name="id">ID (not row number) of the row</param>
+        public void HighlightItem(int id)
         {
             int OldID = SelectedID;
             SelectedID = id;
 
-            if(SelectionMode == SelectMode.Highlight || SelectionMode == SelectMode.HighlightAndCallback)
+            if (SelectionMode == SelectMode.Highlight || SelectionMode == SelectMode.HighlightAndCallback)
             {
                 if (OldID > -1)
                 {
@@ -264,10 +281,20 @@ namespace GoalLine.UI.Controls
                     RowBackgrounds[OldID].Stroke = DeselectedBackgroundBrush;
                     RowBackgrounds[OldID].Opacity = DeselectedOpacity;
                 }
-            
+
                 RowBackgrounds[SelectedID].Fill = SelectedBackgroundBrush;
                 RowBackgrounds[SelectedID].Stroke = SelectedBackgroundBrush;
                 RowBackgrounds[SelectedID].Opacity = SelectedOpacity;
+            }
+        }
+
+        private void ProcessItemClick(int id)
+        {
+            if (SelectionMode == SelectMode.Highlight || SelectionMode == SelectMode.HighlightAndCallback) { 
+                HighlightItem(id);
+            } else
+            {
+                SelectedID = id;
             }
 
             if(SelectionMode == SelectMode.Callback || SelectionMode == SelectMode.HighlightAndCallback)
