@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoalLine.ConsoleApp", "GoalLine.ConsoleApp\GoalLine.ConsoleApp.csproj", "{A912A59B-D877-4A44-8945-4E96744CE999}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoalLine.Structures", "GoalLine.Structures\GoalLine.Structures.csproj", "{59791ADE-64E6-445C-8069-7AD27C82F5F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoalLine.Data", "GoalLine.Data\GoalLine.Data.csproj", "{5D7E0338-5365-4DA7-AFD8-55BE7A5D7AB2}"
@@ -25,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A912A59B-D877-4A44-8945-4E96744CE999}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A912A59B-D877-4A44-8945-4E96744CE999}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A912A59B-D877-4A44-8945-4E96744CE999}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A912A59B-D877-4A44-8945-4E96744CE999}.Release|Any CPU.Build.0 = Release|Any CPU
 		{59791ADE-64E6-445C-8069-7AD27C82F5F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{59791ADE-64E6-445C-8069-7AD27C82F5F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59791ADE-64E6-445C-8069-7AD27C82F5F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
