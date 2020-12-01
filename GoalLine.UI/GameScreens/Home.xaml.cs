@@ -9,6 +9,7 @@ using GoalLine.Data;
 using GoalLine.Structures;
 using GoalLine.UI.GameScreens;
 using GoalLine.UI.Controls;
+using GoalLine.Resources;
 
 namespace GoalLine.UI.GameScreens
 {
@@ -47,20 +48,23 @@ namespace GoalLine.UI.GameScreens
 
         private void UpdateLeagueTable()
         {
+            // Headings[] should contain: Pos,Team,P,W,D,L,F,A,GD,Pts, or equivalent
+            string[] Headings = LangResources.CurLang.LeagueTableHeadings.Split(new string[] { "," }, StringSplitOptions.None);
+
             LeagueAdapter la = new LeagueAdapter();
             lstLeague.Title = la.GetLeague(SetupData.TeamData.LeagueID).Name;
             lstLeague.Columns = new List<ListColumn>()
             {
-                new ListColumn("Pos", 75),
-                new ListColumn("Team", 300),
-                new ListColumn("P", 75, HorizontalAlignment.Right),
-                new ListColumn("W", 75, HorizontalAlignment.Right),
-                new ListColumn("D", 75, HorizontalAlignment.Right),
-                new ListColumn("L", 75, HorizontalAlignment.Right),
-                new ListColumn("F", 75, HorizontalAlignment.Right),
-                new ListColumn("A", 75, HorizontalAlignment.Right),
-                new ListColumn("GD", 75, HorizontalAlignment.Right),
-                new ListColumn("Pts", 75, HorizontalAlignment.Right),
+                new ListColumn(Headings[0], 75),
+                new ListColumn(Headings[1], 300),
+                new ListColumn(Headings[2], 75, HorizontalAlignment.Right),
+                new ListColumn(Headings[3], 75, HorizontalAlignment.Right),
+                new ListColumn(Headings[4], 75, HorizontalAlignment.Right),
+                new ListColumn(Headings[5], 75, HorizontalAlignment.Right),
+                new ListColumn(Headings[6], 75, HorizontalAlignment.Right),
+                new ListColumn(Headings[7], 75, HorizontalAlignment.Right),
+                new ListColumn(Headings[8], 75, HorizontalAlignment.Right),
+                new ListColumn(Headings[9], 75, HorizontalAlignment.Right),
             };
 
 

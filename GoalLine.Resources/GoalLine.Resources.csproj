@@ -45,6 +45,9 @@
   <ItemGroup>
     <Compile Include="Enums.cs" />
     <Compile Include="ImageResources.cs" />
+    <Compile Include="LangResources.cs" />
+    <Compile Include="Language\English.cs" />
+    <Compile Include="Language\ILanguage.cs" />
     <Compile Include="TextResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -73,6 +76,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Images\Star05.png" />
     <EmbeddedResource Include="Images\Star10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GoalLine.Structures\GoalLine.Structures.csproj">
+      <Project>{59791ade-64e6-445c-8069-7ad27c82f5f9}</Project>
+      <Name>GoalLine.Structures</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -21,13 +21,13 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock x:Name="lblFirstName" Text="First Name" Grid.Column="0" Grid.Row="0" />
+        <TextBlock x:Name="lblFirstName" Text="fi" Grid.Column="0" Grid.Row="0" />
         <TextBox x:Name="txtFirstName" Grid.Column="1" Grid.Row="0" />
 
-        <TextBlock x:Name="lblSurname" Text="Surname" Grid.Column="0" Grid.Row="1" />
+        <TextBlock x:Name="lblSurname" Text="su" Grid.Column="0" Grid.Row="1" />
         <TextBox x:Name="txtSurname" Grid.Column="1" Grid.Row="1" />
 
-        <TextBlock x:Name="lblDOB" Text="Date of Birth" Grid.Column="0" Grid.Row="2" />
+        <TextBlock x:Name="lblDOB" Text="dob" Grid.Column="0" Grid.Row="2" />
 
         <Grid Grid.Column="1" Grid.Row="2">
             <Grid.ColumnDefinitions>

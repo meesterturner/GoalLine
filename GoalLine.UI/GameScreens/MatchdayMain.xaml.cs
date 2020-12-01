@@ -1,22 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Threading;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using GoalLine.Matchday;
-using GoalLine.Structures;
-using GoalLine.Data;
 using GoalLine.UI.Utils;
+using GoalLine.Resources;
 
 namespace GoalLine.UI.GameScreens
 {
@@ -52,12 +38,12 @@ namespace GoalLine.UI.GameScreens
         public void SetupGameScreenData(GameScreenSetup dataFromUI)
         {
             SetupData = dataFromUI;
-            SetupData.MainButtons.Add("Start");
+            SetupData.MainButtons.Add(LangResources.CurLang.Start);
 
             SetupData.ShowContinueButton = false;
             SetupData.ShowDate = true;
 
-            SetupData.Title1 = "Match Day";
+            SetupData.Title1 = LangResources.CurLang.MatchDay;
             SetupData.Title2 = "Team One v Team Two";
         }
 

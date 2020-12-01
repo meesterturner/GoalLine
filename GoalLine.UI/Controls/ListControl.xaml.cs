@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GoalLine.Resources;
 
 namespace GoalLine.UI.Controls
 {
@@ -250,7 +244,7 @@ namespace GoalLine.UI.Controls
                 grdRows.RowDefinitions.Add(gridRowDef);
 
                 TextBlock cell = new TextBlock();
-                cell.Text = "There is no data to show in this list";
+                cell.Text = LangResources.CurLang.NoDataToShow;
                 cell.HorizontalAlignment = HorizontalAlignment.Center;
                 cell.Style = Application.Current.FindResource("ListItem") as Style;
 

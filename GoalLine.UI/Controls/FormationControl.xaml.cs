@@ -57,8 +57,8 @@ namespace GoalLine.UI.Controls
             TeamAdapter ta = new TeamAdapter();
             ta.SavePlayerFormation(team.UniqueID, CurrentFormationID, PlayerGridPositions);
             
-            UiUtils.OpenDialogBox(UiUtils.MainWindowGrid, "Formation", "Formation has been saved successfully.", new List<DialogButton>() { 
-                new DialogButton("OK", null, null)
+            UiUtils.OpenDialogBox(UiUtils.MainWindowGrid, LangResources.CurLang.Formation, LangResources.CurLang.FormationSavedSuccessfully, new List<DialogButton>() { 
+                new DialogButton(LangResources.CurLang.OK, null, null)
             });
 
             retVal = true;

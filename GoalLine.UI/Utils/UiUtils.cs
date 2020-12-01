@@ -64,8 +64,8 @@ namespace GoalLine.UI.Utils
             sp.Children.Add(QuickTextblock(" ", false));
 
             List<DialogButton> buttons = new List<DialogButton>();
-            buttons.Add(new DialogButton("OK", Callback, ti));
-            buttons.Add(new DialogButton("Cancel", Callback, null));
+            buttons.Add(new DialogButton(LangResources.CurLang.OK, Callback, ti));
+            buttons.Add(new DialogButton(LangResources.CurLang.Cancel, Callback, null));
 
             sp.Children.Add(DialogButtonGrid(Overlay, buttons));
 

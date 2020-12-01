@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GoalLine.Structures;
 using System.Drawing;
+using GoalLine.Resources;
 
 namespace GoalLine.Data
 {
@@ -27,14 +28,14 @@ namespace GoalLine.Data
             {
                 if (f.Name.ToUpper() == Name.ToUpper())
                 {
-                    return new ResultData(false, "Formation with same name exists");
+                    return new ResultData(false, LangResources.CurLang.FormationExists);
                 }
             }
 
             // Do we have the right number of points
             if(Points.Count != 11)
             {
-                return new ResultData(false, "Formation must have exactly 11 points"); ;
+                return new ResultData(false, LangResources.CurLang.FormationInvalid); ;
             }
 
             return new ResultData(true);

@@ -9,6 +9,7 @@ using GoalLine.Structures;
 using GoalLine.UI.GameScreens;
 using GoalLine.UI.Controls;
 using GoalLine.UI.Utils;
+using GoalLine.Resources;
 
 namespace GoalLine.UI
 {
@@ -57,19 +58,25 @@ namespace GoalLine.UI
 
             LeaguePaging.DisplayItem(0);
 
-            
+            SetupText();
             SetupList();
             UpdateTeams();
         }
 
+        private void SetupText()
+        {
+            lblFirstName.Text = LangResources.CurLang.FirstName + ":";
+            lblSurname.Text = LangResources.CurLang.LastName + ":";
+            lblDOB.Text = LangResources.CurLang.DateOfBirth + ":";
+        }
 
         private void SetupList()
         {
             lstTeams.Title = "";
             lstTeams.Columns = new List<ListColumn>()
             {
-                new ListColumn("Team", 200),
-                new ListColumn("Av Rating", 150)
+                new ListColumn(LangResources.CurLang.Team, 200),
+                new ListColumn(LangResources.CurLang.AverageRating, 150)
             };
         }
 
@@ -140,12 +147,12 @@ namespace GoalLine.UI
         {
             if (txtFirstName.Text.Trim() == "" || txtSurname.Text.Trim() == "")
             {
-                return new ScreenReturnData(ScreenReturnCode.Error, "Please enter your name.");
+                return new ScreenReturnData(ScreenReturnCode.Error, LangResources.CurLang.PleaseEnterYourName);
             }
 
             if(lstTeams.SelectedID == -1)
             {
-                return new ScreenReturnData(ScreenReturnCode.Error, "Please select a team to manage.");
+                return new ScreenReturnData(ScreenReturnCode.Error, LangResources.CurLang.PleaseSelectATeamToManage);
             }
 
             DateTime dob;
@@ -155,7 +162,7 @@ namespace GoalLine.UI
             }
             catch (Exception)
             {
-                return new ScreenReturnData(ScreenReturnCode.Error, "Please enter a valid date of birth.");
+                return new ScreenReturnData(ScreenReturnCode.Error, LangResources.CurLang.PleaseEnterDateOfBirth);
             }
 
             return null;
@@ -164,13 +171,13 @@ namespace GoalLine.UI
         public void SetupGameScreenData(GameScreenSetup dataFromUI)
         {
             SetupData = dataFromUI;
-            SetupData.MainButtons.Add("Ok");
+            SetupData.MainButtons.Add(LangResources.CurLang.OK);
 
             SetupData.ShowContinueButton = false;
             SetupData.ShowDate = false;
 
-            SetupData.Title1 = "Create New Game";
-            SetupData.Title2 = "Welcome to GoalLine";
+            SetupData.Title1 = LangResources.CurLang.StartNewGame;
+            SetupData.Title2 = LangResources.CurLang.WelcomeToGoalLine;
         }
     }
 }

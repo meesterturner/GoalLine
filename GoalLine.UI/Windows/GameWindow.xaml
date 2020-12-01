@@ -29,17 +29,17 @@
         <StackPanel Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="30,0,0,0">
             <Image x:Name="imgLogo" PreviewMouseLeftButtonUp="imgLogo_PreviewMouseLeftButtonUp" Cursor="Hand" />
             <!-- Source="https://www.startupsavior.com/wp-content/uploads/2019/12/circle-1.png"-->
-            <Button Style="{StaticResource NavButton}">Home</Button>
-            <Button Style="{StaticResource NavButton}">Team</Button>
-            <Button Style="{StaticResource NavButton}">League</Button>
+            <Button Style="{StaticResource NavButton}" x:Name="HomeButton">ho</Button>
+            <Button Style="{StaticResource NavButton}" x:Name="TeamButton">te</Button>
+            <Button Style="{StaticResource NavButton}" x:Name="LeagueButton">la</Button>
         </StackPanel>
         
         <!-- Popup Menu -->
         <Grid x:Name="grdPopup" Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" Panel.ZIndex="99999" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,60,0,0" Height="50">
             <Rectangle Fill="White" Stroke="White" />
             <StackPanel>
-                <Button Style="{StaticResource NavPopup}" x:Name="SaveButton" Click="PopupButton_Click">Save Game</Button>
-                <Button Style="{StaticResource NavPopup}" x:Name="QuitButton" Click="PopupButton_Click">Quit Game</Button>
+                <Button Style="{StaticResource NavPopup}" x:Name="SaveButton" Click="PopupButton_Click">sv</Button>
+                <Button Style="{StaticResource NavPopup}" x:Name="QuitButton" Click="PopupButton_Click">qu</Button>
             </StackPanel>
         </Grid>
 
@@ -76,7 +76,7 @@
                     Small Title
                 </TextBlock>
             </StackPanel>
-            <Button Style="{StaticResource NavButton2}" x:Name="ContinueButton" Click="ContinueButton_Click" Content="Next &gt;"/>
+            <Button Style="{StaticResource NavButton2}" x:Name="ContinueButton" Click="ContinueButton_Click" Content="nx"/>
         </StackPanel>
 
         <WrapPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="5">

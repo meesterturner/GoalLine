@@ -19,8 +19,16 @@ namespace GoalLine.UI
         public LaunchWindow()
         {
             InitializeComponent();
+            SetupText();
             SetupList();
             imgLogo.Source = ImageResources.GetImage(ImageResourceList.Logo);
+        }
+
+        private void SetupText()
+        {
+            cmdStart.Content = LangResources.CurLang.StartNewGame;
+            cmdLoad.Content = LangResources.CurLang.LoadSavedGame;
+            cmdQuit.Content = LangResources.CurLang.QuitGame;
         }
 
         private void cmdStart_Click(object sender, RoutedEventArgs e)
@@ -34,11 +42,11 @@ namespace GoalLine.UI
             GameIO io = new GameIO();
             Saves = io.ListSaveGames();
 
-            lstSaves.Title = "Saved Games";
+            lstSaves.Title = LangResources.CurLang.SavedGames;
 
             lstSaves.Columns = new List<ListColumn>() {
-                new ListColumn("Name", 300),
-                new ListColumn("Date", 200, HorizontalAlignment.Right)
+                new ListColumn(LangResources.CurLang.Name, 300),
+                new ListColumn(LangResources.CurLang.Date, 200, HorizontalAlignment.Right)
             };
 
             List<ListRow> rows = new List<ListRow>();
@@ -86,8 +94,8 @@ namespace GoalLine.UI
         {
             if(lstSaves.SelectedID == -1 )
             {
-                UiUtils.OpenDialogBox(grdMain, "Unable to Load Game", "You have not selected a game to load.", new List<DialogButton>() {
-                    new DialogButton("Ok", null, null)
+                UiUtils.OpenDialogBox(grdMain, LangResources.CurLang.LoadSavedGame, LangResources.CurLang.YouHaveNotSelectedAGame, new List<DialogButton>() {
+                    new DialogButton(LangResources.CurLang.OK, null, null)
                 });
                 return;
             }
