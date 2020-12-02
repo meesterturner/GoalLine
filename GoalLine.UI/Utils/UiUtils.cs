@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows;
 using GoalLine.Resources;
 using System.Windows.Media.Imaging;
+using System.Windows.Input;
 
 namespace GoalLine.UI.Utils
 {
@@ -128,10 +129,10 @@ namespace GoalLine.UI.Utils
             return newGrid;
         }
 
-        public static Dictionary<string, object> PleaseWait(Grid ExistingGrid, string Text)
+        public static Dictionary<string, object> OpenPleaseWait(Grid ExistingGrid, string Text)
         {
             Grid Overlay = DarkOverlayGrid(ExistingGrid);
-
+            Overlay.Cursor = Cursors.Wait;
             StackPanel sp = new StackPanel();
             sp.HorizontalAlignment = HorizontalAlignment.Center;
             sp.VerticalAlignment = VerticalAlignment.Center;
@@ -167,7 +168,7 @@ namespace GoalLine.UI.Utils
             }
         }
 
-        private static void RemoveControl(UIElement child)
+        public static void RemoveControl(UIElement child)
         {
             var parent = VisualTreeHelper.GetParent(child);
             var parentAsPanel = parent as Panel;
