@@ -75,7 +75,20 @@ namespace GoalLine.UI
             {
                 GameIO io = new GameIO();
                 io.SaveGameName = SaveGame;
-                io.LoadGame();
+
+                try
+                {
+                    io.LoadGame();
+                    
+                }
+                catch (Exception ex)
+                {
+                    UiUtils.OpenDialogBox(grdMain, LangResources.CurLang.LoadSavedGame, LangResources.CurLang.Error + ": " + ex.Message,
+                        new List<DialogButton>() { new DialogButton(LangResources.CurLang.OK, null, null) });
+                    return;
+                }
+
+
                 FromSave = true;
             }
 

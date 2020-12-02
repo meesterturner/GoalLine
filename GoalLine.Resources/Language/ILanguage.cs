@@ -43,7 +43,9 @@ namespace GoalLine.Resources.Language
         string PleaseSelectATeamToManage { get; }
         string QuitGame { get; }
         string SavedGames { get; }
+        string SaveFileDoesNotExist { get; }
         string SaveGame { get; }
+        string SaveGameNotSpecified { get; }
         string Start { get; }
         string StartNewGame { get; }
         string Subject { get;  }

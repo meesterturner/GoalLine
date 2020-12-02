@@ -50,7 +50,9 @@ namespace GoalLine.Resources.Language
         public string PleaseSelectATeamToManage => "Please select a team to manage.";
         public string QuitGame => "Quit Game";
         public string SavedGames => "Saved Games";
+        public string SaveFileDoesNotExist => "File {0} does not exist in this save game.";
         public string SaveGame => "Save Game";
+        public string SaveGameNotSpecified => "SaveGameName not specified";
         public string Start => "Start";
         public string StartNewGame => "Start New Game";
         public string Subject => "Subject";

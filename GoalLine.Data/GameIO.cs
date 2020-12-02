@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using Newtonsoft.Json;
 using GoalLine.Structures;
+using GoalLine.Resources;
 
 namespace GoalLine.Data
 {
@@ -48,7 +49,7 @@ namespace GoalLine.Data
 
             if(SaveGameName == "")
             {
-                throw new Exception("SaveGameName not specified");
+                throw new Exception(LangResources.CurLang.SaveGameNotSpecified);
             }
 
             Filename = Path.Combine(SavePath, FilenameWithExtension(SaveGameName));
@@ -111,7 +112,7 @@ namespace GoalLine.Data
 
             if (SaveGameName == "")
             {
-                throw new Exception("SaveGameName not specified");
+                throw new Exception(LangResources.CurLang.SaveGameNotSpecified);
             }
 
             Filename = Path.Combine(SavePath, FilenameWithExtension(SaveGameName));
@@ -148,7 +149,14 @@ namespace GoalLine.Data
 
         private string SerialisedData(string FileName)
         {
-            return File.ReadAllText(Path.Combine(TempFolder, FileName));
+            string FullName = Path.Combine(TempFolder, FileName);
+
+            if(!File.Exists(FullName))
+            {
+                throw new Exception(string.Format(LangResources.CurLang.SaveFileDoesNotExist, FileName));
+            }
+
+            return File.ReadAllText(FullName);
         }
     }
 }
