@@ -49,6 +49,20 @@ namespace GoalLine.Data
             return GetTeamPlayerSelections(TeamID, true);
         }
 
+        public int CountSelectedPlayers(int TeamID)
+        {
+            int retVal = 0;
+
+            Dictionary<int, TeamPlayer> sel = GetTeamPlayerSelections(TeamID, true);
+            foreach(KeyValuePair<int, TeamPlayer> kvp in sel)
+            {
+                if (kvp.Value.PlayerGridX > -1 && kvp.Value.PlayerGridY > -1)
+                    retVal++;
+            }
+
+            return retVal;
+        }
+
         public Dictionary<int, TeamPlayer> GetTeamPlayerSelections(int TeamID, bool CurrentSelection)
         {
             if(CurrentSelection)

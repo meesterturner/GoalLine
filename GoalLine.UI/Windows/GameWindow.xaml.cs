@@ -12,6 +12,9 @@ using GoalLine.UI.Utils;
 using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows.Input;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace GoalLine.UI
 {
@@ -179,7 +182,7 @@ namespace GoalLine.UI
                     break;
 
                 case ScreenReturnCode.MatchdayComplete:
-                    RunEndOfDayAndGoToNextDay();
+                    RunProcesses(true);
                     break;
 
                 default:
@@ -205,8 +208,16 @@ namespace GoalLine.UI
             if (HumanManagers == null)
             {
                 // Going to first manager, which means we have to run Start Of Day, unless loading from a savegame
-                ProcessManager.RunStartOfDay(SaveGameJustLoaded);
-                SaveGameJustLoaded = false;
+                if(!SaveGameJustLoaded)
+                {
+                    RunProcesses(false);
+                } 
+                else
+                {
+                    SaveGameJustLoaded = false;
+                }
+                
+                
 
                 HumanManagers = ma.GetHumanManagers();
                 PlayingHumanManager = 0;
@@ -217,6 +228,22 @@ namespace GoalLine.UI
                 }
             } else
             {
+                // Check selections if a matchday
+                if(fa.IsTodayAMatchDay(HumanManagers[PlayingHumanManager].CurrentTeam))
+                {
+                    const int REQUIREDCOUNT = 11;
+                    int PlayerCount = ta.CountSelectedPlayers(HumanManagers[PlayingHumanManager].CurrentTeam);
+                    if(PlayerCount < REQUIREDCOUNT)
+                    {
+                        UiUtils.OpenDialogBox(UiUtils.MainWindowGrid, LangResources.CurLang.MatchDay,
+                            string.Format(LangResources.CurLang.YouHaveNotSelectedEnoughPlayers, PlayerCount, REQUIREDCOUNT),
+                            new List<DialogButton>() { new DialogButton(LangResources.CurLang.OK, null, null) });
+
+                        return;
+                    }
+                }
+
+                // Go to next human manager
                 PlayingHumanManager++;
                 if(PlayingHumanManager >= HumanManagers.Count())
                 {
@@ -250,19 +277,46 @@ namespace GoalLine.UI
                     ShowGameScreen(new MatchdayMain());
                 } else
                 {
-                    RunEndOfDayAndGoToNextDay();
+                    RunProcesses(true);
                 }
             }
         }
 
-        private void RunEndOfDayAndGoToNextDay()
+        private void RunProcesses(bool EndOfDay)
         {
-            ProcessManager.RunEndOfDay();
+            Dictionary<string, object> WaitScreen = UiUtils.OpenPleaseWait(UiUtils.MainWindowGrid, LangResources.CurLang.DailyUpdate);
 
-            // Goto Next day
-            WorldAdapter wa = new WorldAdapter();
-            GameDate.Text = wa.CurrentDate.ToString("dd MMMM yyyy");
-            NextManagerOrContinueDay();
+            Thread t = new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                Thread.Sleep(250);
+
+                if (EndOfDay)
+                {
+                    ProcessManager.RunEndOfDay(); 
+                }
+                else
+                {
+                    ProcessManager.RunStartOfDay(SaveGameJustLoaded);
+                }
+            });
+
+            t.Start();
+
+            while(t.IsAlive)
+            {
+                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { })); // DoEvents, kinda
+            }
+
+            UiUtils.RemoveControl((WaitScreen[ReturnedUIObjects.GridContainer] as Grid));
+
+            if(EndOfDay)
+            {
+                // Goto Next day
+                WorldAdapter wa = new WorldAdapter();
+                GameDate.Text = wa.CurrentDate.ToString("dd MMMM yyyy");
+                NextManagerOrContinueDay();
+            }
         }
 
         private void imgLogo_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

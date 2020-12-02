@@ -21,6 +21,7 @@ namespace GoalLine.Resources.Language
         public string AverageRating => "Average Rating";
         public string BoardOfDirectors => "Board of Directors";
         public string Cancel => "Cancel";
+        public string DailyUpdate => "Running Daily Processes...";
         public string Date => "Date";
         public string DateFormat => "dd/MM/yyyy";
         public string DateOfBirth => "Date of Birth";
@@ -58,5 +59,6 @@ namespace GoalLine.Resources.Language
         public string Yes => "Yes";
         public string YouHaveAMatchAgainst => "You have a match today against {0}.";
         public string YouHaveNotSelectedAGame => "You have not selected a game to load.";
+        public string YouHaveNotSelectedEnoughPlayers => "You cannot continue to the match as you have selected {0} players out of {1}";
     }
 }

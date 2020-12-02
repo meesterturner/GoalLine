@@ -14,6 +14,7 @@ namespace GoalLine.Resources.Language
         string AverageRating { get; }
         string BoardOfDirectors { get; }
         string Cancel { get; }
+        string DailyUpdate { get; }
         string Date { get; }
         string DateFormat { get; }
         string DateOfBirth { get; }
@@ -51,7 +52,6 @@ namespace GoalLine.Resources.Language
         string Yes { get; }
         string YouHaveAMatchAgainst { get; }
         string YouHaveNotSelectedAGame { get; }
-        
-
+        string YouHaveNotSelectedEnoughPlayers { get; }
     }
 }
