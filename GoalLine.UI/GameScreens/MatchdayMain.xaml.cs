@@ -52,5 +52,10 @@ namespace GoalLine.UI.GameScreens
             MatchDayRunner dr = new MatchDayRunner();
             dr.Run(new MatchdayCallback(this));
         }
+
+        public ScreenReturnData ContinueButtonClick()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

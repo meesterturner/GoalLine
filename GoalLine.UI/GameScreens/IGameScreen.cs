@@ -11,5 +11,6 @@ namespace GoalLine.UI.GameScreens
         GameScreenSetup SetupData { get; set; }
         ScreenReturnData MainButtonClick(int buttonId);
         void SetupGameScreenData(GameScreenSetup dataFromUI);
+        ScreenReturnData ContinueButtonClick();
     }
 }

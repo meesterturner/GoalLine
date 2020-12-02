@@ -18,6 +18,7 @@ namespace GoalLine.Resources.Language
         string Date { get; }
         string DateFormat { get; }
         string DateOfBirth { get; }
+        string Error { get; }
         string FirstName { get; }
         string Formation { get; }
         string FormationExists { get; }

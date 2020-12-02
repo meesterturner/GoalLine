@@ -25,6 +25,7 @@ namespace GoalLine.Resources.Language
         public string Date => "Date";
         public string DateFormat => "dd/MM/yyyy";
         public string DateOfBirth => "Date of Birth";
+        public string Error => "Error";
         public string FirstName => "First Name";
         public string Formation => "Formation";
         public string FormationExists => "Formation with same name exists.";

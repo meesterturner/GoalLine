@@ -178,7 +178,7 @@ namespace GoalLine.UI
                     break;
 
                 case ScreenReturnCode.Error:
-                    MessageBox.Show(result.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    ShowErrorDialog(result.Message);
                     break;
 
                 case ScreenReturnCode.MatchdayComplete:
@@ -193,9 +193,39 @@ namespace GoalLine.UI
            
         }
 
+        private void ShowErrorDialog(string Message)
+        {
+            UiUtils.OpenDialogBox(UiUtils.MainWindowGrid, LangResources.CurLang.Error, Message, new List<DialogButton>() { new DialogButton(LangResources.CurLang.OK, null, null) });
+        }
+
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
-            NextManagerOrContinueDay();
+            ScreenReturnData result;
+
+            try
+            {
+                result = CurrentScreen.ContinueButtonClick();
+            }
+            catch (NotImplementedException)
+            {
+                result = new ScreenReturnData(ScreenReturnCode.None);
+            }
+
+
+            switch (result.ReturnCode)
+            {
+                case ScreenReturnCode.Ok:
+                case ScreenReturnCode.None:
+                    NextManagerOrContinueDay();
+                    break;
+
+                case ScreenReturnCode.Error:
+                    ShowErrorDialog(result.Message);
+                    break;
+
+                default:
+                    throw new NotImplementedException("This return code not implemented for Continue button");
+            }  
         }
 
         private void NextManagerOrContinueDay()

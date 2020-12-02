@@ -114,12 +114,20 @@ namespace GoalLine.UI
             UpdateTeams();
         }
 
+
+        public ScreenReturnData ContinueButtonClick()
+        {
+            return SetupGame();
+        }
+
         public ScreenReturnData MainButtonClick(int buttonId)
         {
-            if(buttonId != 0)
-            {
-                throw new NotImplementedException();
-            }
+            //return SetupGame();
+            throw new NotImplementedException();
+        }
+
+        private ScreenReturnData SetupGame()
+        {
 
             ScreenReturnData ValidationResult = ValidateInput();
             if(ValidationResult != null)
@@ -171,9 +179,9 @@ namespace GoalLine.UI
         public void SetupGameScreenData(GameScreenSetup dataFromUI)
         {
             SetupData = dataFromUI;
-            SetupData.MainButtons.Add(LangResources.CurLang.OK);
+            //SetupData.MainButtons.Add(LangResources.CurLang.OK);
 
-            SetupData.ShowContinueButton = false;
+            SetupData.ShowContinueButton = true;
             SetupData.ShowDate = false;
 
             SetupData.Title1 = LangResources.CurLang.StartNewGame;
