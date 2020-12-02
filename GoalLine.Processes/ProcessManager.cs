@@ -23,6 +23,7 @@ namespace GoalLine.Processes
         {
             RegisterProcessHandler(new SeasonProcesses());
             RegisterProcessHandler(new AIProcesses());
+            RegisterProcessHandler(new DirectorProcesses());
 
             RegisteredStandardHandlers = true;
         }

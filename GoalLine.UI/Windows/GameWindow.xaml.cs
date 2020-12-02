@@ -198,6 +198,9 @@ namespace GoalLine.UI
         private void NextManagerOrContinueDay()
         {
             ManagerAdapter ma = new ManagerAdapter();
+            FixtureAdapter fa = new FixtureAdapter();
+            WorldAdapter wa = new WorldAdapter();
+            TeamAdapter ta = new TeamAdapter();
 
             if (HumanManagers == null)
             {
@@ -227,10 +230,21 @@ namespace GoalLine.UI
                 GameScreenSetup data = new GameScreenSetup();
                 data.ManagerData = HumanManagers[PlayingHumanManager];
                 ShowGameScreen(new Home(), data);
+
+                if(fa.IsTodayAMatchDay(data.ManagerData.CurrentTeam))
+                {
+                    Fixture f = fa.GetNextFixture(data.ManagerData.CurrentTeam, wa.CurrentDate);
+                    int Opposition = (f.TeamIDs[0] != data.ManagerData.CurrentTeam ? f.TeamIDs[0] : f.TeamIDs[1]);
+                    string Message = string.Format(LangResources.CurLang.YouHaveAMatchAgainst, ta.GetTeam(Opposition).Name);
+
+                    UiUtils.OpenDialogBox(UiUtils.MainWindowGrid, LangResources.CurLang.MatchDay, Message,
+                        new List<DialogButton>() { 
+                            new DialogButton(LangResources.CurLang.OK, null, null) 
+                        });
+                }
             } else
             {
-                FixtureAdapter fa = new FixtureAdapter();
-
+                
                 if (fa.IsTodayAMatchDay())
                 {
                     ShowGameScreen(new MatchdayMain());

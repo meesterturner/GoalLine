@@ -42,7 +42,9 @@ namespace GoalLine.Structures
 
     public enum EmailType
     {
-        Welcome
+        Welcome,
+        GoodMatch,
+        BadMatch
     }
 
     public enum EmailFrom

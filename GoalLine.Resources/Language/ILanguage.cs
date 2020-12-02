@@ -49,6 +49,7 @@ namespace GoalLine.Resources.Language
         string Unread { get; }
         string WelcomeToGoalLine { get; }
         string Yes { get; }
+        string YouHaveAMatchAgainst { get; }
         string YouHaveNotSelectedAGame { get; }
         
 

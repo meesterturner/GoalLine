@@ -54,6 +54,10 @@ namespace GoalLine.Data
             return retVal;
         }
 
+        /// <summary>
+        /// Returns true/false depending on if there are any matches today
+        /// </summary>
+        /// <returns>True: Matches today, False: no matches today</returns>
         public bool IsTodayAMatchDay()
         {
             DateTime today = new WorldAdapter().CurrentDate;
@@ -63,6 +67,23 @@ namespace GoalLine.Data
                               orderby f.Date
                               select f.Date).FirstOrDefault();
             
+            return (Found.Year > 1);
+        }
+
+        /// <summary>
+        /// Returns true/false depending on if there are any matches today for the specified team
+        /// </summary>
+        /// <param name="TeamID"></param>
+        /// <returns></returns>
+        public bool IsTodayAMatchDay(int TeamID)
+        {
+            DateTime today = new WorldAdapter().CurrentDate;
+
+            DateTime Found = (from f in World.Fixtures
+                              where f.Date == today && (f.TeamIDs[0] == TeamID || f.TeamIDs[1] == TeamID)
+                              orderby f.Date
+                              select f.Date).FirstOrDefault();
+
             return (Found.Year > 1);
         }
 
@@ -102,7 +123,7 @@ namespace GoalLine.Data
             return fixtures.ToList();
         }
 
-        public List<Fixture> GetFixtures(int LeagueID, int TeamID)
+        public List<Fixture> GetFixtures(int TeamID)
         {
             IEnumerable<Fixture> fixtures =
                     from f in World.Fixtures
@@ -111,6 +132,16 @@ namespace GoalLine.Data
                     select f;
 
             return fixtures.ToList();
+        }
+
+        public Fixture GetNextFixture(int TeamID, DateTime date)
+        {
+            List<Fixture> all = GetFixtures(TeamID);
+
+            return (from f in all
+                    where f.Date >= date && f.Played == false
+                    orderby f.UniqueID
+                    select f).FirstOrDefault();
         }
 
         public void UpdateFixture(Fixture f)

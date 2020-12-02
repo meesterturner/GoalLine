@@ -136,8 +136,16 @@ namespace GoalLine.Data
             {
                 case EmailType.Welcome:
                     retVal = string.Format(retVal, 
-                                            ma.GetManager(e.Data[0]).DisplayName(PersonNameReturnType.FirstnameLastname),
-                                            ta.GetTeam(e.Data[1]).Name);
+                        ma.GetManager(e.Data[0]).DisplayName(PersonNameReturnType.FirstnameLastname),
+                        ta.GetTeam(e.Data[1]).Name);
+                    break;
+
+                case EmailType.GoodMatch:
+                case EmailType.BadMatch:
+                    retVal = string.Format(retVal,
+                        e.Data[0].ToString(),
+                        e.Data[1].ToString(),
+                        ta.GetTeam(e.Data[2]).Name);
                     break;
 
                 default:

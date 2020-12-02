@@ -9,8 +9,12 @@ namespace GoalLine.Resources.Language
 
         public List<EmailTemplate> EmailTemplates { get; private set; } = new List<EmailTemplate>()
         {
-            new EmailTemplate(10000, EmailType.Welcome, "Welcome to the Club", "The board warmly welcomes {0} to {1}. We hope for a long and prosperous future under your management."),
-            new EmailTemplate(10001, EmailType.Welcome, "Welcome to the Club", "Congratulations to {0} on your appointment to {1}. We look forward to seeing your performance this coming season.")
+            new EmailTemplate(10000, EmailType.Welcome, "Welcome to the Club", "The board warmly welcomes {0} to {1}.\n\nWe hope for a long and prosperous future under your management."),
+            new EmailTemplate(10001, EmailType.Welcome, "Your appointment to the Club", "Congratulations to {0} on your appointment to {1}.\n\nWe look forward to seeing your performance this coming season."),
+
+            new EmailTemplate(10100, EmailType.GoodMatch, "An excellent result!", "We are especially pleased about the {0}:{1} win against {2}.\n\nWe hope you can keep this performance up."),
+
+            new EmailTemplate(10150, EmailType.BadMatch, "Disappointing match", "We are disappointed to note the team's performance in the {0}:{1} defeat against {2}.\n\nWe are hopeful that this is only a one-off and won't be repeated.")
         };
 
         public string AreYouSureYouWantToQuit => "Are you sure you want to quit, and lose any unsaved progress?";
@@ -52,6 +56,7 @@ namespace GoalLine.Resources.Language
         public string Unread => "Unr";
         public string WelcomeToGoalLine => "Welcome To GoalLine";
         public string Yes => "Yes";
+        public string YouHaveAMatchAgainst => "You have a match today against {0}.";
         public string YouHaveNotSelectedAGame => "You have not selected a game to load.";
     }
 }
