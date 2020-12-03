@@ -36,17 +36,7 @@ namespace GoalLine.UI.GameScreens
 
         public ScreenReturnData ContinueButtonClick()
         {
-            if(ctlTactics.ChangesNotSaved)
-            {
-                UiUtils.OpenDialogBox(UiUtils.MainWindowGrid, LangResources.CurLang.Formation, LangResources.CurLang.FormationNotSaved, new List<DialogButton>() { new DialogButton(LangResources.CurLang.OK, null, null) });
-                return new ScreenReturnData(ScreenReturnCode.Cancel);
-            }
-            else
-            {
-                return new ScreenReturnData(ScreenReturnCode.Ok);
-            }
-
-           
+            return new ScreenReturnData(ScreenReturnCode.Ok);
         }
 
         public ScreenReturnData MainButtonClick(int buttonId)
@@ -73,8 +63,6 @@ namespace GoalLine.UI.GameScreens
 
             SetupData.Title1 = SetupData.TeamData.Name;
             SetupData.Title2 = SetupData.ManagerData.Name;
-
-            ctlTactics.team = SetupData.TeamData;
 
             UpdatePlayers();
         }

@@ -46,7 +46,7 @@ namespace GoalLine.UI
             ContinueButton.Content = LangResources.CurLang.Next + " >";
 
             HomeButton.Content = LangResources.CurLang.Home;
-            LeagueButton.Content = LangResources.CurLang.League;
+            TacticsButton.Content = LangResources.CurLang.Tactics;
             TeamButton.Content = LangResources.CurLang.Team;
         }
 
@@ -185,6 +185,10 @@ namespace GoalLine.UI
                     RunProcesses(true);
                     break;
 
+                case ScreenReturnCode.None:
+                    // No special action required
+                    break;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -202,15 +206,7 @@ namespace GoalLine.UI
         {
             ScreenReturnData result;
 
-            try
-            {
-                result = CurrentScreen.ContinueButtonClick();
-            }
-            catch (NotImplementedException)
-            {
-                result = new ScreenReturnData(ScreenReturnCode.None);
-            }
-
+            result = CurrentScreen.ContinueButtonClick();
 
             switch (result.ReturnCode)
             {
@@ -482,6 +478,25 @@ namespace GoalLine.UI
             GameScreenSetup data = new GameScreenSetup();
             data.TeamData = t;
             ShowGameScreen(new TeamInfo(), data);
+        }
+
+        private void TacticsButton_Click(object sender, RoutedEventArgs e)
+        {
+            TeamAdapter ta = new TeamAdapter();
+            ShowTacticsScreen(ta.GetTeamByManager(HumanManagers[PlayingHumanManager].CurrentTeam));
+        }
+
+        private void ShowTacticsScreen(Team t)
+        {
+            GameScreenSetup data = new GameScreenSetup();
+            data.TeamData = t;
+            ShowGameScreen(new TacticsScreen(), data);
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            QuitGame();
+            e.Cancel = true;
         }
     }
 }

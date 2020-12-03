@@ -11,6 +11,7 @@ namespace GoalLine.Resources.Language
 
 
         string AreYouSureYouWantToQuit { get; }
+        string AreYouSureYouWantToUndo { get; }
         string AverageRating { get; }
         string BoardOfDirectors { get; }
         string Cancel { get; }
@@ -49,6 +50,7 @@ namespace GoalLine.Resources.Language
         Dictionary<int, string> PositionsList { get; }
         string QuitGame { get; }
         string Rating { get; }
+        string Save { get; }
         string SavedGames { get; }
         string SaveFileDoesNotExist { get; }
         string SaveGame { get; }
@@ -57,7 +59,9 @@ namespace GoalLine.Resources.Language
         string Start { get; }
         string StartNewGame { get; }
         string Subject { get;  }
+        string Tactics { get; }
         string Team { get; }
+        string UndoChanges { get; }
         string Unread { get; }
         string WelcomeToGoalLine { get; }
         string Yes { get; }

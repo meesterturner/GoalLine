@@ -44,7 +44,7 @@ namespace GoalLine.UI.Controls
             set 
             {
                 _team = value;
-                SetupTeam();
+                SetupTeam(true);
             }
         }
 
@@ -63,7 +63,12 @@ namespace GoalLine.UI.Controls
             ChangesNotSaved = false;
         }
 
-        private void SetupTeam()
+        //public void SetupTeam()
+        //{
+
+        //}
+
+        public void SetupTeam(bool WithLabels)
         {
             FormationPaging.DisplayItem(team.CurrentFormation);
             SetupFormationTemplate(team.CurrentFormation);
@@ -75,17 +80,21 @@ namespace GoalLine.UI.Controls
                 TeamPlayer tp = p.Value;
                 Player player = pa.GetPlayer(tp.PlayerID);
 
-                TextBlock playerLabel = new TextBlock();
-                playerLabel.Width = 150;
-                playerLabel.Height = 30;
-                playerLabel.Text = player.DisplayName(PersonNameReturnType.LastnameInitial);
-                playerLabel.MouseMove += new MouseEventHandler(PlayerName_MouseMove);
-                playerLabel.Tag = tp.PlayerID;
+                if (WithLabels)
+                {
+                    TextBlock playerLabel = new TextBlock();
+                    playerLabel.Width = 150;
+                    playerLabel.Height = 30;
+                    playerLabel.Text = player.DisplayName(PersonNameReturnType.LastnameInitial);
+                    playerLabel.MouseMove += new MouseEventHandler(PlayerName_MouseMove);
+                    playerLabel.Tag = tp.PlayerID;
 
-                PlayerLabels.Add(playerLabel);
+                    PlayerLabels.Add(playerLabel);
 
-                stkNames.Children.Add(PlayerLabels[PlayerLabels.Count - 1]);
-                playerLabel = null;
+                    stkNames.Children.Add(PlayerLabels[PlayerLabels.Count - 1]);
+                    playerLabel = null;
+                }
+                
 
 
                 if(tp.Selected == PlayerSelectionStatus.Starting && tp.PlayerGridX > -1 && tp.PlayerGridY > -1)
@@ -253,6 +262,7 @@ namespace GoalLine.UI.Controls
         {
             int FormationID = FormationPaging.Items[FormationPaging.CurrentItem].ID;
             SetupFormationTemplate(FormationID);
+            ChangesNotSaved = true;
         }
     }
 }

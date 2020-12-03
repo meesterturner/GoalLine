@@ -18,6 +18,7 @@ namespace GoalLine.Resources.Language
         };
 
         public string AreYouSureYouWantToQuit => "Are you sure you want to quit, and lose any unsaved progress?";
+        public string AreYouSureYouWantToUndo => "Are you sure you want to undo all unsaved changes?";
         public string AverageRating => "Average Rating";
         public string BoardOfDirectors => "Board of Directors";
         public string Cancel => "Cancel";
@@ -64,6 +65,7 @@ namespace GoalLine.Resources.Language
         public string PleaseSelectATeamToManage => "Please select a team to manage.";
         public string QuitGame => "Quit Game";
         public string Rating => "Rating";
+        public string Save => "Save";
         public string SavedGames => "Saved Games";
         public string SaveFileDoesNotExist => "File {0} does not exist in this save game.";
         public string SaveGame => "Save Game";
@@ -77,7 +79,9 @@ namespace GoalLine.Resources.Language
         public string Start => "Start";
         public string StartNewGame => "Start New Game";
         public string Subject => "Subject";
+        public string Tactics => "Tactics";
         public string Team => "Team";
+        public string UndoChanges => "Undo Changes";
         public string Unread => "Unr";
         public string WelcomeToGoalLine => "Welcome To GoalLine";
         public string Yes => "Yes";

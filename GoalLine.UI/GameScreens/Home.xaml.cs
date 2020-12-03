@@ -159,7 +159,7 @@ namespace GoalLine.UI.GameScreens
 
         public ScreenReturnData ContinueButtonClick()
         {
-            throw new NotImplementedException();
+            return new ScreenReturnData(ScreenReturnCode.Ok);
         }
     }
 }

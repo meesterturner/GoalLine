@@ -45,7 +45,7 @@
             </Grid.RowDefinitions>
         </Grid>
 
-        <ScrollViewer x:Name="scvRows" Grid.Column="1" VerticalScrollBarVisibility="Visible" Width="250">
+        <ScrollViewer x:Name="scvRows" Grid.Column="1" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Visible" Width="250">
             <StackPanel x:Name="stkNames">
                 
            
@@ -53,8 +53,6 @@
         </ScrollViewer>
 
         <local:PagingControl x:Name="FormationPaging" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" EitherDirectionClicked="FormationPaging_EitherDirectionClicked" />
-       
-        <Button x:Name="cmdSave" Grid.Column="1" Grid.Row="1" Click="cmdSave_Click">Save</Button>
     </Grid>
 
     
