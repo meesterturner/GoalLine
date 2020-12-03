@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GoalLine.Structures
 {
-    public enum PlayerPosition
+    public enum PlayerPosition // If this changes, update the languages (PositionsList)
     {
         None = 0,
         Goalkeeper = 1,
@@ -16,7 +16,7 @@ namespace GoalLine.Structures
         Striker = 5
     }
 
-    public enum PlayerPositionSide
+    public enum PlayerPositionSide // If this changes, update the languages (SidesList)
     {
         Left = -10,
         Centre = 0,

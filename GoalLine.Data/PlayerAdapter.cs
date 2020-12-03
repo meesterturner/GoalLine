@@ -2,8 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GoalLine.Resources;
 
 namespace GoalLine.Data
 {
@@ -100,6 +99,28 @@ namespace GoalLine.Data
                           player.Position == pos &&
                           player.PreferredSide == side
                     select player).ToList();
+        }
+
+        public string PositionAndSideText(Player p, bool Short)
+        {
+            string pos = LangResources.CurLang.PositionsList[p.PositionInt];
+            string side = "";
+
+            if(Short)
+            {
+                pos = pos.Substring(0, 1);
+            }
+
+            if (p.Position != PlayerPosition.Goalkeeper && p.Position != PlayerPosition.Striker)
+            {
+                side = " " + LangResources.CurLang.SidesList[p.PreferredSideInt];
+                if (Short)
+                {
+                    side = side.Substring(0, 2);
+                }
+            }
+
+            return pos + side;
         }
     }
 }

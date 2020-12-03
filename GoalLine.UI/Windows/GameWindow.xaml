@@ -29,8 +29,8 @@
         <StackPanel Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="30,0,0,0">
             <Image x:Name="imgLogo" PreviewMouseLeftButtonUp="imgLogo_PreviewMouseLeftButtonUp" Cursor="Hand" />
             <!-- Source="https://www.startupsavior.com/wp-content/uploads/2019/12/circle-1.png"-->
-            <Button Style="{StaticResource NavButton}" x:Name="HomeButton">ho</Button>
-            <Button Style="{StaticResource NavButton}" x:Name="TeamButton">te</Button>
+            <Button Style="{StaticResource NavButton}" x:Name="HomeButton" Click="HomeButton_Click">ho</Button>
+            <Button Style="{StaticResource NavButton}" x:Name="TeamButton" Click="TeamButton_Click">te</Button>
             <Button Style="{StaticResource NavButton}" x:Name="LeagueButton">la</Button>
         </StackPanel>
         

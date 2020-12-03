@@ -25,11 +25,13 @@ namespace GoalLine.Resources.Language
         public string Date => "Date";
         public string DateFormat => "dd/MM/yyyy";
         public string DateOfBirth => "Date of Birth";
+        public string Emails => "Emails";
         public string Error => "Error";
         public string FirstName => "First Name";
         public string Formation => "Formation";
         public string FormationExists => "Formation with same name exists.";
         public string FormationInvalid => "Formation must have exactly 11 points";
+        public string FormationNotSaved => "You have made changes to your formation that you have not saved.";
         public string From => "From";
         public string FormationSavedSuccessfully => "Formation has been saved successfully.";
         public string GameHasNotBeenSavedBefore => "This game has not been saved before, please give it a name.";
@@ -45,14 +47,33 @@ namespace GoalLine.Resources.Language
         public string No => "No";
         public string NoDataToShow => "There is no data to show in this list";
         public string OK => "OK";
+        public string Players => "Players";
         public string PleaseEnterDateOfBirth => "Please enter a valid date of birth.";
         public string PleaseEnterYourName => "Please enter your name.";
+        public string Position => "Position";
+        public string Position_Short => "Pos";
+        public Dictionary<int, string> PositionsList => new Dictionary<int, string>()
+        {
+            {0, "None Specified" },
+            {1, "Goalkeeper" },
+            {2, "Defender" },
+            {3, "Midfielder" },
+            {4, "Attacker" },
+            {5, "Striker" }
+        };
         public string PleaseSelectATeamToManage => "Please select a team to manage.";
         public string QuitGame => "Quit Game";
+        public string Rating => "Rating";
         public string SavedGames => "Saved Games";
         public string SaveFileDoesNotExist => "File {0} does not exist in this save game.";
         public string SaveGame => "Save Game";
         public string SaveGameNotSpecified => "SaveGameName not specified";
+        public Dictionary<int, string> SidesList => new Dictionary<int, string>()
+        {
+            {-10, "Left" },
+            {0, "Centre" },
+            {10, "Right" }
+        };
         public string Start => "Start";
         public string StartNewGame => "Start New Game";
         public string Subject => "Subject";

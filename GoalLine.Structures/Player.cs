@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoalLine.Structures
 {
@@ -59,21 +53,6 @@ namespace GoalLine.Structures
             }
         }
 
-        public string PositionAndSideTextCode
-        {
-            get
-            {
-                if(Position == PlayerPosition.Goalkeeper || Position == PlayerPosition.Striker)
-                {
-                    return Position.ToString().Substring(0, 1);
-                } else
-                {
-                    return Position.ToString().Substring(0, 1) + " " + PreferredSide.ToString().Substring(0, 1);
-                }
-                
-            }
-        }
-
         public int Value
         {
             get
@@ -84,11 +63,11 @@ namespace GoalLine.Structures
             }
         }
 
-        public int Stars
+        public double Stars
         {
             get
             {
-                return EffectiveRating / 20;
+                return (double)EffectiveRating / 20;
             }
         }
 

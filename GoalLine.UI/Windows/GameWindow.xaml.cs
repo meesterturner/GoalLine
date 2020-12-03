@@ -223,6 +223,11 @@ namespace GoalLine.UI
                     ShowErrorDialog(result.Message);
                     break;
 
+
+                case ScreenReturnCode.Cancel:
+                    // do nothing
+                    break;
+
                 default:
                     throw new NotImplementedException("This return code not implemented for Continue button");
             }  
@@ -284,14 +289,13 @@ namespace GoalLine.UI
             if(HumanManagers != null)
             {
                 // Display home screen for the current manager
-                GameScreenSetup data = new GameScreenSetup();
-                data.ManagerData = HumanManagers[PlayingHumanManager];
-                ShowGameScreen(new Home(), data);
+                Manager PlayingManager = HumanManagers[PlayingHumanManager];
+                ShowHomeScreenForCurrentManager(PlayingManager);
 
-                if(fa.IsTodayAMatchDay(data.ManagerData.CurrentTeam))
+                if(fa.IsTodayAMatchDay(PlayingManager.CurrentTeam))
                 {
-                    Fixture f = fa.GetNextFixture(data.ManagerData.CurrentTeam, wa.CurrentDate);
-                    int Opposition = (f.TeamIDs[0] != data.ManagerData.CurrentTeam ? f.TeamIDs[0] : f.TeamIDs[1]);
+                    Fixture f = fa.GetNextFixture(PlayingManager.CurrentTeam, wa.CurrentDate);
+                    int Opposition = (f.TeamIDs[0] != PlayingManager.CurrentTeam ? f.TeamIDs[0] : f.TeamIDs[1]);
                     string Message = string.Format(LangResources.CurLang.YouHaveAMatchAgainst, ta.GetTeam(Opposition).Name);
 
                     UiUtils.OpenDialogBox(UiUtils.MainWindowGrid, LangResources.CurLang.MatchDay, Message,
@@ -452,6 +456,32 @@ namespace GoalLine.UI
 
             return false;
             
+        }
+
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            Manager PlayingManager = HumanManagers[PlayingHumanManager];
+            ShowHomeScreenForCurrentManager(PlayingManager);
+        }
+
+        private void TeamButton_Click(object sender, RoutedEventArgs e)
+        {
+            TeamAdapter ta = new TeamAdapter();
+            ShowTeamScreen(ta.GetTeamByManager(HumanManagers[PlayingHumanManager].CurrentTeam));
+        }
+
+        private void ShowHomeScreenForCurrentManager(Manager m)
+        {
+            GameScreenSetup data = new GameScreenSetup();
+            data.ManagerData = m;
+            ShowGameScreen(new Home(), data);
+        }
+
+        private void ShowTeamScreen(Team t)
+        {
+            GameScreenSetup data = new GameScreenSetup();
+            data.TeamData = t;
+            ShowGameScreen(new TeamInfo(), data);
         }
     }
 }

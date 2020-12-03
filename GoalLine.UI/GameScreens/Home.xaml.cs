@@ -53,13 +53,12 @@ namespace GoalLine.UI.GameScreens
 
             UpdateEmails();
             UpdateLeagueTable();
-            ctlTactics.team = SetupData.TeamData;
         }
 
         private void UpdateEmails()
         {
             EmailAdapter ea = new EmailAdapter();
-            lstEmails.Title = "Emails";
+            lstEmails.Title = LangResources.CurLang.Emails;
             lstEmails.Columns = new List<ListColumn>()
             {
                 new ListColumn(LangResources.CurLang.Unread, 35),

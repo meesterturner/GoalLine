@@ -75,6 +75,9 @@
       <DependentUpon>MatchdayMain.xaml</DependentUpon>
     </Compile>
     <Compile Include="GameScreens\ScreenReturnData.cs" />
+    <Compile Include="GameScreens\TeamInfo.xaml.cs">
+      <DependentUpon>TeamInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\GraphicUtils.cs" />
     <Compile Include="Utils\MatchdayCallback.cs" />
     <Compile Include="Utils\UiUtils.cs" />
@@ -101,6 +104,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GameScreens\MatchdayMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GameScreens\TeamInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

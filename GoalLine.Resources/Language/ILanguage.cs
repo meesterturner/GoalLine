@@ -18,11 +18,13 @@ namespace GoalLine.Resources.Language
         string Date { get; }
         string DateFormat { get; }
         string DateOfBirth { get; }
+        string Emails { get; }
         string Error { get; }
         string FirstName { get; }
         string Formation { get; }
         string FormationExists { get; }
         string FormationInvalid { get; }
+        string FormationNotSaved { get; }
         string FormationSavedSuccessfully { get; }
         string From { get; }
         string GameHasNotBeenSavedBefore { get; }
@@ -38,14 +40,20 @@ namespace GoalLine.Resources.Language
         string No { get; }
         string NoDataToShow { get; }
         string OK { get; }
+        string Players { get; }
         string PleaseEnterDateOfBirth { get; }
         string PleaseEnterYourName { get; }
         string PleaseSelectATeamToManage { get; }
+        string Position { get; }
+        string Position_Short { get; }
+        Dictionary<int, string> PositionsList { get; }
         string QuitGame { get; }
+        string Rating { get; }
         string SavedGames { get; }
         string SaveFileDoesNotExist { get; }
         string SaveGame { get; }
         string SaveGameNotSpecified { get; }
+        Dictionary<int, string> SidesList { get; }
         string Start { get; }
         string StartNewGame { get; }
         string Subject { get;  }

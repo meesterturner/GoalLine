@@ -49,11 +49,10 @@ namespace GoalLine.UI.Controls
         }
 
         public int CurrentFormationID { get; private set; }
+        public bool ChangesNotSaved { get; private set; }
 
-        public bool SaveFormation()
+        public void SaveFormation()
         {
-            bool retVal = false;
-
             TeamAdapter ta = new TeamAdapter();
             ta.SavePlayerFormation(team.UniqueID, CurrentFormationID, PlayerGridPositions);
             
@@ -61,8 +60,7 @@ namespace GoalLine.UI.Controls
                 new DialogButton(LangResources.CurLang.OK, null, null)
             });
 
-            retVal = true;
-            return retVal;
+            ChangesNotSaved = false;
         }
 
         private void SetupTeam()
@@ -97,6 +95,8 @@ namespace GoalLine.UI.Controls
                     PlayerGridPositions[tp.PlayerGridX, tp.PlayerGridY] = tp.PlayerID;
                  }
             }
+
+            ChangesNotSaved = false;
         }
 
         private void PlayerName_MouseMove(object sender, MouseEventArgs e)
@@ -151,6 +151,8 @@ namespace GoalLine.UI.Controls
                         }
                     }
                 }
+
+                ChangesNotSaved = true;
             }
         }
 
