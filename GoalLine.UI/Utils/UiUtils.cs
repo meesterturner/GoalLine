@@ -194,6 +194,8 @@ namespace GoalLine.UI.Utils
             TextBlock tb = new TextBlock();
             tb.Text = Text;
             tb.Style = Application.Current.FindResource(Style) as Style;
+            tb.TextWrapping = TextWrapping.Wrap;
+            tb.MaxWidth = 700;
             tb.VerticalAlignment = VerticalAlignment.Center;
 
             return tb;
