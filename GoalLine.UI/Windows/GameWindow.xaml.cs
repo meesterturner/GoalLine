@@ -97,6 +97,7 @@ namespace GoalLine.UI
             }
 
             NewGameScreen.SetupGameScreenData(Data);
+            NewGameScreen.SetupData.Parent = this;
             MainArea.Children.Add((UIElement)NewGameScreen);
             
             CurrentScreen = NewGameScreen;
@@ -473,8 +474,16 @@ namespace GoalLine.UI
             ShowGameScreen(new Home(), data);
         }
 
-        private void ShowTeamScreen(Team t)
+        public void ShowTeamScreen(int TeamID)
         {
+            TeamAdapter ta = new TeamAdapter();
+            ShowTeamScreen(ta.GetTeam(TeamID));
+        }
+
+        public void ShowTeamScreen(Team t)
+        {
+            bool MyTeam = (t.UniqueID == HumanManagers[PlayingHumanManager].CurrentTeam);
+            
             GameScreenSetup data = new GameScreenSetup();
             data.TeamData = t;
             ShowGameScreen(new TeamInfo(), data);

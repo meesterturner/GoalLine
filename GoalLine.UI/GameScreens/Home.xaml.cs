@@ -148,6 +148,13 @@ namespace GoalLine.UI.GameScreens
             }
 
             lstLeague.Rows = rows;
+            lstLeague.SelectionMode = SelectMode.Callback;
+            lstLeague.Callback_ItemClick = () => SetupData.Parent.ShowTeamScreen(lstLeague.SelectedID);
+        }
+
+        private void OpenTeamFromLeague()
+        {
+            SetupData.Parent.ShowTeamScreen(lstLeague.SelectedID);
         }
 
         public ScreenReturnData MainButtonClick(int buttonId)
