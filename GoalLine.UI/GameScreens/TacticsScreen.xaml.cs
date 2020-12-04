@@ -38,19 +38,20 @@ namespace GoalLine.UI.GameScreens
         {
             switch(buttonId)
             {
-                case 1:
+                case 2:
                     ctlFormation.SaveFormation();
-                    break;
+                    return new ScreenReturnData(ScreenReturnCode.None);
+
+                case 1:
+                    UndoChanges(null);
+                    return new ScreenReturnData(ScreenReturnCode.None);
 
                 case 0:
-                    UndoChanges(null);
-                    break;
+                    return new ScreenReturnData(ScreenReturnCode.Cancel);
 
                 default:
                     throw new NotImplementedException();
             }
-
-            return new ScreenReturnData(ScreenReturnCode.None);
         }
 
         private void UndoChanges(object Data)
@@ -82,12 +83,17 @@ namespace GoalLine.UI.GameScreens
 
             SetupData = dataFromUI;
             SetupData.ManagerData = ma.GetManager(SetupData.TeamData.ManagerID);
-            SetupData.MainButtons.Add(LangResources.CurLang.Save);
-            SetupData.MainButtons.Add(LangResources.CurLang.UndoChanges);
 
             MyTeam = (wa.CurrentManagerID == SetupData.TeamData.ManagerID);
 
-            SetupData.ShowContinueButton = true;
+            if (MyTeam)
+            {
+                SetupData.MainButtons.Add(LangResources.CurLang.Save);
+                SetupData.MainButtons.Add(LangResources.CurLang.UndoChanges);
+            }
+            
+            SetupData.MainButtons.Add(LangResources.CurLang.Back);
+            SetupData.ShowContinueButton = MyTeam;
 
             SetupData.Title1 = SetupData.TeamData.Name;
             SetupData.Title2 = SetupData.ManagerData.Name;

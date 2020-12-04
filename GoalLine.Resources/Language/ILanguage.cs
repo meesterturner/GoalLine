@@ -13,6 +13,7 @@ namespace GoalLine.Resources.Language
         string AreYouSureYouWantToQuit { get; }
         string AreYouSureYouWantToUndo { get; }
         string AverageRating { get; }
+        string Back { get; }
         string BoardOfDirectors { get; }
         string Cancel { get; }
         string DailyUpdate { get; }

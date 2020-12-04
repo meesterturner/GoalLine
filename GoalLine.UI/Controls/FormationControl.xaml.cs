@@ -35,6 +35,8 @@ namespace GoalLine.UI.Controls
         int[,] PlayerGridPositions = new int[GRIDWIDTH, GRIDHEIGHT];
         List<TextBlock> PlayerLabels = new List<TextBlock>();
 
+        bool MyTeam;
+
         private Team _team;
         public Team team {
             private get
@@ -44,6 +46,10 @@ namespace GoalLine.UI.Controls
             set 
             {
                 _team = value;
+
+                WorldAdapter wa = new WorldAdapter();
+                MyTeam = (wa.CurrentManagerID == _team.ManagerID);
+
                 SetupTeam(true);
             }
         }
@@ -63,19 +69,17 @@ namespace GoalLine.UI.Controls
             ChangesNotSaved = false;
         }
 
-        //public void SetupTeam()
-        //{
-
-        //}
-
         public void SetupTeam(bool WithLabels)
         {
-            FormationPaging.DisplayItem(team.CurrentFormation);
-            SetupFormationTemplate(team.CurrentFormation);
+            int FormationID = (MyTeam ? team.CurrentFormation : team.LastKnownFormation);
+            Dictionary<int, TeamPlayer> picks = (MyTeam ? team.Players : team.LastKnownPick);
+
+            FormationPaging.DisplayItem(FormationID);
+            SetupFormationTemplate(FormationID);
 
             PlayerAdapter pa = new PlayerAdapter();
             
-            foreach(KeyValuePair<int, TeamPlayer> p in team.Players)
+            foreach(KeyValuePair<int, TeamPlayer> p in picks)
             {
                 TeamPlayer tp = p.Value;
                 Player player = pa.GetPlayer(tp.PlayerID);

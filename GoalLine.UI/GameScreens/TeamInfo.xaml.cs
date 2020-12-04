@@ -37,6 +37,10 @@ namespace GoalLine.UI.GameScreens
         {
             switch(buttonId)
             {
+                case 1:
+                    SetupData.Parent.ShowTacticsScreen(SetupData.TeamData);
+                    return new ScreenReturnData(ScreenReturnCode.None);
+
                 case 0:
                     return new ScreenReturnData(ScreenReturnCode.Cancel);
 
@@ -61,10 +65,8 @@ namespace GoalLine.UI.GameScreens
             MyTeam = (wa.CurrentManagerID == SetupData.TeamData.ManagerID);
             
             SetupData.ShowContinueButton = MyTeam;
-            if(MyTeam == false)
-            {
-                SetupData.MainButtons.Add("Back");
-            }
+            SetupData.MainButtons.Add(LangResources.CurLang.Tactics);
+            SetupData.MainButtons.Add(LangResources.CurLang.Back);
             
 
             SetupData.Title1 = SetupData.TeamData.Name;

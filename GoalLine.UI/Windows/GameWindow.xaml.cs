@@ -124,6 +124,12 @@ namespace GoalLine.UI
 
         private void PreviousGameScreen()
         {
+            if(OpenScreens.Count == 1) // This is the root screen
+            {
+                ShowHomeScreenForCurrentManager(HumanManagers[PlayingHumanManager]);
+                return;
+            }
+
             MainArea.Children.RemoveAt(MainArea.Children.Count - 1);
             OpenScreens.RemoveAt(OpenScreens.Count - 1);
 
@@ -280,6 +286,7 @@ namespace GoalLine.UI
 
                 HumanManagers = ma.GetHumanManagers();
                 PlayingHumanManager = 0;
+                wa.CurrentManagerID = HumanManagers[PlayingHumanManager].UniqueID;
 
                 if(HumanManagers.Count() < 1)
                 {
@@ -307,6 +314,10 @@ namespace GoalLine.UI
                 if(PlayingHumanManager >= HumanManagers.Count())
                 {
                     HumanManagers = null;
+                    wa.CurrentManagerID = -1;
+                } else
+                {
+                    wa.CurrentManagerID = HumanManagers[PlayingHumanManager].UniqueID;
                 }
             }
 
@@ -509,7 +520,8 @@ namespace GoalLine.UI
 
         public void ShowTeamScreen(Team t)
         {
-            bool MyTeam = (t.UniqueID == HumanManagers[PlayingHumanManager].CurrentTeam);
+            WorldAdapter wa = new WorldAdapter();
+            bool MyTeam = (wa.CurrentManagerID == t.ManagerID);
             
             GameScreenSetup data = new GameScreenSetup();
             data.TeamData = t;
@@ -522,11 +534,14 @@ namespace GoalLine.UI
             ShowTacticsScreen(ta.GetTeamByManager(HumanManagers[PlayingHumanManager].CurrentTeam));
         }
 
-        private void ShowTacticsScreen(Team t)
+        public void ShowTacticsScreen(Team t)
         {
+            WorldAdapter wa = new WorldAdapter();
+            bool MyTeam = (wa.CurrentManagerID == t.ManagerID);
+
             GameScreenSetup data = new GameScreenSetup();
             data.TeamData = t;
-            ShowGameScreen(new TacticsScreen(), data, true);
+            ShowGameScreen(new TacticsScreen(), data, MyTeam);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
