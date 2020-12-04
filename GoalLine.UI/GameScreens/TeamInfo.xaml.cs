@@ -35,7 +35,14 @@ namespace GoalLine.UI.GameScreens
 
         public ScreenReturnData MainButtonClick(int buttonId)
         {
-            throw new NotImplementedException();
+            switch(buttonId)
+            {
+                case 0:
+                    return new ScreenReturnData(ScreenReturnCode.Cancel);
+
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         public void SetupGameScreenData(GameScreenSetup dataFromUI)
@@ -53,7 +60,12 @@ namespace GoalLine.UI.GameScreens
 
             MyTeam = (wa.CurrentManagerID == SetupData.TeamData.ManagerID);
             
-            SetupData.ShowContinueButton = true;
+            SetupData.ShowContinueButton = MyTeam;
+            if(MyTeam == false)
+            {
+                SetupData.MainButtons.Add("Back");
+            }
+            
 
             SetupData.Title1 = SetupData.TeamData.Name;
             SetupData.Title2 = SetupData.ManagerData.Name;

@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Threading;
+using System.Diagnostics;
 
 namespace GoalLine.UI
 {
@@ -23,7 +24,7 @@ namespace GoalLine.UI
     /// </summary>
     public partial class GameWindow : Window
     {
-        IGameScreen CurrentScreen;
+        List<IGameScreen> OpenScreens = new List<IGameScreen>();
         bool ShowingNewGame = false;
         bool SaveGameJustLoaded = false;
 
@@ -37,6 +38,13 @@ namespace GoalLine.UI
             grdPopup.Visibility = Visibility.Hidden;
             imgLogo.Source = ImageResources.GetImage(ImageResourceList.LogoSmall);
 
+        }
+
+        private IGameScreen CurrentScreen { 
+            get 
+            {
+                return OpenScreens[OpenScreens.Count() - 1];
+            }  
         }
 
         private void SetupText()
@@ -59,7 +67,7 @@ namespace GoalLine.UI
             if (!SaveGameLoaded)
             {
                 ShowingNewGame = true;
-                ShowGameScreen(new CreateGame());
+                ShowGameScreen(new CreateGame(), true);
             } else
             {
                 NextManagerOrContinueDay();
@@ -84,26 +92,46 @@ namespace GoalLine.UI
             grdMain.Children.Add(c);
         }
 
-        private void ShowGameScreen(IGameScreen NewGameScreen)
+        private void ShowGameScreen(IGameScreen NewGameScreen, bool RootScreen)
         {
-            ShowGameScreen(NewGameScreen, new GameScreenSetup());
+            ShowGameScreen(NewGameScreen, new GameScreenSetup(), RootScreen);
         }
 
-        private void ShowGameScreen(IGameScreen NewGameScreen, GameScreenSetup Data)
+        private void ShowGameScreen(IGameScreen NewGameScreen, GameScreenSetup Data, bool RootScreen)
         {
-            while(MainArea.Children.Count > 0)
+            if(RootScreen)
             {
-                MainArea.Children.RemoveAt(0);
+                while (MainArea.Children.Count > 0)
+                {
+                    MainArea.Children.RemoveAt(0);
+                }
+
+                OpenScreens.Clear();
+            } else
+            {
+                (CurrentScreen as UIElement).Visibility = Visibility.Collapsed;
             }
+            
 
             NewGameScreen.SetupGameScreenData(Data);
             NewGameScreen.SetupData.Parent = this;
             MainArea.Children.Add((UIElement)NewGameScreen);
             
-            CurrentScreen = NewGameScreen;
+            OpenScreens.Add(NewGameScreen);
             Headings();
             CreateButtons();
         }
+
+        private void PreviousGameScreen()
+        {
+            MainArea.Children.RemoveAt(MainArea.Children.Count - 1);
+            OpenScreens.RemoveAt(OpenScreens.Count - 1);
+
+            (CurrentScreen as UIElement).Visibility = Visibility.Visible;
+            Headings();
+            CreateButtons();
+        }
+
 
         private void Headings()
         {
@@ -173,8 +201,7 @@ namespace GoalLine.UI
                         NextManagerOrContinueDay(); // Start manager loop
                     } else
                     {
-                        // TODO: Go back to prev screen
-                        MessageBox.Show("TODO: Go back to prev screen");
+                        PreviousGameScreen();
                     }
                     break;
 
@@ -305,7 +332,7 @@ namespace GoalLine.UI
                 
                 if (fa.IsTodayAMatchDay())
                 {
-                    ShowGameScreen(new MatchdayMain());
+                    ShowGameScreen(new MatchdayMain(), true);
                 } else
                 {
                     RunProcesses(true);
@@ -471,7 +498,7 @@ namespace GoalLine.UI
         {
             GameScreenSetup data = new GameScreenSetup();
             data.ManagerData = m;
-            ShowGameScreen(new Home(), data);
+            ShowGameScreen(new Home(), data, true);
         }
 
         public void ShowTeamScreen(int TeamID)
@@ -486,7 +513,7 @@ namespace GoalLine.UI
             
             GameScreenSetup data = new GameScreenSetup();
             data.TeamData = t;
-            ShowGameScreen(new TeamInfo(), data);
+            ShowGameScreen(new TeamInfo(), data, MyTeam);
         }
 
         private void TacticsButton_Click(object sender, RoutedEventArgs e)
@@ -499,11 +526,15 @@ namespace GoalLine.UI
         {
             GameScreenSetup data = new GameScreenSetup();
             data.TeamData = t;
-            ShowGameScreen(new TacticsScreen(), data);
+            ShowGameScreen(new TacticsScreen(), data, true);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (Debugger.IsAttached)
+            {
+                QuitGameCallback(true);
+            }
             QuitGame();
             e.Cancel = true;
         }
