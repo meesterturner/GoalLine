@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GoalLine.Data;
 using GoalLine.Resources;
@@ -26,6 +19,7 @@ namespace GoalLine.UI.GameScreens
     public partial class TeamInfo : UserControl, IGameScreen
     {
         private bool MyTeam = false;
+        private List<Grid> playerBlocks = new List<Grid>();
 
         public TeamInfo()
         {
@@ -108,52 +102,171 @@ namespace GoalLine.UI.GameScreens
 
             PlayerAdapter pa = new PlayerAdapter();
             Player p = pa.GetPlayer(lstPlayers.SelectedID);
+            GeneratePlayerBlocks(p);
+        }
 
-            lblName.Text = p.DisplayName(PersonNameReturnType.FirstnameLastname);
-            lblPosition.Text = pa.PositionAndSideText(p, false);
-            lblValue.Text = string.Format("Value: £{0:n0}", p.Value.ToString());
+        
 
-            lstSelected.Title = "";
-
-            lstSelected.Columns = new List<ListColumn>()
+        private void GeneratePlayerBlocks(Player p)
+        {
+            if(playerBlocks.Count() > 0)
             {
-                new ListColumn("attrib", 100),
-                new ListColumn("bar", 50),
-                new ListColumn("val", 120, HorizontalAlignment.Right)
-            };
-
-            // "Position", "PreferredSide", "DateOfBirth", "", 
-
-            string[] DisplayAttributes = new string[] {"Agility", "Attitude", "Speed", "Stamina", "", "Wages" };
-            List<ListRow> rows = new List<ListRow>();
-
-            for (int a = 0; a <= DisplayAttributes.GetUpperBound(0); a++)
-            {
-                string attrib = DisplayAttributes[a];
-
-                if (attrib != "")
+                foreach(Grid g in playerBlocks)
                 {
-                    int value = Convert.ToInt32(p.GetType().GetProperty(attrib).GetValue(p));
-
-                    rows.Add(new ListRow(a, new List<object>() { 
-                        attrib,
-                        "?",
-                        value.ToString()
-                    }));
-                }
-                else
-                {
-                    rows.Add(new ListRow(a, new List<object>() {
-                        " ",
-                        " ",
-                        " "
-                    }));
+                    UiUtils.RemoveControl(g);
                 }
 
+                playerBlocks.Clear();
             }
 
-            lstSelected.Rows = rows;
-            lstSelected.SelectionMode = SelectMode.Highlight; // TODO: Need a "none!"
+            AddBlock(GeneratePlayerTitleBlock(p), grdMain, 1, 0);
+            AddBlock(GeneratePlayerStatsBlock(p), stkInfo1);
+            AddBlock(GeneratePlayerContractBlock(p), stkInfo1);
+            AddBlock(GeneratePlayerMedicalBlock(p), stkInfo2);
+            AddBlock(GeneratePlayerTrainingBlock(p), stkInfo2);
         }
+
+        private void AddBlock(Grid block, Grid dest, int col, int row)
+        {
+            Grid.SetColumn(block, col);
+            Grid.SetRow(block, row);
+            dest.Children.Add(block);
+            playerBlocks.Add(block);
+        }
+
+        private void AddBlock(Grid block, StackPanel dest)
+        {
+            dest.Children.Add(block);
+            playerBlocks.Add(block);
+        }
+
+        private Grid GeneratePlayerTitleBlock(Player p)
+        {
+            PlayerAdapter pa = new PlayerAdapter();
+            Data.Utils u = new Data.Utils();
+
+            Grid g;
+            g = GenerateBlankBlockGrid(3, p.DisplayName(PersonNameReturnType.FirstnameLastname), 2);
+            Grid.SetColumnSpan(g, 2);
+
+            TextBlock t = new TextBlock();
+            t.Text = pa.PositionAndSideText(p, false);
+            t.Style = Application.Current.FindResource("ListHeader") as Style;
+            t.Margin = new Thickness(8, 0, 0, 0);
+            Grid.SetColumn(t, 0);
+            Grid.SetColumnSpan(t, 2);
+            Grid.SetRow(t, 1);
+            g.Children.Add(t);
+
+            UiUtils.AddGridData(g, 0, 2, LangResources.CurLang.DateOfBirth, 
+                p.DateOfBirth.ToString(LangResources.CurLang.DateFormat) + string.Format(" (Age: {0})", u.CalculateAgeInGame(p.DateOfBirth)));
+
+            StackPanel stars = GraphicUtils.StarRating(p.Stars);
+            stars.HorizontalAlignment = HorizontalAlignment.Right;
+            Grid.SetColumn(stars, 3);
+            Grid.SetColumnSpan(stars, 3);
+            Grid.SetRow(stars, 0);
+            g.Children.Add(stars);
+            return g;
+        }
+
+        private Grid GeneratePlayerStatsBlock(Player p)
+        {
+            Grid g;
+            g = GenerateBlankBlockGrid(3, "Player Attributes", 1);
+
+            List<(string, int)> stats = new List<(string, int)>();
+            stats.Add(("Agility", p.Agility));
+            stats.Add(("Attitude", p.Attitude));
+            stats.Add(("Speed", p.Speed));
+            stats.Add(("Stamina", p.Stamina));
+
+            List<(string, int)> statsOrdered = (from s in stats 
+                                                orderby s.Item1 
+                                                select s).ToList(); // Because localised, these may not be in alpha-order!
+
+            int halfList = (int)Math.Ceiling((double)stats.Count() / 2) - 1;
+            for(int i = 0; i <= halfList; i++)
+            {
+                UiUtils.AddGridData(g, 0, i + 1, statsOrdered[i].Item1, statsOrdered[i].Item2);
+                UiUtils.AddGridData(g, 2, i + 1, statsOrdered[i + halfList + 1].Item1, statsOrdered[i + halfList + 1].Item2);
+            }
+
+            
+            return g;
+        }
+
+        private Grid GeneratePlayerContractBlock(Player p)
+        {
+            Grid g;
+            g = GenerateBlankBlockGrid(4, "Contract", 1);
+
+            UiUtils.AddGridData_DoubleSize(g, 0, 1, "Date Ending", "--/--/----");
+            UiUtils.AddGridData_DoubleSize(g, 0, 2, "Value", "£" + p.Value.ToString("N0"));
+            UiUtils.AddGridData_DoubleSize(g, 0, 3, "Wages (per week)", "£" + p.Wages.ToString("N0"));
+            return g;
+        }
+
+        private Grid GeneratePlayerMedicalBlock(Player p)
+        {
+            Grid g;
+            g = GenerateBlankBlockGrid(4, "Medical", 1);
+
+            UiUtils.AddGridData_DoubleSize(g, 0, 1, "Physical Condition", "--");
+            UiUtils.AddGridData_DoubleSize(g, 0, 2, "Injury", "None");
+            UiUtils.AddGridData_DoubleSize(g, 0, 3, "Est. Availability", "n/a");
+            return g;
+        }
+
+        private Grid GeneratePlayerTrainingBlock(Player p)
+        {
+            Grid g;
+            g = GenerateBlankBlockGrid(4, "Training", 1);
+
+            return g;
+        }
+
+        private Grid GenerateBlankBlockGrid(int rows, string title, int span)
+        {
+            int[] colWidths = new int[] { 125, 75, 125, 75 };
+            int totWidth = 0;
+
+            Grid g = new Grid();
+            for(int i = 1; i <= rows; i++)
+            {
+                g.RowDefinitions.Add(new RowDefinition());
+            }
+
+            for (int i = 1; i <= colWidths.Count(); i++)
+            {
+                int thisWidth = colWidths[i - 1] * span;
+                totWidth += thisWidth;
+
+                g.ColumnDefinitions.Add(new ColumnDefinition());
+                g.ColumnDefinitions[i - 1].Width = new GridLength(thisWidth);
+            }
+
+            g.Height = (rows * 25) + 10;
+            g.Margin = new Thickness(0, 0, 0, 3);
+
+            Rectangle r = new Rectangle();
+            r.Opacity = 0.5;
+            r.Width = totWidth;
+            r.Height = 2000;
+            r.Fill = Brushes.White;
+            Grid.SetColumnSpan(r, 4 * span);
+            Grid.SetRowSpan(r, rows);
+            g.Children.Add(r);
+
+            TextBlock t = new TextBlock();
+            t.Text = title;
+            t.Style = Application.Current.FindResource("DialogTitle") as Style;
+            Grid.SetColumnSpan(t, 4);
+            g.Children.Add(t);
+
+            return g;
+        }
+
+        
     }
 }

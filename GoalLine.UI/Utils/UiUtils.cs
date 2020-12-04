@@ -157,6 +157,66 @@ namespace GoalLine.UI.Utils
             return obj;
         }
 
+        public static void AddGridData(Grid g, int x, int y, string caption, int data)
+        {
+            AddGridData_Worker(g, x, y, caption, data.ToString(), 2, true);
+        }
+
+        public static void AddGridData(Grid g, int x, int y, string caption, string data)
+        {
+            AddGridData_Worker(g, x, y, caption, data, 2, false);
+        }
+
+        public static void AddGridData_DoubleSize(Grid g, int x, int y, string caption, string data)
+        {
+            AddGridData_Worker(g, x, y, caption, data, 4, false);
+        }
+
+        private static void AddGridData_Worker(Grid g, int x, int y, string caption, string data, int span, bool redGreenBackground)
+        {
+            if(redGreenBackground)
+            {
+                const int LOWER = 30;
+                const int HIGHER = 70;
+                int number = Convert.ToInt32(data);
+
+                if(number <= LOWER || number >= HIGHER)
+                {
+                    Rectangle r = new Rectangle();
+                    r.Opacity = 0.2;
+                    r.Width = (100 * span) - 2;
+                    r.Height = 25;
+
+                    r.Fill = (number <= LOWER ? Brushes.Red : Brushes.Green);
+                    Grid.SetColumn(r, x);
+                    Grid.SetRow(r, y);
+                    Grid.SetColumnSpan(r, span);
+                    g.Children.Add(r);
+                }
+            }
+
+            TextBlock t;
+
+            t = new TextBlock();
+            t.Text = caption + ":";
+            t.Style = Application.Current.FindResource("DialogTitleSmaller") as Style;
+            t.Margin = new Thickness(8, 0, 0, 0);
+            Grid.SetColumn(t, x);
+            Grid.SetRow(t, y);
+            Grid.SetColumnSpan(t, span);
+            g.Children.Add(t);
+
+            t = new TextBlock();
+            t.Text = data;
+            t.HorizontalAlignment = HorizontalAlignment.Right;
+            t.Style = Application.Current.FindResource("ListHeader") as Style;
+            t.Margin = new Thickness(0, 0, 8, 0);
+            Grid.SetColumn(t, x);
+            Grid.SetColumnSpan(t, span);
+            Grid.SetRow(t, y);
+            g.Children.Add(t);
+        }
+
         // ----- Helper functions -----
         #region Helper Functions
         private static void ProcessDialogCallback(Grid OverlayToRemove, DialogButtonCallback Callback, object CallbackData)

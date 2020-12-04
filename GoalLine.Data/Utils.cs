@@ -25,5 +25,19 @@ namespace GoalLine.Data
         {
             return rng.Next(From, To + 1);
         }
+
+        public int CalculateAgeInGame(DateTime dob)
+        {
+            WorldAdapter wa = new WorldAdapter();
+
+            DateTime today = wa.CurrentDate;
+            int age = today.Year - dob.Year;
+            if(dob.Date > today.AddYears(0 - age))
+            {
+                age--;
+            }
+
+            return age;
+        }
     }
 }
