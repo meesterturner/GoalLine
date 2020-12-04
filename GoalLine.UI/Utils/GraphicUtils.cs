@@ -14,6 +14,9 @@ namespace GoalLine.UI.Utils
     static class GraphicUtils
     {
 
+        const int STARWIDTH = 20;
+        const int STARHEIGHT = 19;
+
         /// <summary>
         /// Returns an image of a football Shirt in a Polygon object
         /// </summary>
@@ -49,8 +52,7 @@ namespace GoalLine.UI.Utils
         /// <returns></returns>
         public static StackPanel StarRating(double Stars)
         {
-            const int WIDTH = 20;
-            const int HEIGHT = 19;
+            
 
             StackPanel sp = new StackPanel();
             sp.Orientation = Orientation.Horizontal;
@@ -60,10 +62,7 @@ namespace GoalLine.UI.Utils
 
             for(int i = 1; i <= Whole; i++)
             {
-                Image Star = new Image();
-                Star.Source = ImageResources.GetImage(ImageResourceList.Star_Whole);
-                Star.Width = WIDTH;
-                Star.Height = HEIGHT;
+                Image Star = StarImage(true);
 
                 if(!firstStar)
                 {
@@ -74,12 +73,9 @@ namespace GoalLine.UI.Utils
                 firstStar = true;
             }
 
-            if(Stars - Whole > 0.5)
+            if(Stars - Whole >= 0.45)
             {
-                Image Star = new Image();
-                Star.Source = ImageResources.GetImage(ImageResourceList.Star_Half);
-                Star.Width = WIDTH;
-                Star.Height = HEIGHT;
+                Image Star = StarImage(false);
 
                 if (!firstStar)
                 {
@@ -89,6 +85,38 @@ namespace GoalLine.UI.Utils
             }
 
             return sp;
+        }
+
+        public static StackPanel StarRatingWithNumber(double Stars)
+        {
+            StackPanel sp = new StackPanel();
+            sp.Orientation = Orientation.Horizontal;
+
+            Image star = StarImage(true);
+            star.Width -= 4;
+            star.Height -= 4;
+            sp.Children.Add(star);
+
+            TextBlock t = new TextBlock();
+            t.Text = Stars.ToString("0.0");
+            t.Margin = new Thickness(3, 0, 0, 0);
+            t.Style = Application.Current.FindResource("ListHeader") as Style;
+            t.FontSize = 16;
+            
+            sp.Children.Add(t);
+
+
+            return sp;
+        }
+
+        private static Image StarImage(bool Whole)
+        {
+            Image Star = new Image();
+            Star.Source = ImageResources.GetImage(Whole ? ImageResourceList.Star_Whole : ImageResourceList.Star_Half);
+            Star.Width = STARWIDTH;
+            Star.Height = STARHEIGHT;
+
+            return Star;
         }
     }
 }

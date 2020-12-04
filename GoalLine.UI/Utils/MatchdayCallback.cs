@@ -14,6 +14,7 @@ namespace GoalLine.UI.Utils
 {
     class MatchdayCallback : IMatchCallback
     {
+        private Data.Utils u = new Data.Utils();
 
         public MatchdayMain UI { get; set; }
         public string Commentary { get; set; }
@@ -42,15 +43,15 @@ namespace GoalLine.UI.Utils
 
         private bool MatchFinished_Worker(Fixture f)
         {
-            TeamAdapter ta = new TeamAdapter();
-            string result = "{0} {1} : {2} {3}";
+            //TeamAdapter ta = new TeamAdapter();
+            //string result = "{0} {1} : {2} {3}";
 
-            result = String.Format(result, ta.GetTeam(f.TeamIDs[0]).Name,
-                f.Score[0],
-                f.Score[1],
-                ta.GetTeam(f.TeamIDs[1]).Name);
+            //result = String.Format(result, ta.GetTeam(f.TeamIDs[0]).Name,
+            //    f.Score[0],
+            //    f.Score[1],
+            //    ta.GetTeam(f.TeamIDs[1]).Name);
 
-            UI.txtResults.Text = UI.txtResults.Text + result + "\n";
+            //UI.txtResults.Text = UI.txtResults.Text + result + "\n";
 
             return true;
         }
@@ -95,9 +96,37 @@ namespace GoalLine.UI.Utils
 
         private bool UpdateUI_Worker()
         {
+            int PauseTime;
+            if (EventType == MatchEventType.Goal)
+            {
+                PauseTime = 1500;
+            }
+            else if (EventType == MatchEventType.None)
+            {
+                PauseTime = 75;
+            } 
+            else
+            {
+                PauseTime = 750;
+            }
+
             UI.txtTime.Text = DisplayMatchTime();
             UI.txtEvents.Text = Commentary;
-            UI.txtScore.Text = String.Format(" {0} : {1} ", MatchStatus.Score[0], MatchStatus.Score[1]);
+            UI.txtHomeScore.Text = MatchStatus.Score[0].ToString();
+            UI.txtAwayScore.Text = MatchStatus.Score[1].ToString();
+
+
+            // TODO: Change the randomness when we go to have a BallY
+            if(EventType == MatchEventType.KickOff || EventType == MatchEventType.HalfTime || EventType == MatchEventType.FullTime)
+            {
+                UI.pitPitch.Animate = false;
+            }
+            else
+            {
+                UI.pitPitch.Animate = true;
+            }
+            UI.pitPitch.AnimateMillisecs = PauseTime;
+            UI.pitPitch.BallPosition = (MatchStatus.BallX, u.RandomInclusive((int)UI.pitPitch.MinY, (int)UI.pitPitch.MaxY));
             DoEvents();
 
             if (EventType == MatchEventType.Goal)
@@ -105,16 +134,8 @@ namespace GoalLine.UI.Utils
                 System.Threading.Thread.Sleep(50);
                 UI.txtEvents.Text = "*** GOAL ***";
                 DoEvents();
-                System.Threading.Thread.Sleep(1500);
             }
-            else if (EventType == MatchEventType.None)
-            {
-                System.Threading.Thread.Sleep(75);
-            }
-            else
-            {
-                System.Threading.Thread.Sleep(750);
-            }
+            System.Threading.Thread.Sleep(PauseTime);
 
             DoEvents();
             return true;

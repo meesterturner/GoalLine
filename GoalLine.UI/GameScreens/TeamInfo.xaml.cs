@@ -186,24 +186,27 @@ namespace GoalLine.UI.GameScreens
 
         private Grid GeneratePlayerStatsBlock(Player p)
         {
-            Grid g;
-            g = GenerateBlankBlockGrid(3, "Player Attributes", 1);
-
             List<(string, int)> stats = new List<(string, int)>();
             stats.Add(("Agility", p.Agility));
             stats.Add(("Attitude", p.Attitude));
             stats.Add(("Speed", p.Speed));
             stats.Add(("Stamina", p.Stamina));
 
+            int halfList = (int)Math.Ceiling((double)stats.Count() / 2) - 1;
+
+            Grid g;
+            g = GenerateBlankBlockGrid(halfList + 2, "Player Attributes", 1);
+
             List<(string, int)> statsOrdered = (from s in stats 
                                                 orderby s.Item1 
                                                 select s).ToList(); // Because localised, these may not be in alpha-order!
 
-            int halfList = (int)Math.Ceiling((double)stats.Count() / 2) - 1;
+            
             for(int i = 0; i <= halfList; i++)
             {
                 UiUtils.AddGridData(g, 0, i + 1, statsOrdered[i].Item1, statsOrdered[i].Item2);
-                UiUtils.AddGridData(g, 2, i + 1, statsOrdered[i + halfList + 1].Item1, statsOrdered[i + halfList + 1].Item2);
+                if((i + halfList + 1) < stats.Count())
+                    UiUtils.AddGridData(g, 2, i + 1, statsOrdered[i + halfList + 1].Item1, statsOrdered[i + halfList + 1].Item2);
             }
 
             

@@ -62,6 +62,9 @@
     <Compile Include="Controls\ListControl.xaml.cs">
       <DependentUpon>ListControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PitchViewControl.xaml.cs">
+      <DependentUpon>PitchViewControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GameScreens\Enums.cs" />
     <Compile Include="GameScreens\GameScreenSetup.cs" />
     <Compile Include="GameScreens\Home.xaml.cs">
@@ -99,6 +102,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\PagingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PitchViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

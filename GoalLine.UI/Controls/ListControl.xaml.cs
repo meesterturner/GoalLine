@@ -207,6 +207,14 @@ namespace GoalLine.UI.Controls
                                 sp.HorizontalAlignment = Columns[x].Alignment;
                                 cell = sp;
                             }
+                            else if(s.GetType() == typeof(Grid))
+                            {
+                                Grid g = new Grid();
+                                g = (Grid)s;
+                                g.VerticalAlignment = VerticalAlignment.Center;
+                                g.HorizontalAlignment = Columns[x].Alignment;
+                                cell = g;
+                            }
 
                             else
                             {

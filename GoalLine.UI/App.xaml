@@ -91,6 +91,27 @@
             <Setter Property="Margin" Value="3,0,3,0" />
         </Style>
 
+        <Style TargetType="TextBlock" x:Key="Matchday">
+            <Setter Property="FontFamily" Value="fonts/#Roboto Bold"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="{StaticResource StandardGrey_Brush}" />
+            <Setter Property="Margin" Value="3,0,3,0" />
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="MatchdayClock">
+            <Setter Property="FontFamily" Value="fonts/#Roboto Bold"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="{StaticResource LighterPurple_Brush}" />
+            <Setter Property="Margin" Value="3,0,3,0" />
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="MatchdayScore">
+            <Setter Property="FontFamily" Value="fonts/#Roboto Bold"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="{StaticResource DarkerPurple_Brush}" />
+            <Setter Property="Margin" Value="3,0,3,0" />
+        </Style>
+
         <Style TargetType="TextBlock" x:Key="ListItem">
             <Setter Property="FontFamily" Value="fonts/#Roboto Regular"/>
             <Setter Property="FontSize" Value="18"/>
