@@ -17,6 +17,7 @@ namespace GoalLine.UI.GameScreens
         public MatchdayMain()
         {
             InitializeComponent();
+            pitPitch.CentreBall();
         }
 
         public ScreenReturnData MainButtonClick(int buttonId)

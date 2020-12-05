@@ -5,10 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GoalLine.UI.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="320">
-    <Grid  Width="320" Height="200" Background="Green">
-        <Canvas x:Name="PitchCanvas" Width="320" Height="200">
+             d:DesignHeight="300" d:DesignWidth="480">
+    <Grid  Width="480" Height="300" Background="Green">
+        <Image x:Name="PitchImage" Width="480" Height="300" />
+        
+        <Canvas x:Name="PitchCanvas" Width="480" Height="300">
             <Image x:Name="BallImage" />
         </Canvas>
+        
     </Grid>
 </UserControl>

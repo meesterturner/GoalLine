@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using GoalLine.Data;
 using GoalLine.Structures;
@@ -19,6 +20,11 @@ namespace GoalLine.Matchday
         public Fixture Fixture { get; set; }
         public bool Interactive { get; set; }
         public IMatchCallback MatchCallback { get; set; }
+
+        public List<int> InteractivePauseTimes = new List<int>()
+        {
+            250,750,2000
+        };
 
         List<MatchEventCommentary> CommentaryList;
 
@@ -102,17 +108,30 @@ namespace GoalLine.Matchday
                 return; // If non-interactive, no point raising events or deciding on commentary for the UI
             }
 
-            if(Ev == MatchEventType.None)
+            switch(Ev)
             {
-                MatchCallback.Commentary = "";
-            } else
-            {
-                MatchCallback.Commentary = FindCommentary(Ev);
+                case MatchEventType.None:
+                    MatchCallback.Commentary = "";
+                    MatchCallback.PauseTime = InteractivePauseTimes[0];
+                    break;
+
+                case MatchEventType.Goal:
+                    MatchCallback.Commentary = FindCommentary(Ev);
+                    MatchCallback.PauseTime = InteractivePauseTimes[2];
+                    break;
+
+                default:
+                    MatchCallback.Commentary = FindCommentary(Ev);
+                    MatchCallback.PauseTime = InteractivePauseTimes[1];
+                    break;
             }
 
+            MatchStatus.ShortestPause = InteractivePauseTimes[0];
             MatchCallback.MatchStatus = MatchStatus;
             MatchCallback.EventType = Ev;
             MatchCallback.UpdateUI();
+
+            Thread.Sleep(MatchCallback.PauseTime);
         }
 
         private string FindCommentary(MatchEventType Ev)

@@ -23,14 +23,11 @@ namespace GoalLine.UI.Controls
     public partial class PitchViewControl : UserControl
     {
 
-        public double MinX { get; set; }
-        public double MaxX { get; set; }
-        public double MinY { get; set; }
-        public double MaxY { get; set; }
         public bool Animate { get; set; } = false;
         public int AnimateMillisecs { get; set; } = 300;
 
         private (double x, double y) _BallPosition;
+        private (double x, double y) _LastBallPixelPos;
         public (double x, double y) BallPosition
         {
             get
@@ -44,9 +41,10 @@ namespace GoalLine.UI.Controls
                 double Tempy = Canvas.GetTop(BallImage);
 
                 _BallPosition = value;
-                if(Animate)
+
+                if (Animate)
                 {
-                    AnimateBall();
+                    AnimateBall(); // AnimateBall();
                 } 
                 else
                 {
@@ -58,68 +56,73 @@ namespace GoalLine.UI.Controls
 
         private const int BALLW = 30;
         private const int BALLH = 30;
-
+        public int SegmentCountX => 5;
+        public int SegmentCountY => 3;
 
         public PitchViewControl()
         {
             InitializeComponent();
 
+            PitchImage.Source = ImageResources.GetImage(ImageResourceList.PitchSmallLandscape);
+            PitchImage.Stretch = Stretch.Fill;
             BallImage.Source = ImageResources.GetImage(ImageResourceList.SmallBall);
             BallImage.Width = BALLW;
             BallImage.Height = BALLH;
-            BallImage.Visibility = Visibility.Hidden;
 
-            MinX = -2;
-            MaxX = 2;
-            MinY = 0;
-            MaxY = 2;
+            CentreBall();
+        }
+
+        public void CentreBall()
+        {
+            bool animTemp = Animate;
+            Animate = false;
+            BallPosition = ((SegmentCountX - 1) / 2, (SegmentCountY - 1) / 2);
+            Animate = animTemp;
         }
 
         private void MoveBall()
         {
             (double x, double y) Pos = CalculatePixelPosition();
-            BallImage.Visibility = Visibility.Visible;
 
             Canvas.SetLeft(BallImage, Pos.x);
             Canvas.SetTop(BallImage, Pos.y);
+
+            _LastBallPixelPos = Pos;
         }
 
         private void AnimateBall()
         {
+
             (double x, double y) Pos = CalculatePixelPosition();
-            BallImage.Visibility = Visibility.Visible;
 
             DoubleAnimation xAnim = new DoubleAnimation();
-            xAnim.From = Canvas.GetLeft(BallImage);
-            xAnim.To = Pos.x;
+            xAnim.By = Pos.x - _LastBallPixelPos.x;
             xAnim.Duration = new Duration(TimeSpan.FromMilliseconds(AnimateMillisecs));
+            xAnim.DecelerationRatio = 0.3;
 
             DoubleAnimation yAnim = new DoubleAnimation();
-            yAnim.From = Canvas.GetTop(BallImage);
-            yAnim.To = Pos.y;
+            yAnim.By = Pos.y - _LastBallPixelPos.y;
             yAnim.Duration = new Duration(TimeSpan.FromMilliseconds(AnimateMillisecs));
+            yAnim.DecelerationRatio = 0.3;
 
             TranslateTransform tx = new TranslateTransform();
             BallImage.RenderTransform = tx;
-
+            
             tx.BeginAnimation(TranslateTransform.XProperty, xAnim);
             tx.BeginAnimation(TranslateTransform.YProperty, yAnim);
+            
+            Canvas.SetLeft(BallImage, _LastBallPixelPos.x);
+            Canvas.SetTop(BallImage, _LastBallPixelPos.y);
+            _LastBallPixelPos = Pos;
         }
 
         private (double x, double y) CalculatePixelPosition()
         {
-            double SegXCount = (MaxX - MinX) + 1;
-            double SegW = PitchCanvas.Width / SegXCount;
-            double SegX = BallPosition.x - MinX;
+            double SegW = PitchCanvas.Width / SegmentCountX;
+            double PixelX = (BallPosition.x * SegW) + ((SegW - BALLW) / 2);
 
-            double PixelX = (SegX * SegW) + ((SegW / 2) - (BALLW / 2));
-
-
-            double SegYCount = (MaxY - MinY) + 1;
-            double SegH = PitchCanvas.Height / SegYCount;
-            double SegY = BallPosition.y - MinY;
-
-            double PixelY = (SegY * SegH) + ((SegH / 2) - (BALLH / 2));
+            double SegH = PitchCanvas.Height / SegmentCountY;
+            double PixelY = (BallPosition.y * SegH) + ((SegH - BALLH) / 2);
 
             return (PixelX, PixelY);
         }

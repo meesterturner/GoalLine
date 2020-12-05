@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="650" d:DesignWidth="1000">
     
-    <Grid x:Name="grdLive" Grid.Column="1" MinWidth="1000">
+    <Grid x:Name="grdLive" Grid.Column="1" MinWidth="1000" MinHeight="650">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="70" />
@@ -21,8 +21,8 @@
             <RowDefinition Height="75" />
             <RowDefinition Height="75" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="150" />
-            <RowDefinition Height="75" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
         </Grid.RowDefinitions>
 
         <TextBlock x:Name="txtHome" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource Matchday}">Home Team</TextBlock>
@@ -32,6 +32,6 @@
         <TextBlock x:Name="txtAway" Grid.Row="0" Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource Matchday}">Away Team</TextBlock>
         <TextBlock x:Name="txtTime" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource MatchdayClock}">00:00</TextBlock>
         <TextBlock x:Name="txtEvents" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Center" Width="550" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Style="{StaticResource Matchday}">Events Go Here</TextBlock>
-        <Controls:PitchViewControl x:Name="pitPitch" Grid.Row="4" Grid.ColumnSpan="5" />
+        <Controls:PitchViewControl x:Name="pitPitch" Grid.Row="4" Grid.ColumnSpan="5" Width="480" Height="300" MinWidth="480" MinHeight="300" />
     </Grid>
 </UserControl>

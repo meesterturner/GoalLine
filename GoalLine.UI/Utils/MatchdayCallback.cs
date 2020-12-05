@@ -20,6 +20,7 @@ namespace GoalLine.UI.Utils
         public string Commentary { get; set; }
         public MatchEventType EventType { get; set; }
         public MatchStatus MatchStatus { get; set; }
+        public int PauseTime { get; set; }
 
         public MatchdayCallback(MatchdayMain SourceUI)
         {
@@ -79,7 +80,6 @@ namespace GoalLine.UI.Utils
             TeamAdapter ta = new TeamAdapter();
             UI.txtHome.Text = ta.GetTeam(f.TeamIDs[0]).Name;
             UI.txtAway.Text = ta.GetTeam(f.TeamIDs[1]).Name;
-            DoEvents();
 
             return true;
         }
@@ -96,59 +96,39 @@ namespace GoalLine.UI.Utils
 
         private bool UpdateUI_Worker()
         {
-            int PauseTime;
-            if (EventType == MatchEventType.Goal)
-            {
-                PauseTime = 1500;
-            }
-            else if (EventType == MatchEventType.None)
-            {
-                PauseTime = 75;
-            } 
-            else
-            {
-                PauseTime = 750;
-            }
-
             UI.txtTime.Text = DisplayMatchTime();
             UI.txtEvents.Text = Commentary;
             UI.txtHomeScore.Text = MatchStatus.Score[0].ToString();
             UI.txtAwayScore.Text = MatchStatus.Score[1].ToString();
 
 
-            // TODO: Change the randomness when we go to have a BallY
+            
             if(EventType == MatchEventType.KickOff || EventType == MatchEventType.HalfTime || EventType == MatchEventType.FullTime)
             {
-                UI.pitPitch.Animate = false;
+                UI.pitPitch.CentreBall();
             }
             else
             {
                 UI.pitPitch.Animate = true;
             }
-            UI.pitPitch.AnimateMillisecs = PauseTime;
-            UI.pitPitch.BallPosition = (MatchStatus.BallX, u.RandomInclusive((int)UI.pitPitch.MinY, (int)UI.pitPitch.MaxY));
-            DoEvents();
+            UI.pitPitch.AnimateMillisecs = MatchStatus.ShortestPause / 2;
+            int tempY = u.RandomInclusive(0, UI.pitPitch.SegmentCountY - 1);
+
+            // TODO: Change the randomness when we go to have a BallY
+            // TODO: No need to convert Ballx when we change match engine
+            UI.pitPitch.BallPosition = (MatchStatus.BallX + 2, tempY);
 
             if (EventType == MatchEventType.Goal)
             {
-                System.Threading.Thread.Sleep(50);
                 UI.txtEvents.Text = "*** GOAL ***";
-                DoEvents();
             }
-            System.Threading.Thread.Sleep(PauseTime);
 
-            DoEvents();
             return true;
         }
 
         private string DisplayMatchTime()
         {
             return (MatchStatus.MatchTimeSeconds / 60).ToString("00") + ":" + (MatchStatus.MatchTimeSeconds % 60).ToString("00");
-        }
-
-        private void DoEvents()
-        {
-            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
         }
     }
 }
