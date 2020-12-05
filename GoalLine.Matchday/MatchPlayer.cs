@@ -165,6 +165,7 @@ namespace GoalLine.Matchday
             retVal.Add(new MatchEventCommentary(MatchEventType.Hoofed, "He hoofs it right up the pitch", MatchSegment.None));
             retVal.Add(new MatchEventCommentary(MatchEventType.Shot, "He's hit it towards the goal...", MatchSegment.None));
             retVal.Add(new MatchEventCommentary(MatchEventType.CornerStart, "He runs up to the corner", MatchSegment.None));
+            retVal.Add(new MatchEventCommentary(MatchEventType.CornerAnnounce, "That'll be a corner!", MatchSegment.None));
             retVal.Add(new MatchEventCommentary(MatchEventType.Cross, "The ball is crossed in", MatchSegment.None));
             retVal.Add(new MatchEventCommentary(MatchEventType.CornerOpposition, "The ball is safely taken by the opposition", MatchSegment.None));
             retVal.Add(new MatchEventCommentary(MatchEventType.OppositionGotThereFirst, "Their opponents got to the ball before they could", MatchSegment.None));
@@ -401,16 +402,25 @@ namespace GoalLine.Matchday
             int MidChance = u.RandomInclusive(0, MatchStatus.Evaluation[MatchStatus.PossessionTeam].Midfield);
             int DefChance = u.RandomInclusive(0, MatchStatus.Evaluation[1 - MatchStatus.PossessionTeam].Defence);
 
-            RaiseEvent(MatchEventType.Cross); // TODO: This should be Corner Taken
-
-            if (MidChance > DefChance)
+            if(SuccessfulEvent())
             {
-                DoShot(MidChance, DefChance); 
+                RaiseEvent(MatchEventType.Cross); // TODO: This should be Corner Taken
+
+                if (MidChance > DefChance)
+                {
+                    DoShot(MidChance, DefChance);
+                }
+                else
+                {
+                    RaiseEvent(MatchEventType.Dispossessed);
+                    MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
+                }
             } else
             {
                 RaiseEvent(MatchEventType.CornerOpposition);
                 MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
             }
+            
         }
 
         void DoShot()
@@ -436,7 +446,7 @@ namespace GoalLine.Matchday
                 GKChance = GKChanceOriginal;
             }
 
-            bool ShotOnTarget = u.RandomInclusive(0, AttChance) > AttChance * 0.66f; // Two-thirds of a chance of being on target
+            bool ShotOnTarget = u.RandomInclusive(0, AttChance) > AttChance * 0.66f; // TODO: Two-thirds of a chance of being on target
 
             if (ShotOnTarget)
             {
@@ -456,7 +466,11 @@ namespace GoalLine.Matchday
                 }
                 else
                 {
-                    bool SafeHands = u.RandomInclusive(0, MatchStatus.Evaluation[1 - MatchStatus.PossessionTeam].Goalkeeping) < GKChance;
+                    if(Interactive)
+                    {
+                        int temp = 1;
+                    }
+                    bool SafeHands = (u.RandomInclusive(0, MatchStatus.Evaluation[1 - MatchStatus.PossessionTeam].Goalkeeping) < GKChance);
                     if (SafeHands)
                     {
                         RaiseEvent(MatchEventType.Save);
@@ -464,7 +478,8 @@ namespace GoalLine.Matchday
                     }
                     else
                     {
-                        RaiseEvent(MatchEventType.BadSave);
+                        RaiseEvent(MatchEventType.BadSave); // TODO: Possible for someone to get it....
+                        RaiseEvent(MatchEventType.CornerAnnounce);
                         DoCorner();
                     }
 

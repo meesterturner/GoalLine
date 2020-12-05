@@ -15,8 +15,6 @@ namespace GoalLine.UI.Utils
 {
     class MatchdayCallback : IMatchCallback
     {
-        private Data.Utils u = new Data.Utils();
-
         public MatchdayMain UI { get; set; }
         public string Commentary { get; set; }
         public MatchEventType EventType { get; set; }
@@ -45,15 +43,15 @@ namespace GoalLine.UI.Utils
 
         private bool MatchFinished_Worker(Fixture f)
         {
-            //TeamAdapter ta = new TeamAdapter();
-            //string result = "{0} {1} : {2} {3}";
+            TeamAdapter ta = new TeamAdapter();
+            string result = "{0} {1} - {2} {3}";
 
-            //result = String.Format(result, ta.GetTeam(f.TeamIDs[0]).Name,
-            //    f.Score[0],
-            //    f.Score[1],
-            //    ta.GetTeam(f.TeamIDs[1]).Name);
+            result = string.Format(result, ta.GetTeam(f.TeamIDs[0]).Name,
+                f.Score[0],
+                f.Score[1],
+                ta.GetTeam(f.TeamIDs[1]).Name);
 
-            //UI.txtResults.Text = UI.txtResults.Text + result + "\n";
+            System.Diagnostics.Debug.WriteLine(result);
 
             return true;
         }

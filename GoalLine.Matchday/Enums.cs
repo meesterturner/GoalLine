@@ -22,6 +22,7 @@ namespace GoalLine.Matchday
         Hoofed,
         Shot,
         BadSave,
+        CornerAnnounce,
         CornerStart,
         CornerOpposition,
         Cross,
