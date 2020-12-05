@@ -117,29 +117,6 @@ namespace GoalLine.Data
             World.Teams[TeamID].LastKnownFormation = World.Teams[TeamID].CurrentFormation;
         }
 
-        public PlayerSelectionStatus CycleTeamPlayerSelection(int TeamID, int PlayerID)
-        {
-            PlayerSelectionStatus Old = World.Teams[TeamID].Players[PlayerID].Selected;
-            PlayerSelectionStatus New;
-            if (Old == PlayerSelectionStatus.None)
-            {
-                New = PlayerSelectionStatus.Starting;
-            } else if (Old == PlayerSelectionStatus.Starting)
-            {
-                New = PlayerSelectionStatus.Sub;
-            } else if (Old == PlayerSelectionStatus.Sub)
-            {
-                New = PlayerSelectionStatus.None;
-            } else
-            {
-                throw new NotImplementedException();
-            }
-
-            SetTeamPlayerSelection(TeamID, PlayerID, New);
-
-            return New;
-        }
-
         public Team GetTeam(int TeamID)
         {
             return World.Teams[TeamID];
