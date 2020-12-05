@@ -9,6 +9,7 @@ using GoalLine.Data;
 using GoalLine.UI.GameScreens;
 using System.Windows.Threading;
 using System.Windows;
+using System.Threading;
 
 namespace GoalLine.UI.Utils
 {
@@ -20,13 +21,13 @@ namespace GoalLine.UI.Utils
         public string Commentary { get; set; }
         public MatchEventType EventType { get; set; }
         public MatchStatus MatchStatus { get; set; }
-        public int PauseTime { get; set; }
+        private int[] PauseLengths = new int[] { 250, 750, 2000 };
 
         public MatchdayCallback(MatchdayMain SourceUI)
         {
             UI = SourceUI;
         }
-        
+
         public void MatchdayComplete()
         {
             UI.MatchdayComplete = true;
@@ -87,6 +88,25 @@ namespace GoalLine.UI.Utils
         public void UpdateUI()
         {
             bool b = UpdateUI_InvokeThread();
+            int pause;
+
+            switch(EventType)
+            {
+                case MatchEventType.Goal:
+                    pause = PauseLengths[2];
+                    break;
+
+                case MatchEventType.None:
+                    pause = PauseLengths[0];
+                    break;
+
+                default:
+                    pause = PauseLengths[1];
+                    break;
+
+            }
+
+            Thread.Sleep(pause);
         }
 
         private bool UpdateUI_InvokeThread()
@@ -112,7 +132,7 @@ namespace GoalLine.UI.Utils
                 UI.pitPitch.Animate = true;
             }
 
-            UI.pitPitch.AnimateMillisecs = MatchStatus.ShortestPause / 2;
+            UI.pitPitch.AnimateMillisecs = PauseLengths[0] / 2;
             int destX = MatchStatus.BallX + 2;
             int destY = u.RandomInclusive(0, UI.pitPitch.SegmentCountY - 1);
 

@@ -21,7 +21,6 @@ namespace GoalLine.Matchday
         public TacticEvaluation[] Evaluation { get; set; } = new TacticEvaluation[2];
         public int[] OverallPlayerEffectiveRating { get; set; } = new int[2];
         public int BallX { get; set; }
-        public int ShortestPause { get; set; }
 
         public int PossessionPercentage(int Team)
         {

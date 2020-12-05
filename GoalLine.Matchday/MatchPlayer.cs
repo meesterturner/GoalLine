@@ -112,26 +112,17 @@ namespace GoalLine.Matchday
             {
                 case MatchEventType.None:
                     MatchCallback.Commentary = "";
-                    MatchCallback.PauseTime = InteractivePauseTimes[0];
                     break;
 
                 case MatchEventType.Goal:
-                    MatchCallback.Commentary = FindCommentary(Ev);
-                    MatchCallback.PauseTime = InteractivePauseTimes[2];
-                    break;
-
                 default:
                     MatchCallback.Commentary = FindCommentary(Ev);
-                    MatchCallback.PauseTime = InteractivePauseTimes[1];
                     break;
             }
 
-            MatchStatus.ShortestPause = InteractivePauseTimes[0];
             MatchCallback.MatchStatus = MatchStatus;
             MatchCallback.EventType = Ev;
             MatchCallback.UpdateUI();
-
-            Thread.Sleep(MatchCallback.PauseTime);
         }
 
         private string FindCommentary(MatchEventType Ev)

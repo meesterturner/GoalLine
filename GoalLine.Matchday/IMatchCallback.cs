@@ -12,7 +12,6 @@ namespace GoalLine.Matchday
         string Commentary { get; set; }
         MatchStatus MatchStatus { get; set; }
         MatchEventType EventType { get; set; }
-        int PauseTime { get; set; }
 
         void UpdateUI();
         void MatchStarting(Fixture f, bool Interactive);
