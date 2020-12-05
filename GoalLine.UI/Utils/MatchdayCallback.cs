@@ -111,18 +111,23 @@ namespace GoalLine.UI.Utils
             {
                 UI.pitPitch.Animate = true;
             }
+
             UI.pitPitch.AnimateMillisecs = MatchStatus.ShortestPause / 2;
-            int tempY = u.RandomInclusive(0, UI.pitPitch.SegmentCountY - 1);
+            int destX = MatchStatus.BallX + 2;
+            int destY = u.RandomInclusive(0, UI.pitPitch.SegmentCountY - 1);
 
             // TODO: Change the randomness when we go to have a BallY
             // TODO: No need to convert Ballx when we change match engine
-            UI.pitPitch.BallPosition = (MatchStatus.BallX + 2, tempY);
+            //UI.pitPitch.BallPosition = (destX, destY);
 
             if (EventType == MatchEventType.Goal)
             {
                 UI.txtEvents.Text = "*** GOAL ***";
+                destY = 1;
+                destX = (MatchStatus.PossessionTeam == 0 ? UI.pitPitch.SegmentCountX - 1 : 0);
             }
 
+            UI.pitPitch.BallPosition = (destX, destY);
             return true;
         }
 

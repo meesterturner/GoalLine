@@ -25,14 +25,14 @@ namespace GoalLine.Processes.ProcessLogic
                         {
                             int opp = 1 - team; // Opposition team
 
-                            if(f.Score[team] > f.Score[opp] && (f.Score[team] - f.Score[opp]) > 3)
+                            if(Math.Abs(f.Score[team] - f.Score[opp]) >= 3)
                             {
-                                ea.SendEmail(m.UniqueID,EmailType.GoodMatch, new List<int>() { f.Score[0], f.Score[1], f.TeamIDs[opp] });
-                            }
+                                if (f.Score[team] > f.Score[opp])
+                                    ea.SendEmail(m.UniqueID, EmailType.GoodMatch, new List<int>() { f.Score[0], f.Score[1], f.TeamIDs[opp] });
 
-                            if (f.Score[team] < f.Score[opp] && (f.Score[opp] - f.Score[team]) > 3)
-                            {
-                                ea.SendEmail(m.UniqueID, EmailType.BadMatch, new List<int>() { f.Score[0], f.Score[1], f.TeamIDs[opp] });
+                                if (f.Score[team] < f.Score[opp])
+                                    ea.SendEmail(m.UniqueID, EmailType.BadMatch, new List<int>() { f.Score[0], f.Score[1], f.TeamIDs[opp] });
+
                             }
                         }
                     }
