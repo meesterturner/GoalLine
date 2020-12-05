@@ -56,8 +56,8 @@ namespace GoalLine.UI.Controls
 
         private const int BALLW = 30;
         private const int BALLH = 30;
-        public int SegmentCountX => 5;
-        public int SegmentCountY => 3;
+        public int SegmentCountX => 8;
+        public int SegmentCountY => 5;
 
         public PitchViewControl()
         {

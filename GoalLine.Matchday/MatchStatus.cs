@@ -20,7 +20,8 @@ namespace GoalLine.Matchday
         public List<PlayerStatus>[] PlayerStatuses { get; set; } = new List<PlayerStatus>[2];
         public TacticEvaluation[] Evaluation { get; set; } = new TacticEvaluation[2];
         public int[] OverallPlayerEffectiveRating { get; set; } = new int[2];
-        public int BallX { get; set; }
+        public double BallX { get; set; }
+        public double BallY { get; set; }
 
         public int PossessionPercentage(int Team)
         {

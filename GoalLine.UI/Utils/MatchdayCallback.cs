@@ -21,7 +21,7 @@ namespace GoalLine.UI.Utils
         public string Commentary { get; set; }
         public MatchEventType EventType { get; set; }
         public MatchStatus MatchStatus { get; set; }
-        private int[] PauseLengths = new int[] { 250, 750, 2000 };
+        private int[] PauseLengths = new int[] { 175, 750, 2000 };
 
         public MatchdayCallback(MatchdayMain SourceUI)
         {
@@ -94,6 +94,8 @@ namespace GoalLine.UI.Utils
             {
                 case MatchEventType.Goal:
                     pause = PauseLengths[2];
+                    Thread.Sleep(pause);
+                    UpdateCommentaryOnly_InvokeThread(); // Show post-goal commentary. Hopefully! 
                     break;
 
                 case MatchEventType.None:
@@ -107,6 +109,18 @@ namespace GoalLine.UI.Utils
             }
 
             Thread.Sleep(pause);
+        }
+
+
+        private bool UpdateCommentaryOnly_InvokeThread()
+        {
+            return UI.Dispatcher.Invoke(() => UpdateCommentaryOnly_Worker());
+        }
+
+        private bool UpdateCommentaryOnly_Worker()
+        {
+            UI.txtEvents.Text = Commentary;
+            return true;
         }
 
         private bool UpdateUI_InvokeThread()
@@ -133,8 +147,8 @@ namespace GoalLine.UI.Utils
             }
 
             UI.pitPitch.AnimateMillisecs = PauseLengths[0] / 2;
-            int destX = MatchStatus.BallX + 2;
-            int destY = u.RandomInclusive(0, UI.pitPitch.SegmentCountY - 1);
+            double destX = MatchStatus.BallX;
+            double destY = MatchStatus.BallY; // u.RandomInclusive(0, UI.pitPitch.SegmentCountY - 1);
 
             // TODO: Change the randomness when we go to have a BallY
             // TODO: No need to convert Ballx when we change match engine
@@ -143,8 +157,8 @@ namespace GoalLine.UI.Utils
             if (EventType == MatchEventType.Goal)
             {
                 UI.txtEvents.Text = "*** GOAL ***";
-                destY = 1;
-                destX = (MatchStatus.PossessionTeam == 0 ? UI.pitPitch.SegmentCountX - 1 : 0);
+                //destY = 1;
+                //destX = (MatchStatus.PossessionTeam == 0 ? UI.pitPitch.SegmentCountX - 1 : 0);
             }
 
             UI.pitPitch.BallPosition = (destX, destY);

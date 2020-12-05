@@ -21,14 +21,16 @@ namespace GoalLine.Matchday
         public bool Interactive { get; set; }
         public IMatchCallback MatchCallback { get; set; }
 
-        public List<int> InteractivePauseTimes = new List<int>()
-        {
-            250,750,2000
-        };
-
         List<MatchEventCommentary> CommentaryList;
 
         MatchStatus MatchStatus;
+
+        const double BALLXMIN = 0;
+        const double BALLXMAX = 7;
+        const double BALLXCENTRE = BALLXMAX / 2;
+        const double BALLYMIN = 0;
+        const double BALLYMAX = 4;
+        const double BALLYCENTRE = BALLYMAX / 2;
 
         public void StartMatch()
         {
@@ -63,10 +65,14 @@ namespace GoalLine.Matchday
                     MatchStatus.Segment = MatchSegment.SecondHalf;
                 }
 
-                MatchStatus.BallX = 0;
+                MatchStatus.BallX = BALLXCENTRE;
+                MatchStatus.BallY = BALLYCENTRE;
                 MatchStatus.PossessionTeam = h - 1; // TODO: Randomise for the start, but opposite team for second half.
 
                 RaiseEvent(MatchEventType.KickOff);
+
+                // TODO: Just in case we change the grid, this may need to change. But gets us whole numbers.
+                //MatchStatus.BallX = (MatchStatus.PossessionTeam == Constants.HomeTeam ? Math.Floor(MatchStatus.BallX) : Math.Ceiling(MatchStatus.BallX)); 
 
                 for (int s = 0; s <= Constants.MinsPerHalf * 60 - Constants.EventIntervalSecs; s += Constants.EventIntervalSecs)
                 {
@@ -76,6 +82,9 @@ namespace GoalLine.Matchday
 
                     DetermineNextEvent();
                 }
+
+                MatchStatus.BallX = BALLXCENTRE;
+                MatchStatus.BallY = BALLYCENTRE;
 
                 if (h == 1)
                 {
@@ -220,10 +229,11 @@ namespace GoalLine.Matchday
 
         public void DetermineNextEvent()
         {
-            //MatchEventType LastEvent = s.MostRecentEvent;
             EventCountThisSecond = 0;
 
-            bool PossessionChange = u.RandomInclusive(0, MatchStatus.Evaluation[1 - MatchStatus.PossessionTeam].Defence) > u.RandomInclusive(0, MatchStatus.OverallPlayerEffectiveRating[MatchStatus.PossessionTeam] * (Math.Abs(MatchStatus.BallX) + 1));
+            double AttackAdrenaline = (MatchStatus.BallX > BALLXCENTRE ? MatchStatus.BallX : BALLXMAX - MatchStatus.BallX) * 0.4;
+            bool PossessionChange = u.RandomInclusive(0, MatchStatus.Evaluation[1 - MatchStatus.PossessionTeam].Defence) 
+                > u.RandomInclusive(0, Convert.ToInt32(MatchStatus.OverallPlayerEffectiveRating[MatchStatus.PossessionTeam] * AttackAdrenaline));
 
             if (MatchStatus.PossessionTeam == Constants.HomeTeam && PossessionChange == true)
             {
@@ -245,23 +255,12 @@ namespace GoalLine.Matchday
             
 
             bool ShotAttempt = false;
-            int ShotDistance;
+            double ShotDistance = (MatchStatus.PossessionTeam == Constants.HomeTeam ?
+                    BALLXMAX - MatchStatus.BallX :
+                    Math.Abs(MatchStatus.BallX - BALLXMAX));
 
-            if (MatchStatus.PossessionTeam == Constants.HomeTeam)
-            {
-                ShotDistance = 3 - MatchStatus.BallX;
-            } else
-            {
-                ShotDistance = 3 - (0 - MatchStatus.BallX);
-            }
-
-            if(MatchStatus.BallX == -2 && MatchStatus.PossessionTeam == Constants.AwayTeam)
-            {
-                System.Diagnostics.Debug.Print("");
-            }
-
-            int DistanceChance = u.RandomInclusive(0, 100 * ShotDistance);
-            int OverallAttemptChance = ((MatchStatus.Evaluation[MatchStatus.PossessionTeam].Midfield / 2) +
+            double DistanceChance = u.RandomInclusive(0, 100 * Convert.ToInt32(ShotDistance));
+            double OverallAttemptChance = ((MatchStatus.Evaluation[MatchStatus.PossessionTeam].Midfield / 2) +
                                         MatchStatus.Evaluation[MatchStatus.PossessionTeam].Attack + (MatchStatus.Evaluation[MatchStatus.PossessionTeam].Striker * 2) / 3) / ShotDistance;
             ShotAttempt = DistanceChance <= OverallAttemptChance;
 
@@ -276,14 +275,17 @@ namespace GoalLine.Matchday
             {
                 if (PossessionChange)
                 {
-                    if ((MatchStatus.PossessionTeam == Constants.AwayTeam && MatchStatus.BallX == 2) || (MatchStatus.PossessionTeam == Constants.HomeTeam && MatchStatus.BallX == -2))
+                    if ((MatchStatus.PossessionTeam == Constants.AwayTeam && MatchStatus.BallX >= BALLXMAX - 1) || (MatchStatus.PossessionTeam == Constants.HomeTeam && MatchStatus.BallX <= BALLXMIN + 1))
                     {
                         bool hoofedAway = u.RandomInclusive(0, 100) < MatchStatus.Evaluation[MatchStatus.PossessionTeam].Defence / 4;
                         if (hoofedAway)
                         {
                             RaiseEvent(MatchEventType.Hoofed);
-                            MatchStatus.BallX = 0;
-                            if(u.RandomInclusive(0,1) == 1)
+
+                            // TODO: Randomise this based on strength of players
+                            int hoofDistance = u.RandomInclusive(1, 3);
+                            MatchStatus.BallX += (MatchStatus.PossessionTeam == Constants.HomeTeam ? hoofDistance : 0 - hoofDistance);
+                            if(u.RandomInclusive(0, 1) == 1)
                             {
                                 MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
                                 RaiseEvent(MatchEventType.OppositionGotThereFirst);
@@ -292,16 +294,21 @@ namespace GoalLine.Matchday
                     }
                 }
 
-                int ballDirection = MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1;
-                bool ballMovesInDirection = SuccessfulEvent();
-
-                if (ballMovesInDirection)
+                double ballDirection = MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1;
+                if (ballDirection < BALLXMIN)
                 {
-                    if ((MatchStatus.BallX > -2 && ballDirection == -1) || (MatchStatus.BallX < 2 && ballDirection == 1))
-                    {
-                        MatchStatus.BallX += ballDirection;
-                    }
+                    MatchStatus.BallX = BALLXMIN;
+                } 
+                else if (ballDirection > BALLXMAX)
+                {
+                    MatchStatus.BallX = BALLXMAX;
+                } 
+                else if (SuccessfulEvent())
+                {
+                    MatchStatus.BallX += ballDirection;
                 }
+
+                
             }
 
             MatchStatus.PossessionUnits[MatchStatus.PossessionTeam]++;
@@ -314,59 +321,59 @@ namespace GoalLine.Matchday
 
         private bool SuccessfulEvent()
         {
-            int For = 0;
-            int Against = 0;
+            double For = 0;
+            double Against = 0;
 
-            switch (MatchStatus.BallX)
+            int ForTeam = (MatchStatus.BallX < BALLXCENTRE ? Constants.AwayTeam : Constants.HomeTeam);
+            int AgainstTeam = 1 - ForTeam;
+
+            switch (Math.Floor(MatchStatus.BallX))
             {
-                case -2:
-                    For = MatchStatus.Evaluation[Constants.HomeTeam].Defence;
-                    Against = MatchStatus.Evaluation[Constants.AwayTeam].Striker;
-                    break;
-
-                case -1:
-                    For = MatchStatus.Evaluation[Constants.HomeTeam].Midfield;
-                    Against = MatchStatus.Evaluation[Constants.AwayTeam].Attack;
-                    break;
-
                 case 0:
-                    if (MatchStatus.PossessionTeam == Constants.HomeTeam)
-                    {
-                        For = MatchStatus.Evaluation[Constants.HomeTeam].Midfield + HomeAdvantage;
-                        Against = MatchStatus.Evaluation[Constants.AwayTeam].Midfield;
-                    }
-                    else
-                    {
-                        For = MatchStatus.Evaluation[Constants.AwayTeam].Midfield;
-                        Against = MatchStatus.Evaluation[Constants.HomeTeam].Midfield;
-                    }
-
+                case 7:
+                    For = (MatchStatus.Evaluation[ForTeam].Defence + MatchStatus.Evaluation[ForTeam].Goalkeeping) * 0.8;
+                    Against = MatchStatus.Evaluation[AgainstTeam].Striker;
                     break;
 
                 case 1:
-                    For = MatchStatus.Evaluation[Constants.AwayTeam].Midfield;
-                    Against = MatchStatus.Evaluation[Constants.HomeTeam].Attack; 
+                case 6:
+                    For = MatchStatus.Evaluation[ForTeam].Defence;
+                    Against = MatchStatus.Evaluation[AgainstTeam].Striker;
                     break;
 
                 case 2:
-                    For = MatchStatus.Evaluation[Constants.AwayTeam].Defence; 
-                    Against = MatchStatus.Evaluation[Constants.HomeTeam].Striker;
+                case 5:
+                    For = (MatchStatus.Evaluation[ForTeam].Defence + MatchStatus.Evaluation[ForTeam].Midfield) * 0.6;
+                    Against = MatchStatus.Evaluation[AgainstTeam].Attack;
                     break;
+
+                case 3:
+                case 4:
+                    For = MatchStatus.Evaluation[ForTeam].Midfield;
+                    Against = (MatchStatus.Evaluation[AgainstTeam].Midfield + MatchStatus.Evaluation[AgainstTeam].Attack) * 0.6;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
 
             }
 
-
-            return u.RandomInclusive(0, For) >= u.RandomInclusive(0, Against * 2 );
+            // TODO: "x2" multiplier depends on player factors. Or maybe the above mulipliers do..... 
+            return u.RandomInclusive(0, Convert.ToInt32(For)) >= u.RandomInclusive(0, Convert.ToInt32(Against) * 2 );
         }
 
         void DoGoalKick()
         {
-            RaiseEvent(MatchEventType.GoalKick);
             MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
+            MatchStatus.BallX = (MatchStatus.PossessionTeam == Constants.HomeTeam ? BALLXMIN : BALLXMAX);
+            RaiseEvent(MatchEventType.GoalKick);
+            
 
+            // TODO: Take into account goalkeeper strength
             int strength = u.RandomInclusive(0, MatchStatus.Evaluation[MatchStatus.PossessionTeam].Goalkeeping);
             int ballDirection = MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1;
-            MatchStatus.BallX = 2 * (0 - ballDirection);
+
+            MatchStatus.BallX += (0 - ballDirection);
 
             if (strength <= 30)
             {
@@ -377,22 +384,24 @@ namespace GoalLine.Matchday
             } else
             {
                 RaiseEvent(MatchEventType.Hoofed);
-                MatchStatus.BallX += 3 * ballDirection; // Hard kick
+                MatchStatus.BallX += 4 * ballDirection; // Hard kick
             }
 
         }
 
         void DoCorner()
         {
+            // TODO: Some logic in here to move the ball to the "Y" position of the correct corner
+            MatchStatus.BallX = (MatchStatus.PossessionTeam == Constants.HomeTeam ? BALLXMIN : BALLXMAX);
             RaiseEvent(MatchEventType.CornerStart);
-            //MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
+            
             int ballDirection = MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1;
-            MatchStatus.BallX = 2 * (0 - ballDirection);
+            MatchStatus.BallX += ballDirection;
 
             int MidChance = u.RandomInclusive(0, MatchStatus.Evaluation[MatchStatus.PossessionTeam].Midfield);
             int DefChance = u.RandomInclusive(0, MatchStatus.Evaluation[1 - MatchStatus.PossessionTeam].Defence);
 
-            RaiseEvent(MatchEventType.Cross);
+            RaiseEvent(MatchEventType.Cross); // TODO: This should be Corner Taken
 
             if (MidChance > DefChance)
             {
@@ -437,10 +446,13 @@ namespace GoalLine.Matchday
                 if (ShotSuccess)
                 {
                     MatchStatus.Score[MatchStatus.PossessionTeam]++;
+                    MatchStatus.BallX = BALLXMAX * (1 - MatchStatus.PossessionTeam);
+                    MatchStatus.BallY = BALLYCENTRE;
                     RaiseEvent(MatchEventType.Goal);
 
                     MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
-                    MatchStatus.BallX = 0;
+                    MatchStatus.BallX = BALLXCENTRE;
+                    MatchStatus.BallY = BALLYCENTRE;
                 }
                 else
                 {
