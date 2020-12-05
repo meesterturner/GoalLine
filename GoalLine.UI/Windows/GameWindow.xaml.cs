@@ -357,7 +357,6 @@ namespace GoalLine.UI
 
             Thread t = new Thread(() =>
             {
-                Thread.CurrentThread.IsBackground = true;
                 Thread.Sleep(250);
 
                 if (EndOfDay)
@@ -370,13 +369,9 @@ namespace GoalLine.UI
                 }
             });
 
+            t.IsBackground = true;
             t.Start();
-
-            while(t.IsAlive)
-            {
-                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { })); // DoEvents, kinda
-            }
-
+            UiUtils.WaitForThread(t);
             UiUtils.RemoveControl((WaitScreen[ReturnedUIObjects.GridContainer] as Grid));
 
             if(EndOfDay)

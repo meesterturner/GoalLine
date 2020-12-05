@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 using System.Windows.Media;
@@ -10,6 +10,7 @@ using System.Windows;
 using GoalLine.Resources;
 using System.Windows.Media.Imaging;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace GoalLine.UI.Utils
 {
@@ -215,6 +216,14 @@ namespace GoalLine.UI.Utils
             Grid.SetColumnSpan(t, span);
             Grid.SetRow(t, y);
             g.Children.Add(t);
+        }
+
+        public static void WaitForThread(Thread t)
+        {
+            while (t.IsAlive)
+            {
+                Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { })); // DoEvents, kinda
+            }
         }
 
         // ----- Helper functions -----

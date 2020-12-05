@@ -25,13 +25,13 @@ namespace GoalLine.UI.GameScreens
             if(!MatchdayComplete)
             {
                 Thread rm = new Thread(this.RunMatchday);
+                rm.IsBackground = true;
                 rm.Start();
-                return null;
+
+                return new ScreenReturnData(ScreenReturnCode.None);
             } else
             {
-                ScreenReturnData s = new ScreenReturnData();
-                s.ReturnCode = ScreenReturnCode.MatchdayComplete;
-                return s;
+                return new ScreenReturnData(ScreenReturnCode.MatchdayComplete);
             }
             
         }
