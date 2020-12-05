@@ -3,6 +3,8 @@ using System.Windows.Controls;
 using GoalLine.Matchday;
 using GoalLine.UI.Utils;
 using GoalLine.Resources;
+using GoalLine.Structures;
+using GoalLine.Data;
 
 namespace GoalLine.UI.GameScreens
 {
@@ -31,7 +33,11 @@ namespace GoalLine.UI.GameScreens
                 return new ScreenReturnData(ScreenReturnCode.None);
             } else
             {
-                return new ScreenReturnData(ScreenReturnCode.MatchdayComplete);
+                FixtureAdapter fa = new FixtureAdapter();
+                WorldAdapter wa = new WorldAdapter();
+                
+                SetupData.Parent.ShowResultsScreen(fa.GetFixtures(wa.CurrentDate));
+                return new ScreenReturnData(ScreenReturnCode.None);
             }
             
         }

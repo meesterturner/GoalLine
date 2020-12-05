@@ -166,7 +166,7 @@ namespace GoalLine.UI.GameScreens
 
         public ScreenReturnData ContinueButtonClick()
         {
-            return new ScreenReturnData(ScreenReturnCode.Ok);
+            return new ScreenReturnData(ScreenReturnCode.Next);
         }
     }
 }

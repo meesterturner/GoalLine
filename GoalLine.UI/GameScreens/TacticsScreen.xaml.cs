@@ -26,11 +26,14 @@ namespace GoalLine.UI.GameScreens
             if (ctlFormation.ChangesNotSaved)
             {
                 UiUtils.OpenDialogBox(UiUtils.MainWindowGrid, LangResources.CurLang.Formation, LangResources.CurLang.FormationNotSaved, new List<DialogButton>() { new DialogButton(LangResources.CurLang.OK, null, null) });
-                return new ScreenReturnData(ScreenReturnCode.Cancel);
+                return new ScreenReturnData(ScreenReturnCode.None);
             }
             else
             {
-                return new ScreenReturnData(ScreenReturnCode.Ok);
+                if (MyTeam)
+                    return new ScreenReturnData(ScreenReturnCode.Next);
+                else
+                    return new ScreenReturnData(ScreenReturnCode.Ok);
             }
         }
 

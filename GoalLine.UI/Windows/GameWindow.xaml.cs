@@ -189,14 +189,12 @@ namespace GoalLine.UI
             Button b = (Button)sender;
             
             int id = Convert.ToInt32(b.Name.Substring(10));
-            ScreenReturnData result = CurrentScreen.MainButtonClick(id);
+            GoToNextScreen(CurrentScreen.MainButtonClick(id));
+        }
 
-            if(result == null)
-            {
-                return;
-            }
-
-            switch(result.ReturnCode)
+        private void GoToNextScreen(ScreenReturnData result)
+        {
+            switch (result.ReturnCode)
             {
                 case ScreenReturnCode.Ok:
                 case ScreenReturnCode.Cancel:
@@ -205,10 +203,15 @@ namespace GoalLine.UI
                     {
                         ShowingNewGame = false;
                         NextManagerOrContinueDay(); // Start manager loop
-                    } else
+                    }
+                    else
                     {
                         PreviousGameScreen();
                     }
+                    break;
+
+                case ScreenReturnCode.Next:
+                    NextManagerOrContinueDay();
                     break;
 
                 case ScreenReturnCode.Error:
@@ -226,9 +229,6 @@ namespace GoalLine.UI
                 default:
                     throw new NotImplementedException();
             }
-
-            
-           
         }
 
         private void ShowErrorDialog(string Message)
@@ -238,29 +238,7 @@ namespace GoalLine.UI
 
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
-            ScreenReturnData result;
-
-            result = CurrentScreen.ContinueButtonClick();
-
-            switch (result.ReturnCode)
-            {
-                case ScreenReturnCode.Ok:
-                case ScreenReturnCode.None:
-                    NextManagerOrContinueDay();
-                    break;
-
-                case ScreenReturnCode.Error:
-                    ShowErrorDialog(result.Message);
-                    break;
-
-
-                case ScreenReturnCode.Cancel:
-                    // do nothing
-                    break;
-
-                default:
-                    throw new NotImplementedException("This return code not implemented for Continue button");
-            }  
+            GoToNextScreen(CurrentScreen.ContinueButtonClick());
         }
 
         private void NextManagerOrContinueDay()
@@ -537,6 +515,13 @@ namespace GoalLine.UI
             GameScreenSetup data = new GameScreenSetup();
             data.TeamData = t;
             ShowGameScreen(new TacticsScreen(), data, MyTeam);
+        }
+
+        public void ShowResultsScreen(List<Fixture> f)
+        {
+            GameScreenSetup data = new GameScreenSetup();
+            data.FixtureData = f;
+            ShowGameScreen(new ResultsScreen(), data, true);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

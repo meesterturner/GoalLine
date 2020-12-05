@@ -466,10 +466,6 @@ namespace GoalLine.Matchday
                 }
                 else
                 {
-                    if(Interactive)
-                    {
-                        int temp = 1;
-                    }
                     bool SafeHands = (u.RandomInclusive(0, MatchStatus.Evaluation[1 - MatchStatus.PossessionTeam].Goalkeeping) < GKChance);
                     if (SafeHands)
                     {

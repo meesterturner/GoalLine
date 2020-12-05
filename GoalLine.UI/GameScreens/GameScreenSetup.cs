@@ -19,6 +19,7 @@ namespace GoalLine.UI.GameScreens
         public Team TeamData;
         public Player PlayerData;
         public Manager ManagerData;
+        public List<Fixture> FixtureData;
 
     }
 }

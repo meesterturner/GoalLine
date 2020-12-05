@@ -30,7 +30,10 @@ namespace GoalLine.UI.GameScreens
 
         public ScreenReturnData ContinueButtonClick()
         {
-            return new ScreenReturnData(ScreenReturnCode.Ok);
+            if(MyTeam)
+                return new ScreenReturnData(ScreenReturnCode.Next);
+            else
+                return new ScreenReturnData(ScreenReturnCode.Ok);
         }
 
         public ScreenReturnData MainButtonClick(int buttonId)

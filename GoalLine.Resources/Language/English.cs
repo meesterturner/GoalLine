@@ -20,6 +20,7 @@ namespace GoalLine.Resources.Language
         public string AreYouSureYouWantToQuit => "Are you sure you want to quit, and lose any unsaved progress?";
         public string AreYouSureYouWantToUndo => "Are you sure you want to undo all unsaved changes?";
         public string AverageRating => "Average Rating";
+        public string Away => "Away";
         public string Back => "Back";
         public string BoardOfDirectors => "Board of Directors";
         public string Cancel => "Cancel";
