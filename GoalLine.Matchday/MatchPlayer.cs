@@ -295,21 +295,35 @@ namespace GoalLine.Matchday
                     }
                 }
 
-                double ballDirection = MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1;
-                if (ballDirection < BALLXMIN)
+                // TODO: Make the second part of this depend on passing
+                double ballXDir = (MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1) * u.RandomInclusive(-1, 1);
+                if(ballXDir != 0)
                 {
-                    MatchStatus.BallX = BALLXMIN;
-                } 
-                else if (ballDirection > BALLXMAX)
-                {
-                    MatchStatus.BallX = BALLXMAX;
-                } 
-                else if (SuccessfulEvent())
-                {
-                    MatchStatus.BallX += ballDirection;
+                    if (SuccessfulEvent())
+                    {
+                        MatchStatus.BallX += ballXDir;
+
+                        if (ballXDir < BALLXMIN)
+                            MatchStatus.BallX = BALLXMIN;
+
+                        if (ballXDir > BALLXMAX)
+                            MatchStatus.BallX = BALLXMAX;
+                    }
                 }
 
-                
+                // TODO: Make this depend on passing
+                double ballYDir = u.RandomInclusive(-1, 1) * u.RandomInclusive(0, 1);
+                if (SuccessfulEvent())
+                {
+                    MatchStatus.BallY += ballYDir;
+
+                    if (ballYDir < BALLYMIN)
+                        MatchStatus.BallY = BALLYMIN;
+
+                    if (ballYDir > BALLYMAX)
+                        MatchStatus.BallY = BALLYMAX;
+                }
+
             }
 
             MatchStatus.PossessionUnits[MatchStatus.PossessionTeam]++;
@@ -367,6 +381,7 @@ namespace GoalLine.Matchday
         {
             MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
             MatchStatus.BallX = (MatchStatus.PossessionTeam == Constants.HomeTeam ? BALLXMIN : BALLXMAX);
+            MatchStatus.BallY = BALLYCENTRE;
             RaiseEvent(MatchEventType.GoalKick);
             
 
@@ -374,18 +389,21 @@ namespace GoalLine.Matchday
             int strength = u.RandomInclusive(0, MatchStatus.Evaluation[MatchStatus.PossessionTeam].Goalkeeping);
             int ballDirection = MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1;
 
-            MatchStatus.BallX += (0 - ballDirection);
+            //MatchStatus.BallX += (0 - ballDirection);
 
             if (strength <= 30)
             {
-                MatchStatus.BallX += 1 * ballDirection; // Light kick
+                MatchStatus.BallX += 2 * ballDirection; // Light kick
+                MatchStatus.BallY = u.RandomInclusive(Convert.ToInt32(BALLYMIN + 1), Convert.ToInt32(BALLYMAX - 1));
             } else if(strength >= 31 && strength <= 66)
             {
-                MatchStatus.BallX += 2 * ballDirection; // Medium kick
+                MatchStatus.BallX += 3 * ballDirection; // Medium kick
+                MatchStatus.BallY = u.RandomInclusive(Convert.ToInt32(BALLYMIN + 1), Convert.ToInt32(BALLYMAX - 1));
             } else
             {
-                RaiseEvent(MatchEventType.Hoofed);
+                MatchStatus.BallY = u.RandomInclusive(Convert.ToInt32(BALLYMIN), Convert.ToInt32(BALLYMAX));
                 MatchStatus.BallX += 4 * ballDirection; // Hard kick
+                RaiseEvent(MatchEventType.Hoofed);
             }
 
         }
@@ -394,16 +412,20 @@ namespace GoalLine.Matchday
         {
             // TODO: Some logic in here to move the ball to the "Y" position of the correct corner
             MatchStatus.BallX = (MatchStatus.PossessionTeam == Constants.HomeTeam ? BALLXMIN : BALLXMAX);
+            MatchStatus.BallY = (MatchStatus.BallY >= BALLYCENTRE ? BALLYMAX : BALLYMIN);
             RaiseEvent(MatchEventType.CornerStart);
             
-            int ballDirection = MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1;
-            MatchStatus.BallX += ballDirection;
+            int ballXDir = (MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1);
+            int ballYDir = (MatchStatus.BallY == BALLYMIN ? 1 : -1);
+            MatchStatus.BallX += ballXDir;
 
             int MidChance = u.RandomInclusive(0, MatchStatus.Evaluation[MatchStatus.PossessionTeam].Midfield);
             int DefChance = u.RandomInclusive(0, MatchStatus.Evaluation[1 - MatchStatus.PossessionTeam].Defence);
 
             if(SuccessfulEvent())
             {
+                ballYDir = ballYDir * u.RandomInclusive(1, 4);
+                MatchStatus.BallY += ballYDir;
                 RaiseEvent(MatchEventType.Cross); // TODO: This should be Corner Taken
 
                 if (MidChance > DefChance)
@@ -412,13 +434,17 @@ namespace GoalLine.Matchday
                 }
                 else
                 {
-                    RaiseEvent(MatchEventType.Dispossessed);
+                    MatchStatus.BallX += ballXDir * u.RandomInclusive(0, 2);
                     MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
+                    RaiseEvent(MatchEventType.Dispossessed);
                 }
             } else
             {
-                RaiseEvent(MatchEventType.CornerOpposition);
+
+                ballYDir = ballYDir * u.RandomInclusive(1, 2);
+                MatchStatus.BallY += ballYDir;
                 MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
+                RaiseEvent(MatchEventType.CornerOpposition);
             }
             
         }
