@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace GoalLine.Data
 {
-    public class Utils
+    public class Maths
     {
         private Random rng;
 
-        public Utils()
+        public Maths()
         {
             rng = new Random();
         }

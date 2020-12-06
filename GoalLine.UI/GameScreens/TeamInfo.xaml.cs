@@ -160,7 +160,7 @@ namespace GoalLine.UI.GameScreens
         private Grid GeneratePlayerTitleBlock(Player p)
         {
             PlayerAdapter pa = new PlayerAdapter();
-            Data.Utils u = new Data.Utils();
+            Maths u = new Maths();
 
             Grid g;
             g = GenerateBlankBlockGrid(3, p.DisplayName(PersonNameReturnType.FirstnameLastname), 2);

@@ -13,7 +13,7 @@ namespace GoalLine.Matchday
 {
     class MatchPlayer
     {
-        Utils u = new Utils();
+        Maths u = new Maths();
         private int HomeAdvantage = 7;
         private int EventCountThisSecond;
 

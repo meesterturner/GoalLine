@@ -39,7 +39,7 @@ namespace GoalLine.Data
 
             List<string> AvailableNames = new List<string>();
 
-            Utils rand = new Utils();
+            Maths rand = new Maths();
             LeagueAdapter la = new LeagueAdapter();
             List<League> Leagues = la.GetLeagues();
 
@@ -93,7 +93,7 @@ namespace GoalLine.Data
             string[] LastName = TextResources.NameList(NameListResource.LastNames, ResourceLanguage.en);
 
 
-            Utils rand = new Utils();
+            Maths rand = new Maths();
 
             for (int i = 0; i <= MAXPLAYERS - 1; i++)
             {
@@ -210,7 +210,7 @@ namespace GoalLine.Data
 
         private void AssignPlayersToTeam(int TeamID)
         {
-            Utils rand = new Utils();
+            Maths rand = new Maths();
             AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Goalkeeper, PlayerPositionSide.Centre, rand.RandomInclusive(1, 3));
 
             AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Defender, PlayerPositionSide.Left, rand.RandomInclusive(1, 3));
@@ -233,7 +233,7 @@ namespace GoalLine.Data
 
         private void AssignPlayersToTeam_Worker(int TeamID, PlayerPosition pos, PlayerPositionSide side, int max)
         {
-            Utils rand = new Utils();
+            Maths rand = new Maths();
 
             for (int i = 1; i <= max; i++)
             {

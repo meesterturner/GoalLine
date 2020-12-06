@@ -62,7 +62,7 @@ namespace GoalLine.Data
                 return templates[0];
             } else
             {
-                Utils u = new Utils();
+                Maths u = new Maths();
                 int r = u.RandomInclusive(0, count - 1);
                 return templates[r];
             }
