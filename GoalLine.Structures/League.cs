@@ -10,6 +10,8 @@ namespace GoalLine.Structures
     {
         public int UniqueID { get; set; }
         public string Name { get; set; }
+        public string ShortName { get; set; }
+        public int PlayerEffectivenessBase { get; set; }
     }
 
     public class LeagueTableRecord // If anyone questions this, it's because we might need to add our own custom bits in later

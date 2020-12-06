@@ -11,7 +11,7 @@ namespace GoalLine.Data
     {
         private const int STARTYEAR = 2020;
         private const int MAXTEAMSPERLEAGUE = 22;
-        private const int MAXPLAYERS = 6000;
+        private const int MAXPLAYERS = 15000;
 
         public void CreateWorld()
         {
@@ -68,7 +68,7 @@ namespace GoalLine.Data
                     TeamAdapter ta = new TeamAdapter();
                     int NewID = ta.AddTeam(NewTeam);
 
-                    AssignPlayersToTeam(NewID);
+                    AssignPlayersToTeam(NewID, L.PlayerEffectivenessBase);
 
                     // TODO: Temporary AI manager assignment needs replacing
                     Manager NewManager = new Manager();
@@ -91,7 +91,7 @@ namespace GoalLine.Data
 
             string[] FirstName = TextResources.NameList(NameListResource.FirstNames, ResourceLanguage.en);
             string[] LastName = TextResources.NameList(NameListResource.LastNames, ResourceLanguage.en);
-
+            (int min, int max)[] Ranges = { (0, 40), (20, 60), (40, 80), (60, 100)  };
 
             Maths rand = new Maths();
 
@@ -179,10 +179,13 @@ namespace GoalLine.Data
 
                 }
 
-                NewPlayer.Agility = rand.RandomInclusive(0, 100);
-                NewPlayer.Attitude = rand.RandomInclusive(0, 100);
-                NewPlayer.Speed = rand.RandomInclusive(0, 100);
-                NewPlayer.Stamina = rand.RandomInclusive(0, 100);
+
+                int range = rand.GaussianDistributedRandom_Int(0, Ranges.GetUpperBound(0));
+
+                NewPlayer.Agility = rand.RandomInclusive(Ranges[range].min, Ranges[range].max);
+                NewPlayer.Attitude = rand.RandomInclusive(Ranges[range].min, Ranges[range].max);
+                NewPlayer.Speed = rand.RandomInclusive(Ranges[range].min, Ranges[range].max);
+                NewPlayer.Stamina = rand.RandomInclusive(Ranges[range].min, Ranges[range].max);
 
                 NewPlayer.Wages = rand.RandomInclusive(5, 80) * 100;
 
@@ -200,38 +203,60 @@ namespace GoalLine.Data
             League L;
 
             L = new League();
-            L.Name = "Fenwick League 1";
+            L.Name = "Premiership";
+            L.ShortName = "VP";
+            L.PlayerEffectivenessBase = 85;
             la.AddLeague(L);
 
             L = new League();
-            L.Name = "Fenwick League 2";
+            L.Name = "League 1";
+            L.ShortName = "L1";
+            L.PlayerEffectivenessBase = 65;
+            la.AddLeague(L);
+
+            L = new League();
+            L.Name = "League 2";
+            L.ShortName = "L2";
+            L.PlayerEffectivenessBase = 40;
+            la.AddLeague(L);
+
+            L = new League();
+            L.Name = "Conference";
+            L.ShortName = "CON";
+            L.PlayerEffectivenessBase = 30;
             la.AddLeague(L);
         }
 
-        private void AssignPlayersToTeam(int TeamID)
+        private void AssignPlayersToTeam(int TeamID, int effBase)
         {
+            const int PlayerEffectiveBand = 15;
+            const int PlayerEffectiveBandDown = -2;
             Maths rand = new Maths();
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Goalkeeper, PlayerPositionSide.Centre, rand.RandomInclusive(1, 3));
 
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Defender, PlayerPositionSide.Left, rand.RandomInclusive(1, 3));
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Defender, PlayerPositionSide.Centre, rand.RandomInclusive(3, 5));
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Defender, PlayerPositionSide.Right, rand.RandomInclusive(1, 3));
+            int max = effBase + rand.RandomInclusive(PlayerEffectiveBandDown, PlayerEffectiveBand);
+            int min = max - PlayerEffectiveBand;
 
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Midfielder, PlayerPositionSide.Left, rand.RandomInclusive(1, 3));
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Midfielder, PlayerPositionSide.Centre, rand.RandomInclusive(3, 5));
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Midfielder, PlayerPositionSide.Right, rand.RandomInclusive(1, 3));
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Goalkeeper, PlayerPositionSide.Centre, rand.RandomInclusive(1, 3), min, max);
 
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Attacker, PlayerPositionSide.Left, rand.RandomInclusive(0, 1));
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Attacker, PlayerPositionSide.Centre, rand.RandomInclusive(1, 2));
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Attacker, PlayerPositionSide.Right, rand.RandomInclusive(0, 1));
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Defender, PlayerPositionSide.Left, rand.RandomInclusive(1, 3), min, max);
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Defender, PlayerPositionSide.Centre, rand.RandomInclusive(3, 5), min, max);
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Defender, PlayerPositionSide.Right, rand.RandomInclusive(1, 3), min, max);
 
-            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Striker, PlayerPositionSide.Centre, rand.RandomInclusive(0, 2));
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Midfielder, PlayerPositionSide.Left, rand.RandomInclusive(1, 3), min, max);
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Midfielder, PlayerPositionSide.Centre, rand.RandomInclusive(3, 5), min, max);
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Midfielder, PlayerPositionSide.Right, rand.RandomInclusive(1, 3), min, max);
+
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Attacker, PlayerPositionSide.Left, rand.RandomInclusive(0, 1), min, max);
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Attacker, PlayerPositionSide.Centre, rand.RandomInclusive(1, 2), min, max);
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Attacker, PlayerPositionSide.Right, rand.RandomInclusive(0, 1), min, max);
+
+            AssignPlayersToTeam_Worker(TeamID, PlayerPosition.Striker, PlayerPositionSide.Centre, rand.RandomInclusive(0, 2), min, max);
 
             PlayerAdapter pa = new PlayerAdapter();
             pa.SetUseInitialOnPlayers(TeamID); // Run here instead of in PlayerAdapter.AssignToTeam() so it's only run once per team
         }
 
-        private void AssignPlayersToTeam_Worker(int TeamID, PlayerPosition pos, PlayerPositionSide side, int max)
+        private void AssignPlayersToTeam_Worker(int TeamID, PlayerPosition pos, PlayerPositionSide side, int max, int minEffectiveness, int maxEffectiveness)
         {
             Maths rand = new Maths();
 
@@ -239,15 +264,22 @@ namespace GoalLine.Data
             {
                 // Select free players of given type
                 PlayerAdapter pa = new PlayerAdapter();
-                List<Player> playerList = pa.GetPlayers(-1, pos, side);
+                List<Player> playerList = pa.GetPlayers(-1, pos, side, minEffectiveness, maxEffectiveness);
 
                 int found = playerList.Count();
                 if (found == 0)
                 {
-                    throw new Exception("Not enough players");
+                    playerList = (from p in pa.GetPlayers(-1, pos, side)
+                                  where p.EffectiveRating < maxEffectiveness
+                                  select p).ToList();
+
+                    found = playerList.Count();
+
+                    if (found == 0)
+                        throw new Exception("Not enough players");
                 }
 
-                int which = rand.RandomInclusive(0, found - 1);
+                int which = rand.GaussianDistributedRandom_Int(0, found - 1);
                 PlayerAdapter pad = new PlayerAdapter();
 
                 pad.AssignToTeam(playerList[which].UniqueID, TeamID, true);

@@ -101,6 +101,18 @@ namespace GoalLine.Data
                     select player).ToList();
         }
 
+        public List<Player> GetPlayers(int TeamID, PlayerPosition pos, PlayerPositionSide side, int MinEffectiveness, int MaxEffectiveness)
+        {
+            return (from player in World.Players
+                    where player.CurrentTeam == TeamID &&
+                          player.Position == pos &&
+                          player.PreferredSide == side &&
+                          player.EffectiveRating >= MinEffectiveness &&
+                          player.EffectiveRating <= MaxEffectiveness
+                         
+                    select player).ToList();
+        }
+
         public string PositionAndSideText(Player p, bool Short)
         {
             string pos = LangResources.CurLang.PositionsList[p.PositionInt];
