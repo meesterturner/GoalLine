@@ -88,6 +88,11 @@ namespace GoalLine.Data
             return retVal;
         }
 
+        public int GaussianDistributedRandom_Int(double Lower, double Upper)
+        {
+            return Convert.ToInt32(GaussianDistributedRandom(Lower, Upper));
+        }
+
         /// <summary>
         /// Returns an age based on the given DOB, and the current game date.
         /// </summary>
