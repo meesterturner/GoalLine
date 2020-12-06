@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using GoalLine.Data;
 using GoalLine.Structures;
 
@@ -72,7 +67,7 @@ namespace GoalLine.Matchday
                 RaiseEvent(MatchEventType.KickOff);
 
                 // TODO: Just in case we change the grid, this may need to change. But gets us whole numbers.
-                //MatchStatus.BallX = (MatchStatus.PossessionTeam == Constants.HomeTeam ? Math.Floor(MatchStatus.BallX) : Math.Ceiling(MatchStatus.BallX)); 
+                //MatchStatus.BallX = (PossessionHome() ? Math.Floor(MatchStatus.BallX) : Math.Ceiling(MatchStatus.BallX)); 
 
                 for (int s = 0; s <= Constants.MinsPerHalf * 60 - Constants.EventIntervalSecs; s += Constants.EventIntervalSecs)
                 {
@@ -132,6 +127,16 @@ namespace GoalLine.Matchday
             MatchCallback.MatchStatus = MatchStatus;
             MatchCallback.EventType = Ev;
             MatchCallback.UpdateUI();
+        }
+
+        private bool PossessionHome()
+        {
+            return MatchStatus.PossessionTeam == Constants.HomeTeam;
+        }
+
+        private bool PossessionAway()
+        {
+            return !PossessionHome();
         }
 
         private string FindCommentary(MatchEventType Ev)
@@ -236,7 +241,7 @@ namespace GoalLine.Matchday
             bool PossessionChange = u.RandomInclusive(0, MatchStatus.Evaluation[1 - MatchStatus.PossessionTeam].Defence) 
                 > u.RandomInclusive(0, Convert.ToInt32(MatchStatus.OverallPlayerEffectiveRating[MatchStatus.PossessionTeam] * AttackAdrenaline));
 
-            if (MatchStatus.PossessionTeam == Constants.HomeTeam && PossessionChange == true)
+            if (PossessionHome() && PossessionChange == true)
             {
                 if (u.RandomInclusive(0, 100) <= HomeAdvantage)
                 {
@@ -256,7 +261,7 @@ namespace GoalLine.Matchday
             
 
             bool ShotAttempt = false;
-            double ShotDistance = (MatchStatus.PossessionTeam == Constants.HomeTeam ?
+            double ShotDistance = (PossessionHome() ?
                     BALLXMAX - MatchStatus.BallX :
                     Math.Abs(MatchStatus.BallX - BALLXMAX));
 
@@ -276,7 +281,7 @@ namespace GoalLine.Matchday
             {
                 if (PossessionChange)
                 {
-                    if ((MatchStatus.PossessionTeam == Constants.AwayTeam && MatchStatus.BallX >= BALLXMAX - 1) || (MatchStatus.PossessionTeam == Constants.HomeTeam && MatchStatus.BallX <= BALLXMIN + 1))
+                    if ((PossessionAway() && MatchStatus.BallX >= BALLXMAX - 1) || (PossessionHome() && MatchStatus.BallX <= BALLXMIN + 1))
                     {
                         bool hoofedAway = u.RandomInclusive(0, 100) < MatchStatus.Evaluation[MatchStatus.PossessionTeam].Defence / 4;
                         if (hoofedAway)
@@ -285,7 +290,7 @@ namespace GoalLine.Matchday
 
                             // TODO: Randomise this based on strength of players
                             int hoofDistance = u.RandomInclusive(1, 3);
-                            MatchStatus.BallX += (MatchStatus.PossessionTeam == Constants.HomeTeam ? hoofDistance : 0 - hoofDistance);
+                            MatchStatus.BallX += (PossessionHome() ? hoofDistance : 0 - hoofDistance);
                             if(u.RandomInclusive(0, 1) == 1)
                             {
                                 MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
@@ -296,7 +301,7 @@ namespace GoalLine.Matchday
                 }
 
                 // TODO: Make the second part of this depend on passing
-                double ballXDir = (MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1) * u.RandomInclusive(-1, 1);
+                double ballXDir = (PossessionHome() ? 1 : -1) * u.RandomInclusive(-1, 1);
                 if(ballXDir != 0)
                 {
                     if (SuccessfulEvent())
@@ -380,14 +385,14 @@ namespace GoalLine.Matchday
         void DoGoalKick()
         {
             MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
-            MatchStatus.BallX = (MatchStatus.PossessionTeam == Constants.HomeTeam ? BALLXMIN : BALLXMAX);
+            MatchStatus.BallX = (PossessionHome() ? BALLXMIN : BALLXMAX);
             MatchStatus.BallY = BALLYCENTRE;
             RaiseEvent(MatchEventType.GoalKick);
             
 
             // TODO: Take into account goalkeeper strength
             int strength = u.RandomInclusive(0, MatchStatus.Evaluation[MatchStatus.PossessionTeam].Goalkeeping);
-            int ballDirection = MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1;
+            int ballDirection = PossessionHome() ? 1 : -1;
 
             //MatchStatus.BallX += (0 - ballDirection);
 
@@ -411,11 +416,11 @@ namespace GoalLine.Matchday
         void DoCorner()
         {
             // TODO: Some logic in here to move the ball to the "Y" position of the correct corner
-            MatchStatus.BallX = (MatchStatus.PossessionTeam == Constants.HomeTeam ? BALLXMIN : BALLXMAX);
+            MatchStatus.BallX = (PossessionHome() ? BALLXMIN : BALLXMAX);
             MatchStatus.BallY = (MatchStatus.BallY >= BALLYCENTRE ? BALLYMAX : BALLYMIN);
             RaiseEvent(MatchEventType.CornerStart);
             
-            int ballXDir = (MatchStatus.PossessionTeam == Constants.HomeTeam ? 1 : -1);
+            int ballXDir = (PossessionHome() ? 1 : -1);
             int ballYDir = (MatchStatus.BallY == BALLYMIN ? 1 : -1);
             MatchStatus.BallX += ballXDir;
 

@@ -43,10 +43,9 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="MatchDayRunner.cs" />
-    <Compile Include="Enums.cs" />
     <Compile Include="IMatchCallback.cs" />
-    <Compile Include="MatchEventCommentary.cs" />
     <Compile Include="MatchPlayer.cs" />
+    <Compile Include="MatchPlayerSupport.cs" />
     <Compile Include="MatchStatus.cs" />
     <Compile Include="PlayerStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

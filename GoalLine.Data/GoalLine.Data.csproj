@@ -46,12 +46,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EmailAdapter.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="MatchEventChanceItem.cs" />
     <Compile Include="FixtureAdapter.cs" />
     <Compile Include="FormationAdapter.cs" />
     <Compile Include="Initialiser.cs" />
     <Compile Include="GameIO.cs" />
     <Compile Include="LeagueAdapter.cs" />
     <Compile Include="ManagerAdapter.cs" />
+    <Compile Include="MatchEventCommentary.cs" />
     <Compile Include="PlayerAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeamAdapter.cs" />
