@@ -46,6 +46,8 @@
     <Compile Include="Formation.cs" />
     <Compile Include="League.cs" />
     <Compile Include="Manager.cs" />
+    <Compile Include="MatchEventChanceItem.cs" />
+    <Compile Include="MatchEventCommentary.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Fixture.cs" />

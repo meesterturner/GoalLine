@@ -52,4 +52,37 @@ namespace GoalLine.Structures
         BoardOfDirectors = 0,
         Other = 255
     }
+
+    public enum MatchEventType
+    {
+        None,
+        Goal,
+        GoalKick,
+        Save,
+        Miss,
+        Foul,
+        FreeKick,
+        HalfTime,
+        FullTime,
+        KickOff,
+        Dispossessed,
+        Hoofed,
+        Shot,
+        BadSave,
+        CornerAnnounce,
+        CornerStart,
+        CornerOpposition,
+        Cross,
+        OppositionGotThereFirst
+    }
+
+    public enum MatchSegment
+    {
+        None,
+        FirstHalf,
+        SecondHalf,
+        ExtraTimeFirstHalf,
+        ExtraTimeSecondHalf,
+        Penalties
+    }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GoalLine.Data
+namespace GoalLine.Structures
 {
     public class MatchEventChanceItem
     {
