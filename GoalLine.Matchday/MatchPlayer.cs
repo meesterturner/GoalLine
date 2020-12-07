@@ -263,7 +263,7 @@ namespace GoalLine.Matchday
             bool ShotAttempt = false;
             double ShotDistance = (PossessionHome() ?
                     BALLXMAX - MatchStatus.BallX :
-                    Math.Abs(MatchStatus.BallX - BALLXMAX));
+                    Math.Abs(MatchStatus.BallX - BALLXMIN));
 
             double DistanceChance = u.RandomInclusive(0, 100 * Convert.ToInt32(ShotDistance));
             double OverallAttemptChance = ((MatchStatus.Evaluation[MatchStatus.PossessionTeam].Midfield / 2) +
@@ -301,7 +301,7 @@ namespace GoalLine.Matchday
                 }
 
                 // TODO: Make the second part of this depend on passing
-                double ballXDir = (PossessionHome() ? 1 : -1) * u.RandomInclusive(-1, 1);
+                double ballXDir = (PossessionHome() ? 1 : -1) * u.GaussianDistributedRandom(-1.5, 1.5);
                 if(ballXDir != 0)
                 {
                     if (SuccessfulEvent())
@@ -317,7 +317,7 @@ namespace GoalLine.Matchday
                 }
 
                 // TODO: Make this depend on passing
-                double ballYDir = u.RandomInclusive(-1, 1) * u.RandomInclusive(0, 1);
+                double ballYDir = u.RandomInclusive(-1, 1) * u.GaussianDistributedRandom(-1.5, 1.5);
                 if (SuccessfulEvent())
                 {
                     MatchStatus.BallY += ballYDir;
