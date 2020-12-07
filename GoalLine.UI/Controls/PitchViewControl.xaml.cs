@@ -76,7 +76,7 @@ namespace GoalLine.UI.Controls
         {
             bool animTemp = Animate;
             Animate = false;
-            BallPosition = ((SegmentCountX - 1) / 2, (SegmentCountY - 1) / 2);
+            BallPosition = (((double)SegmentCountX - 1) / 2, ((double)SegmentCountY - 1) / 2);
             Animate = animTemp;
         }
 
