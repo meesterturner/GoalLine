@@ -8,6 +8,14 @@ namespace GoalLine.Structures
         public int Attitude { get; set; }
         public int Speed { get; set; }
         public int Stamina { get; set; }
+        public int Passing { get; set; }
+        public int Marking { get; set; }
+        public int Balance { get; set; }
+        public int Tackling { get; set; }
+        public int Shooting { get; set; }
+        public int Handling { get; set; }
+        public int Heading { get; set; }
+        public int Influence { get; set; }
 
         public int Wages { get; set; }
 
@@ -67,15 +75,36 @@ namespace GoalLine.Structures
         {
             get
             {
-                return (double)EffectiveRating / 20;
+                return (double)OverallRating / 20;
             }
         }
 
-        public int EffectiveRating
+        public int OverallRating
         {
             get
             {
-                return (Agility + Attitude + Speed + Stamina) / 4;
+                int standardSet = Agility + Attitude + Speed;
+                switch (Position)
+                {
+                    case PlayerPosition.Goalkeeper:
+                        return (Agility + Attitude + Handling + Balance + Passing) / 5;
+
+                    case PlayerPosition.Defender:
+                        return (standardSet + Stamina + Passing + Marking + Tackling + Heading) / 7;
+
+                    case PlayerPosition.Midfielder:
+                        return (standardSet + Stamina + Passing + Tackling + Heading) / 7;
+
+                    case PlayerPosition.Attacker:
+                        return (standardSet + Stamina + Passing + Tackling + Shooting) / 7;
+
+                    case PlayerPosition.Striker:
+                        return (standardSet + Stamina + Shooting) / 5;
+
+                    default:
+                        return (standardSet + Stamina) / 4;
+
+                }
             }
         }
     }

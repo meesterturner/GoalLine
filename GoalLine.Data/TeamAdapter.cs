@@ -32,7 +32,7 @@ namespace GoalLine.Data
 
             foreach (Player p in players)
             {
-                TotalRating += p.EffectiveRating;
+                TotalRating += p.OverallRating;
             }
                 
 

@@ -107,8 +107,8 @@ namespace GoalLine.Data
                     where player.CurrentTeam == TeamID &&
                           player.Position == pos &&
                           player.PreferredSide == side &&
-                          player.EffectiveRating >= MinEffectiveness &&
-                          player.EffectiveRating <= MaxEffectiveness
+                          player.OverallRating >= MinEffectiveness &&
+                          player.OverallRating <= MaxEffectiveness
                          
                     select player).ToList();
         }
