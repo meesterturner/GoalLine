@@ -39,7 +39,7 @@ namespace GoalLine.Processes.ProcessLogic
                 ap.PlayerID = p.UniqueID;
                 ap.Pos = p.Position;
                 ap.Side = p.PreferredSide;
-                ap.Rating = p.EffectiveRating;
+                ap.Rating = p.OverallRating;
 
                 retVal.Add(ap);
             }

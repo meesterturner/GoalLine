@@ -182,10 +182,19 @@ namespace GoalLine.Data
 
                 int range = rand.GaussianDistributedRandom_Int(0, Ranges.GetUpperBound(0));
 
-                NewPlayer.Agility = rand.RandomInclusive(Ranges[range].min, Ranges[range].max);
-                NewPlayer.Attitude = rand.RandomInclusive(Ranges[range].min, Ranges[range].max);
-                NewPlayer.Speed = rand.RandomInclusive(Ranges[range].min, Ranges[range].max);
-                NewPlayer.Stamina = rand.RandomInclusive(Ranges[range].min, Ranges[range].max);
+                NewPlayer.Agility = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, true);
+                NewPlayer.Attitude = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, true);
+                NewPlayer.Speed = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, p != PlayerPosition.Goalkeeper);
+                NewPlayer.Stamina = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, true);
+
+                NewPlayer.Passing = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, p == PlayerPosition.Defender || p == PlayerPosition.Midfielder || p == PlayerPosition.Attacker);
+                NewPlayer.Marking = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, p == PlayerPosition.Defender);
+                NewPlayer.Balance = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, p == PlayerPosition.Goalkeeper);
+                NewPlayer.Tackling = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, p == PlayerPosition.Defender || p == PlayerPosition.Midfielder);
+                NewPlayer.Shooting = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, p == PlayerPosition.Attacker || p == PlayerPosition.Striker);
+                NewPlayer.Handling = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, p == PlayerPosition.Goalkeeper);
+                NewPlayer.Heading = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, p == PlayerPosition.Midfielder || p == PlayerPosition.Attacker);
+                NewPlayer.Influence = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, rand.RandomInclusive(0, 1) == 1);
 
                 NewPlayer.Wages = rand.RandomInclusive(5, 80) * 100;
 
@@ -194,6 +203,17 @@ namespace GoalLine.Data
                 PlayerAdapter pa = new PlayerAdapter();
                 pa.AddPlayer(NewPlayer);
             }
+        }
+
+        private int RandomPlayerStat(Maths m, int min, int max, bool preferThisPosition)
+        {
+            if (!preferThisPosition)
+            {
+                min -= 20;
+                if (min < 1)
+                    min = 1;
+            }
+            return m.GaussianDistributedRandom_Int(min, max);
         }
 
         private void CreateLeagues()
@@ -270,7 +290,7 @@ namespace GoalLine.Data
                 if (found == 0)
                 {
                     playerList = (from p in pa.GetPlayers(-1, pos, side)
-                                  where p.EffectiveRating < maxEffectiveness
+                                  where p.OverallRating < maxEffectiveness
                                   select p).ToList();
 
                     found = playerList.Count();
