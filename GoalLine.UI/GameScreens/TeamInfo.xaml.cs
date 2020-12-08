@@ -190,10 +190,19 @@ namespace GoalLine.UI.GameScreens
         private Grid GeneratePlayerStatsBlock(Player p)
         {
             List<(string, int)> stats = new List<(string, int)>();
-            stats.Add(("Agility", p.Agility));
-            stats.Add(("Attitude", p.Attitude));
-            stats.Add(("Speed", p.Speed));
-            stats.Add(("Stamina", p.Stamina));
+            stats.Add((LangResources.CurLang.Agility, p.Agility));
+            stats.Add((LangResources.CurLang.Attitude, p.Attitude));
+            stats.Add((LangResources.CurLang.Speed, p.Speed));
+            stats.Add((LangResources.CurLang.Stamina, p.Stamina));
+            
+            stats.Add((LangResources.CurLang.Passing, p.Passing));
+            stats.Add((LangResources.CurLang.Marking, p.Marking));
+            stats.Add((LangResources.CurLang.Balance, p.Balance));
+            stats.Add((LangResources.CurLang.Tackling, p.Tackling));
+            stats.Add((LangResources.CurLang.Shooting, p.Shooting));
+            stats.Add((LangResources.CurLang.Handling, p.Handling));
+            stats.Add((LangResources.CurLang.Heading, p.Heading));
+            stats.Add((LangResources.CurLang.Influence, p.Influence));
 
             int halfList = (int)Math.Ceiling((double)stats.Count() / 2) - 1;
 

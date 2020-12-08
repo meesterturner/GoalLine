@@ -17,11 +17,14 @@ namespace GoalLine.Resources.Language
             new EmailTemplate(10150, EmailType.BadMatch, "Disappointing match", "We are disappointed to note the team's performance in the {0}:{1} defeat against {2}.\n\nWe are hopeful that this is only a one-off and won't be repeated.")
         };
 
+        public string Agility => "Agility";
+        public string Attitude => "Attitude";
         public string AreYouSureYouWantToQuit => "Are you sure you want to quit, and lose any unsaved progress?";
         public string AreYouSureYouWantToUndo => "Are you sure you want to undo all unsaved changes?";
         public string AverageRating => "Average Rating";
         public string Away => "Away";
         public string Back => "Back";
+        public string Balance => "Balance";
         public string BoardOfDirectors => "Board of Directors";
         public string Cancel => "Cancel";
         public string DailyUpdate => "Running Daily Processes...";
@@ -39,17 +42,22 @@ namespace GoalLine.Resources.Language
         public string FormationSavedSuccessfully => "Formation has been saved successfully.";
         public string GameHasNotBeenSavedBefore => "This game has not been saved before, please give it a name.";
         public string GameSavedSuccessfully => "Game saved successfully as \"{0}\"";
+        public string Handling => "Handling";
+        public string Heading => "Heading";
         public string Home => "Home";
+        public string Influence => "Influence";
         public string LastName => "Last Name";
         public string League => "League";
         public string LeagueTableHeadings => "Pos," + Team + ",P,W,D,L,F,A,GD,Pts";
         public string LoadSavedGame => "Load Saved Game";
+        public string Marking => "Marking";
         public string MatchDay => "Match Day";
         public string Name => "Name";
         public string Next => "Next";
         public string No => "No";
         public string NoDataToShow => "There is no data to show in this list";
         public string OK => "OK";
+        public string Passing => "Passing";
         public string Players => "Players";
         public string PleaseEnterDateOfBirth => "Please enter a valid date of birth.";
         public string PleaseEnterYourName => "Please enter your name.";
@@ -72,15 +80,20 @@ namespace GoalLine.Resources.Language
         public string SaveFileDoesNotExist => "File {0} does not exist in this save game.";
         public string SaveGame => "Save Game";
         public string SaveGameNotSpecified => "SaveGameName not specified";
+        public string Shooting => "Shooting";
         public Dictionary<int, string> SidesList => new Dictionary<int, string>()
         {
             {-10, "Left" },
             {0, "Centre" },
             {10, "Right" }
         };
+
+        public string Speed => "Speed";
+        public string Stamina => "Stamina";
         public string Start => "Start";
         public string StartNewGame => "Start New Game";
         public string Subject => "Subject";
+        public string Tackling => "Tackling";
         public string Tactics => "Tactics";
         public string Team => "Team";
         public string UndoChanges => "Undo Changes";
