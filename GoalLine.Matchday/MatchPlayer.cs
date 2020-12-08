@@ -310,12 +310,12 @@ namespace GoalLine.Matchday
         void DoCorner()
         {
             // TODO: Some logic in here to move the ball to the "Y" position of the correct corner
-            MatchStatus.BallX = (PossessionHome() ? BALLXMIN : BALLXMAX);
+            MatchStatus.BallX = (PossessionHome() ? BALLXMAX : BALLXMIN);
             MatchStatus.BallY = (MatchStatus.BallY >= BALLYCENTRE ? BALLYMAX : BALLYMIN);
             RaiseEvent(MatchEventType.CornerStart);
             
-            int ballXDir = (PossessionHome() ? 1 : -1);
-            int ballYDir = (MatchStatus.BallY == BALLYMIN ? 1 : -1);
+            int ballXDir = (PossessionHome() ? -1 : 1);
+            int ballYDir = (MatchStatus.BallY <= BALLYMIN ? 1 : -1);
             MatchStatus.BallX += ballXDir;
 
             int MidChance = maths.RandomInclusive(0, MatchStatus.Evaluation[MatchStatus.PossessionTeam].Midfield);
