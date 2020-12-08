@@ -88,8 +88,8 @@ namespace GoalLine.Matchday
 
                 TacticEvaluation Eval = new TacticEvaluation();
 
-                int Selected = 0;
-                int TotalEffectiveRating = 0;
+                int selected = 0;
+                int totalEffectiveRating = 0;
 
                 foreach (KeyValuePair<int, TeamPlayer> kvp in Team.Players)
                 {
@@ -100,29 +100,64 @@ namespace GoalLine.Matchday
 
                     if (ps.Playing == PlayerSelectionStatus.Starting)
                     {
-                        Selected++;
+                        selected++;
+                        PlayerPosition pos = GridLengthToPosition(kvp.Value);
+                        int effectiveRating = CalculatePlayerEffectivenessInPosition(kvp.Value);
+                        totalEffectiveRating += effectiveRating;
 
-                        Player p = pa.GetPlayer(ps.PlayerID);
-                        ps.EffectiveRating = p.OverallRating;
-                        TotalEffectiveRating += ps.EffectiveRating;
+                        Eval.AddRatingForPosition(pos, effectiveRating);
 
-                        Eval.AddRatingForPosition(p.Position, p.OverallRating);
                     }
+                    //{
+                        //Selected++;
 
-                    if (ps.Playing != PlayerSelectionStatus.None)
-                    {
-                        StatusList.Add(ps);
-                    }
+                        //Player p = pa.GetPlayer(ps.PlayerID);
+                        //ps.EffectiveRating = p.OverallRating;
+                        //TotalEffectiveRating += ps.EffectiveRating;
+
+                        //Eval.AddRatingForPosition(p.Position, p.OverallRating);
+                    //}
+
+                    //if (ps.Playing != PlayerSelectionStatus.None)
+                    //{
+                    //    StatusList.Add(ps);
+                    //}
 
                     ps = null;
                 }
 
-                ms.OverallPlayerEffectiveRating[t] = (Selected > 0 ? TotalEffectiveRating / Selected : 0);
+                ms.OverallPlayerEffectiveRating[t] = (selected > 0 ? totalEffectiveRating / selected : 0);
 
                 ms.PlayerStatuses[t] = StatusList;
                 ms.Evaluation[t] = Eval;
                 StatusList = null;
             }
+        }
+
+        private PlayerPosition GridLengthToPosition(TeamPlayer tp)
+        {
+            switch(tp.PlayerGridY)
+            {
+                case 0:
+                    return PlayerPosition.Goalkeeper;
+
+                case 1:
+                case 2:
+                    return PlayerPosition.Defender;
+
+                case 3:
+                case 4:
+                    return PlayerPosition.Midfielder;
+
+                case 5:
+                    return PlayerPosition.Attacker;
+
+                case 6:
+                case 7:
+                    return PlayerPosition.Striker;
+            }
+
+            throw new ArgumentOutOfRangeException();
         }
 
         private int CalculatePlayerEffectivenessInPosition(TeamPlayer tp)
@@ -142,28 +177,23 @@ namespace GoalLine.Matchday
             switch (p.Position)
             {
                 case PlayerPosition.Goalkeeper:
-                    range.from = 0;
-                    range.to = 0;
+                    range = (0, 0);
                     break;
 
                 case PlayerPosition.Defender:
-                    range.from = 1;
-                    range.to = 2;
+                    range = (1, 2);
                     break;
 
                 case PlayerPosition.Midfielder:
-                    range.from = 2;
-                    range.to = 4;
+                    range = (2, 4);
                     break;
 
                 case PlayerPosition.Attacker:
-                    range.from = 4;
-                    range.to = 5;
+                    range = (4, 5);
                     break;
 
                 case PlayerPosition.Striker:
-                    range.from = 6;
-                    range.to = 6;
+                    range = (6, 6);
                     break;
 
                 default:
@@ -179,18 +209,15 @@ namespace GoalLine.Matchday
             switch (p.PreferredSide)
             {
                 case PlayerPositionSide.Left:
-                    range.from = 0;
-                    range.to = 1;
+                    range = (0, 1);
                     break;
 
                 case PlayerPositionSide.Centre:
-                    range.from = 1;
-                    range.to = 3;
+                    range = (1, 3);
                     break;
 
                 case PlayerPositionSide.Right:
-                    range.from = 3;
-                    range.to = 4;
+                    range = (3, 4);
                     break;
 
                 default:
