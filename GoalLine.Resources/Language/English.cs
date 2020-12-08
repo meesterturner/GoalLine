@@ -17,6 +17,29 @@ namespace GoalLine.Resources.Language
             new EmailTemplate(10150, EmailType.BadMatch, "Disappointing match", "We are disappointed to note the team's performance in the {0}:{1} defeat against {2}.\n\nWe are hopeful that this is only a one-off and won't be repeated.")
         };
 
+        public List<MatchEventCommentary> Commentaries { get; private set; } = new List<MatchEventCommentary>()
+        {
+            new MatchEventCommentary(MatchEventType.Foul, "His legs were hacked off right in front of the crowd", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.FreeKick, "He goes to take the free kick", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.FullTime, "And that's the end of the match!", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.Goal, "The keeper had no chance with that one!", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.GoalKick, "The keeper boots it down the pitch", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.HalfTime, "The end of a thrilling first half", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.KickOff, "This hotly anticipated game begins!", MatchSegment.FirstHalf),
+            new MatchEventCommentary(MatchEventType.KickOff, "The second half gets under way!", MatchSegment.SecondHalf),
+            new MatchEventCommentary(MatchEventType.Miss, "Oooh, surely he will be kicking himself for that one!", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.Save, "Cracking reactions by the keeper there", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.BadSave, "He's palmed it away with his fingers", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.Dispossessed, "The ball is intercepted by the opposition", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.Hoofed, "He hoofs it right up the pitch", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.Shot, "He's hit it towards the goal...", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.CornerStart, "He runs up to the corner", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.CornerAnnounce, "That'll be a corner!", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.Cross, "The ball is crossed in", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.CornerOpposition, "The ball is safely taken by the opposition", MatchSegment.None),
+            new MatchEventCommentary(MatchEventType.OppositionGotThereFirst, "Their opponents got to the ball before they could", MatchSegment.None)
+        };
+
         public string Agility => "Agility";
         public string Attitude => "Attitude";
         public string AreYouSureYouWantToQuit => "Are you sure you want to quit, and lose any unsaved progress?";

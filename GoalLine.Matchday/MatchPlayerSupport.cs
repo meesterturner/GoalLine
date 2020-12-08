@@ -5,11 +5,39 @@ using System.Text;
 using System.Threading.Tasks;
 using GoalLine.Structures;
 using GoalLine.Data;
+using GoalLine.Resources;
 
 namespace GoalLine.Matchday
 {
+    /// <summary>
+    /// Supporting calculations and peripheral functions for playing a match.
+    /// </summary>
     class MatchPlayerSupport
     {
+        bool Interactive;
+        List<MatchEventCommentary> CommentaryList;
+
+        public MatchPlayerSupport(bool Interactive)
+        {
+            this.Interactive = Interactive;
+            if (Interactive)
+            {
+                CommentaryList = LangResources.CurLang.Commentaries;
+            }
+        }
+
+        public string FindCommentary(MatchEventType Ev, MatchStatus ms)
+        {
+            string retVal = "";
+
+            List<MatchEventCommentary> PossComment = (from C in CommentaryList
+                                                      where C.EventType == Ev && (C.Segment == MatchSegment.None || C.Segment == ms.Segment)
+                                                      select C).ToList();
+
+            retVal = PossComment[0].RawText;
+            return retVal;
+        }
+
         Maths maths = new Maths();
 
         public MatchEventType RandomiseEvent(List<MatchEventChanceItem> events)
@@ -42,6 +70,150 @@ namespace GoalLine.Matchday
             }
 
             throw new ArithmeticException();
+        }
+
+        public void PopulatePlayerStatuses(MatchStatus ms, Fixture f)
+        {
+            List<PlayerStatus> StatusList;
+
+            for (int t = 0; t <= 1; t++)
+            {
+                ms.OverallPlayerEffectiveRating[t] = 0;
+
+                TeamAdapter ta = new TeamAdapter();
+                Team Team = ta.GetTeam(f.TeamIDs[t]);
+
+                PlayerAdapter pa = new PlayerAdapter();
+                StatusList = new List<PlayerStatus>();
+
+                TacticEvaluation Eval = new TacticEvaluation();
+
+                int Selected = 0;
+                int TotalEffectiveRating = 0;
+
+                foreach (KeyValuePair<int, TeamPlayer> kvp in Team.Players)
+                {
+
+                    PlayerStatus ps = new PlayerStatus();
+                    ps.PlayerID = kvp.Value.PlayerID;
+                    ps.Playing = kvp.Value.Selected;
+
+                    if (ps.Playing == PlayerSelectionStatus.Starting)
+                    {
+                        Selected++;
+
+                        Player p = pa.GetPlayer(ps.PlayerID);
+                        ps.EffectiveRating = p.OverallRating;
+                        TotalEffectiveRating += ps.EffectiveRating;
+
+                        Eval.AddRatingForPosition(p.Position, p.OverallRating);
+                    }
+
+                    if (ps.Playing != PlayerSelectionStatus.None)
+                    {
+                        StatusList.Add(ps);
+                    }
+
+                    ps = null;
+                }
+
+                ms.OverallPlayerEffectiveRating[t] = (Selected > 0 ? TotalEffectiveRating / Selected : 0);
+
+                ms.PlayerStatuses[t] = StatusList;
+                ms.Evaluation[t] = Eval;
+                StatusList = null;
+            }
+        }
+
+        private int CalculatePlayerEffectivenessInPosition(TeamPlayer tp)
+        {
+            const double PlayerOutOfPositionMultiplier = 0.85;
+            const double GKOutOfPositionMultiplier = 0.3;
+
+            PlayerAdapter pa = new PlayerAdapter();
+            Player p = pa.GetPlayer(tp.PlayerID);
+            (int from, int to) range;
+
+            int pitchLength = tp.PlayerGridY; // Flipped around due to axis changes.
+            int pitchWidth = tp.PlayerGridX;
+
+            double retVal = (double)p.OverallRating / 100; // Starting point - current rating, decimalised
+            // TODO: Health percent needs to affect this as well. 
+            switch (p.Position)
+            {
+                case PlayerPosition.Goalkeeper:
+                    range.from = 0;
+                    range.to = 0;
+                    break;
+
+                case PlayerPosition.Defender:
+                    range.from = 1;
+                    range.to = 2;
+                    break;
+
+                case PlayerPosition.Midfielder:
+                    range.from = 2;
+                    range.to = 4;
+                    break;
+
+                case PlayerPosition.Attacker:
+                    range.from = 4;
+                    range.to = 5;
+                    break;
+
+                case PlayerPosition.Striker:
+                    range.from = 6;
+                    range.to = 6;
+                    break;
+
+                default:
+                    throw new IndexOutOfRangeException();
+            }
+
+            if (pitchLength < range.from)
+                retVal *= Math.Pow(PlayerOutOfPositionMultiplier, range.from - pitchLength);
+
+            if (pitchLength > range.to)
+                retVal *= Math.Pow(PlayerOutOfPositionMultiplier, pitchLength - range.to);
+
+            switch (p.PreferredSide)
+            {
+                case PlayerPositionSide.Left:
+                    range.from = 0;
+                    range.to = 1;
+                    break;
+
+                case PlayerPositionSide.Centre:
+                    range.from = 1;
+                    range.to = 3;
+                    break;
+
+                case PlayerPositionSide.Right:
+                    range.from = 3;
+                    range.to = 4;
+                    break;
+
+                default:
+                    throw new IndexOutOfRangeException();
+
+            }
+
+            if (pitchWidth < range.from)
+                retVal *= Math.Pow(PlayerOutOfPositionMultiplier, range.from - pitchWidth);
+
+            if (pitchWidth > range.to)
+                retVal *= Math.Pow(PlayerOutOfPositionMultiplier, pitchWidth - range.to);
+
+            // If GK is out of position, or another player is in GK position, automatically set to 30%
+            // on top of what may already have been worked out.
+            if (pitchLength == 0 && pitchWidth == 2 && p.Position != PlayerPosition.Goalkeeper)
+                retVal *= GKOutOfPositionMultiplier;
+
+            if ((pitchLength != 0 || pitchWidth != 2) && p.Position == PlayerPosition.Goalkeeper)
+                retVal *= GKOutOfPositionMultiplier;
+
+
+            return Convert.ToInt32(retVal * 100);
         }
     }
 }

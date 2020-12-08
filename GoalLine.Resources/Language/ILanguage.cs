@@ -8,6 +8,7 @@ namespace GoalLine.Resources.Language
         string _Name { get; }
         
         List<EmailTemplate> EmailTemplates { get; }
+        List<MatchEventCommentary> Commentaries { get; }
 
         string Agility { get; }
         string AreYouSureYouWantToQuit { get; }
