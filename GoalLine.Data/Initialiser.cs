@@ -286,20 +286,13 @@ namespace GoalLine.Data
                 PlayerAdapter pa = new PlayerAdapter();
                 List<Player> playerList = pa.GetPlayers(-1, pos, side, minEffectiveness, maxEffectiveness);
 
-                int found = playerList.Count();
-                if (found == 0)
-                {
-                    playerList = (from p in pa.GetPlayers(-1, pos, side)
-                                  where p.OverallRating < maxEffectiveness
-                                  select p).ToList();
+                if (playerList.Count() == 0)
+                    playerList = pa.GetPlayers(-1, pos, side, 0, maxEffectiveness);
 
-                    found = playerList.Count();
+                if (playerList.Count() == 0)
+                    playerList = pa.GetPlayers(-1, pos, side);
 
-                    if (found == 0)
-                        throw new Exception("Not enough players");
-                }
-
-                int which = rand.GaussianDistributedRandom_Int(0, found - 1);
+                int which = rand.GaussianDistributedRandom_Int(0, playerList.Count() - 1);
                 PlayerAdapter pad = new PlayerAdapter();
 
                 pad.AssignToTeam(playerList[which].UniqueID, TeamID, true);

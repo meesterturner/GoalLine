@@ -211,10 +211,10 @@ namespace GoalLine.Matchday
                         Selected++;
 
                         Player p = pa.GetPlayer(ps.PlayerID);
-                        ps.EffectiveRating = p.EffectiveRating;
+                        ps.EffectiveRating = p.OverallRating;
                         TotalEffectiveRating += ps.EffectiveRating;
 
-                        Eval.AddRatingForPosition(p.Position, p.EffectiveRating); 
+                        Eval.AddRatingForPosition(p.Position, p.OverallRating); 
                     }
 
                     if(ps.Playing != PlayerSelectionStatus.None)
@@ -301,31 +301,31 @@ namespace GoalLine.Matchday
                 }
 
                 // TODO: Make the second part of this depend on passing
-                double ballXDir = (PossessionHome() ? 1 : -1) * u.GaussianDistributedRandom(-1.5, 1.5);
+                double ballXDir = (PossessionHome() ? 1 : -1) * u.RandomInclusive(-1, 1);
                 if(ballXDir != 0)
                 {
                     if (SuccessfulEvent())
                     {
                         MatchStatus.BallX += ballXDir;
 
-                        if (ballXDir < BALLXMIN)
+                        if (MatchStatus.BallX < BALLXMIN)
                             MatchStatus.BallX = BALLXMIN;
 
-                        if (ballXDir > BALLXMAX)
+                        if (MatchStatus.BallX > BALLXMAX)
                             MatchStatus.BallX = BALLXMAX;
                     }
                 }
 
                 // TODO: Make this depend on passing
-                double ballYDir = u.RandomInclusive(-1, 1) * u.GaussianDistributedRandom(-1.5, 1.5);
+                double ballYDir = u.RandomInclusive(-1, 1) * u.RandomInclusive(-1, 1);
                 if (SuccessfulEvent())
                 {
                     MatchStatus.BallY += ballYDir;
 
-                    if (ballYDir < BALLYMIN)
+                    if (MatchStatus.BallY < BALLYMIN)
                         MatchStatus.BallY = BALLYMIN;
 
-                    if (ballYDir > BALLYMAX)
+                    if (MatchStatus.BallY > BALLYMAX)
                         MatchStatus.BallY = BALLYMAX;
                 }
 
@@ -514,6 +514,8 @@ namespace GoalLine.Matchday
             }
             else
             {
+                MatchStatus.BallX = BALLXMAX * (1 - MatchStatus.PossessionTeam);
+                MatchStatus.BallY = BALLYCENTRE + u.GaussianDistributedRandom(-1.5, 1.5);
                 RaiseEvent(MatchEventType.Miss);
                 DoGoalKick();
             }
