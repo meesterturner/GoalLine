@@ -41,7 +41,7 @@ namespace GoalLine.Data
             return new ResultData(true);
         }
 
-        public bool AddFormation(string Name, List<Point2> Points, bool System)
+        public int AddFormation(string Name, List<Point2> Points, bool System)
         { 
             if(System) // Let's catch the programmer's errors! 
             {
@@ -60,7 +60,7 @@ namespace GoalLine.Data
 
             World.Formations.Add(nf);
 
-            return true;
+            return nf.UniqueID;
         }
 
         public SuitablePlayerInfo SuitablePlayerPositions(Point2 p)

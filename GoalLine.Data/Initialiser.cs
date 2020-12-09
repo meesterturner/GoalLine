@@ -13,6 +13,8 @@ namespace GoalLine.Data
         private const int MAXTEAMSPERLEAGUE = 22;
         private const int MAXPLAYERS = 15000;
 
+        int maxFormationID;
+
         public void CreateWorld()
         {
             AssignDates();
@@ -41,6 +43,7 @@ namespace GoalLine.Data
 
             Maths rand = new Maths();
             LeagueAdapter la = new LeagueAdapter();
+            TeamAdapter ta = new TeamAdapter();
             List<League> Leagues = la.GetLeagues();
 
             foreach(League L in Leagues)
@@ -64,10 +67,10 @@ namespace GoalLine.Data
                     r = rand.RandomInclusive(0, TeamLastName.GetUpperBound(0));
                     NewTeam.Name = NewTeam.Name + TeamLastName[r];
                     NewTeam.LeagueID = L.UniqueID;
+                    NewTeam.CurrentFormation = rand.RandomInclusive(0, maxFormationID);
 
-                    TeamAdapter ta = new TeamAdapter();
+                    
                     int NewID = ta.AddTeam(NewTeam);
-
                     AssignPlayersToTeam(NewID, L.PlayerEffectivenessBase);
 
                     // TODO: Temporary AI manager assignment needs replacing
@@ -322,7 +325,7 @@ namespace GoalLine.Data
             p.Add(new Point2(1, 6)); // Att/Stk
             p.Add(new Point2(3, 6));
 
-            fa.AddFormation("442", p, true);
+            maxFormationID = fa.AddFormation("442", p, true);
             p = null;
             // --------------------------------
 
@@ -345,7 +348,7 @@ namespace GoalLine.Data
             p.Add(new Point2(1, 6)); // Att/Stk
             p.Add(new Point2(3, 6));
 
-            fa.AddFormation("532", p, true);
+            maxFormationID = fa.AddFormation("532", p, true);
             p = null;
             // --------------------------------
 
@@ -368,7 +371,7 @@ namespace GoalLine.Data
             p.Add(new Point2(1, 6));
             p.Add(new Point2(3, 6));
 
-            fa.AddFormation("Diamond", p, true);
+            maxFormationID = fa.AddFormation("Diamond", p, true);
             p = null;
             // --------------------------------
         }
