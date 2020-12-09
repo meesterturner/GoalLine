@@ -309,6 +309,8 @@ namespace GoalLine.Matchday
 
         void DoCorner()
         {
+            RaiseEvent(MatchEventType.CornerAnnounce);
+
             // TODO: Some logic in here to move the ball to the "Y" position of the correct corner
             MatchStatus.BallX = (PossessionHome() ? BALLXMAX : BALLXMIN);
             MatchStatus.BallY = (MatchStatus.BallY >= BALLYCENTRE ? BALLYMAX : BALLYMIN);
@@ -323,20 +325,7 @@ namespace GoalLine.Matchday
 
             if(SuccessfulEvent())
             {
-                ballYDir = ballYDir * maths.RandomInclusive(1, 4);
-                MatchStatus.BallY += ballYDir;
-                RaiseEvent(MatchEventType.Cross); // TODO: This should be Corner Taken
-
-                if (MidChance > DefChance)
-                {
-                    DoShot(MidChance, DefChance);
-                }
-                else
-                {
-                    MatchStatus.BallX += ballXDir * maths.RandomInclusive(0, 2);
-                    MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
-                    RaiseEvent(MatchEventType.Dispossessed);
-                }
+                AdditionalShot();
             } else
             {
 
@@ -346,6 +335,32 @@ namespace GoalLine.Matchday
                 RaiseEvent(MatchEventType.CornerOpposition);
             }
             
+        }
+
+        void AdditionalShot()
+        {
+            int MidChance = maths.RandomInclusive(0, MatchStatus.Evaluation[MatchStatus.PossessionTeam].Midfield);
+            int DefChance = maths.RandomInclusive(0, MatchStatus.Evaluation[1 - MatchStatus.PossessionTeam].Defence);
+
+            if (MidChance > DefChance)
+            {
+                DoShot(MidChance, DefChance);
+            }
+            else
+            {
+                MatchStatus.PossessionTeam = 1 - MatchStatus.PossessionTeam;
+                int ballXDir = (PossessionHome() ? 1 : -1); // Clear the ball away
+                MatchStatus.BallX += ballXDir * maths.GaussianDistributedRandom(1, 2.5);
+                MatchStatus.BallY += maths.GaussianDistributedRandom(-1.5, 1.5);
+                
+                if (MatchStatus.BallY < BALLYMIN)
+                    MatchStatus.BallY = 0; // TODO: Throw ins
+
+                if (MatchStatus.BallY > BALLYMAX)
+                    MatchStatus.BallY = BALLYMAX; // TODO: Throw ins
+
+                RaiseEvent(MatchEventType.Clearance);
+            }
         }
 
         void DoShot()
@@ -371,12 +386,11 @@ namespace GoalLine.Matchday
                 GKChance = GKChanceOriginal;
             }
 
-            bool ShotOnTarget = maths.RandomInclusive(0, AttChance) > AttChance * 0.66f; // TODO: Two-thirds of a chance of being on target
+            bool ShotOnTarget = maths.RandomInclusive(0, AttChance) > AttChance * 0.66f;
 
             if (ShotOnTarget)
             {
                 bool ShotSuccess = AttChance > GKChance;
-                
 
                 if (ShotSuccess)
                 {
@@ -400,7 +414,6 @@ namespace GoalLine.Matchday
                     else
                     {
                         RaiseEvent(MatchEventType.BadSave); // TODO: Possible for someone to get it....
-                        RaiseEvent(MatchEventType.CornerAnnounce);
                         DoCorner();
                     }
 
@@ -408,10 +421,33 @@ namespace GoalLine.Matchday
             }
             else
             {
+                bool hitWoodwork = (maths.RandomInclusive(0, 100) < 35);
+
                 MatchStatus.BallX = BALLXMAX * (1 - MatchStatus.PossessionTeam);
-                MatchStatus.BallY = BALLYCENTRE + maths.GaussianDistributedRandom(-1.5, 1.5);
-                RaiseEvent(MatchEventType.Miss);
-                DoGoalKick();
+
+                if (!hitWoodwork)
+                {
+                    MatchStatus.BallY = BALLYCENTRE + maths.GaussianDistributedRandom(-1.5, 1.5);
+                    RaiseEvent(MatchEventType.Miss);
+                    DoGoalKick();
+                }
+                else
+                {
+                    if (MatchStatus.BallY == BALLYCENTRE)
+                    {
+                        // Move ball back
+                        RaiseEvent(MatchEventType.HitCrossbar);
+                    }
+                    else
+                    {
+                        RaiseEvent(MatchEventType.HitPost);
+                        DoCorner();
+
+                    }
+
+
+                }
+                
             }
 
             
