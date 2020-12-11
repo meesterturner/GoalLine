@@ -12,5 +12,7 @@ namespace GoalLine.Matchday
         public int PlayerID { get; set; }
         public PlayerSelectionStatus Playing { get; set; }
         public int EffectiveRating { get; set; }
+        public double CurrentHealth { get; set; }
+        public double CurrentHealthDeterioration { get; set; }
     }
 }

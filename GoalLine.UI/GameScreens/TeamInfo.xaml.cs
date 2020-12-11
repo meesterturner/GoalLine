@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -163,7 +164,8 @@ namespace GoalLine.UI.GameScreens
             Maths u = new Maths();
 
             Grid g;
-            g = GenerateBlankBlockGrid(3, p.DisplayName(PersonNameReturnType.FirstnameLastname), 2);
+            g = GenerateBlankBlockGrid(3, p.DisplayName(PersonNameReturnType.FirstnameLastname) + 
+                (Debugger.IsAttached ? string.Format(", ID: {0}", p.UniqueID.ToString()) : ""), 2);
             Grid.SetColumnSpan(g, 2);
 
             TextBlock t = new TextBlock();

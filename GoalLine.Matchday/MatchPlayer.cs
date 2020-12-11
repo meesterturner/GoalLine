@@ -64,6 +64,7 @@ namespace GoalLine.Matchday
                     MatchStatus.MatchTimeSeconds += Constants.EventIntervalSecs;
 
                     DetermineNextEvent();
+                    mps.UpdatePlayerHealthForMatch(MatchStatus);
                 }
 
                 MatchStatus.BallX = BALLXCENTRE;
@@ -88,7 +89,7 @@ namespace GoalLine.Matchday
 
             FixtureAdapter fa = new FixtureAdapter();
             fa.UpdateFixture(Fixture);
-
+            mps.UpdatePlayerHealthForWorld(MatchStatus);
             MatchCallback.MatchFinished(Fixture, Interactive);
 
         }

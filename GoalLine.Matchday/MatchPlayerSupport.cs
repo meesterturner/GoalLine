@@ -90,38 +90,29 @@ namespace GoalLine.Matchday
 
                 int selected = 0;
                 int totalEffectiveRating = 0;
+                const double HealthDeteriorationPower = 4;
 
                 foreach (KeyValuePair<int, TeamPlayer> kvp in Team.Players)
                 {
+                    Player p = pa.GetPlayer(kvp.Value.PlayerID);
 
                     PlayerStatus ps = new PlayerStatus();
                     ps.PlayerID = kvp.Value.PlayerID;
                     ps.Playing = kvp.Value.Selected;
+                    ps.CurrentHealth = p.Health;
+                    ps.CurrentHealthDeterioration = Math.Pow(1 - (Convert.ToDouble(p.Fitness) / 100), HealthDeteriorationPower);
 
                     if (ps.Playing == PlayerSelectionStatus.Starting)
                     {
                         selected++;
+                        
                         PlayerPosition pos = GridLengthToPosition(kvp.Value);
-                        int effectiveRating = CalculatePlayerEffectivenessInPosition(kvp.Value);
-                        totalEffectiveRating += effectiveRating;
-
-                        Eval.AddRatingForPosition(pos, effectiveRating);
-
+                        ps.EffectiveRating = CalculatePlayerEffectivenessInPosition(kvp.Value);
+                        totalEffectiveRating += ps.EffectiveRating;
+                        
+                        Eval.AddRatingForPosition(pos, ps.EffectiveRating);
+                        StatusList.Add(ps);
                     }
-                    //{
-                        //Selected++;
-
-                        //Player p = pa.GetPlayer(ps.PlayerID);
-                        //ps.EffectiveRating = p.OverallRating;
-                        //TotalEffectiveRating += ps.EffectiveRating;
-
-                        //Eval.AddRatingForPosition(p.Position, p.OverallRating);
-                    //}
-
-                    //if (ps.Playing != PlayerSelectionStatus.None)
-                    //{
-                    //    StatusList.Add(ps);
-                    //}
 
                     ps = null;
                 }
@@ -131,6 +122,42 @@ namespace GoalLine.Matchday
                 ms.PlayerStatuses[t] = StatusList;
                 ms.Evaluation[t] = Eval;
                 StatusList = null;
+            }
+        }
+
+        public void UpdatePlayerHealthForMatch(MatchStatus ms)
+        {
+            for (int t = 0; t <= 1; t++)
+            {
+                for(int s = 0; s < ms.PlayerStatuses[t].Count; s++)
+                {
+                    PlayerStatus stat = ms.PlayerStatuses[t][s];
+
+                    if (stat.Playing == PlayerSelectionStatus.Starting)
+                    {
+                        stat.CurrentHealth -= stat.CurrentHealthDeterioration;
+                        if (stat.CurrentHealth < 0)
+                            stat.CurrentHealth = 0;
+
+                        ms.PlayerStatuses[t][s] = stat;
+                    }
+                }
+            }
+        }
+
+        public void UpdatePlayerHealthForWorld(MatchStatus ms)
+        {
+            PlayerAdapter pa = new PlayerAdapter();
+
+            for (int t = 0; t <= 1; t++)
+            {
+                for (int s = 0; s < ms.PlayerStatuses[t].Count; s++)
+                {
+                    PlayerStatus stat = ms.PlayerStatuses[t][s];
+                    Player p = pa.GetPlayer(stat.PlayerID);
+                    p.Health = stat.CurrentHealth;
+                    pa.UpdatePlayer(p);
+                }
             }
         }
 
