@@ -46,7 +46,7 @@ namespace GoalLine.Processes.ProcessLogic
                         if (increment < 1)
                             increment = 1;
 
-                        p.Health = +increment;
+                        p.Health += increment;
 
                         if (p.Health > 100)
                             p.Health = 100;
