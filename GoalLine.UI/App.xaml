@@ -209,7 +209,7 @@
                                             <SolidColorBrush Color="{StaticResource DarkerPurple_Colour}" />
                                         </Border.BorderBrush>
                                         <Border.Background>
-                                            <SolidColorBrush Color="White" Opacity="0.5"/>
+                                            <SolidColorBrush Color="White" Opacity="0.8"/>
                                         </Border.Background>
                                     </Border>
                                     <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True" Cursor="Hand">

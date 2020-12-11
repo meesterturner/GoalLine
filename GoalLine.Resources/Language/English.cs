@@ -12,9 +12,9 @@ namespace GoalLine.Resources.Language
             new EmailTemplate(10000, EmailType.Welcome, "Welcome to the Club", "The board warmly welcomes {0} to {1}.\n\nWe hope for a long and prosperous future under your management."),
             new EmailTemplate(10001, EmailType.Welcome, "Your appointment to the Club", "Congratulations to {0} on your appointment to {1}.\n\nWe look forward to seeing your performance this coming season."),
 
-            new EmailTemplate(10100, EmailType.GoodMatch, "An excellent result!", "We are especially pleased about the {0}:{1} win against {2}.\n\nWe hope you can keep this performance up."),
+            new EmailTemplate(10100, EmailType.GoodMatch, "An excellent result!", "We are especially pleased about the {0}-{1} win against {2}.\n\nWe hope you can keep this performance up."),
 
-            new EmailTemplate(10150, EmailType.BadMatch, "Disappointing match", "We are disappointed to note the team's performance in the {0}:{1} defeat against {2}.\n\nWe are hopeful that this is only a one-off and won't be repeated.")
+            new EmailTemplate(10150, EmailType.BadMatch, "Disappointing match", "We are disappointed to note the team's performance in the {0}-{1} defeat against {2}.\n\nWe are hopeful that this is only a one-off and won't be repeated.")
         };
 
         public List<MatchEventCommentary> Commentaries { get; private set; } = new List<MatchEventCommentary>()
