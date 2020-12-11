@@ -1,16 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GoalLine.Structures;
 using GoalLine.Data;
@@ -86,16 +79,33 @@ namespace GoalLine.UI.Controls
 
                 if (WithLabels)
                 {
+                    StackPanel s = new StackPanel();
+                    s.Orientation = Orientation.Horizontal;
+
                     TextBlock playerLabel = new TextBlock();
                     playerLabel.Width = 150;
                     playerLabel.Height = 30;
                     playerLabel.Text = player.DisplayName(PersonNameReturnType.LastnameInitial);
                     playerLabel.MouseMove += new MouseEventHandler(PlayerName_MouseMove);
                     playerLabel.Tag = tp.PlayerID;
-
+                    playerLabel.VerticalAlignment = VerticalAlignment.Center;
+                    playerLabel.Cursor = Cursors.Hand;
                     PlayerLabels.Add(playerLabel);
 
-                    stkNames.Children.Add(PlayerLabels[PlayerLabels.Count - 1]);
+                    s.Children.Add(PlayerLabels[PlayerLabels.Count - 1]);
+
+                    TextBlock playerPos = new TextBlock();
+                    playerPos.Width = 60;
+                    playerPos.Height = 30;
+                    playerPos.Text = pa.PositionAndSideText(player, true);
+                    playerPos.VerticalAlignment = VerticalAlignment.Center;
+
+                    s.Children.Add(playerPos);
+
+                    s.Children.Add(GraphicUtils.StarRatingWithNumber(player.Stars));
+
+                    //stkNames.Children.Add(PlayerLabels[PlayerLabels.Count - 1]);
+                    stkNames.Children.Add(s);
                     playerLabel = null;
                 }
                 

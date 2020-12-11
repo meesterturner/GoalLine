@@ -91,18 +91,20 @@ namespace GoalLine.UI.Utils
         {
             StackPanel sp = new StackPanel();
             sp.Orientation = Orientation.Horizontal;
+            sp.VerticalAlignment = VerticalAlignment.Center;
 
             Image star = StarImage(true);
             star.Width -= 4;
             star.Height -= 4;
             sp.Children.Add(star);
+            star.VerticalAlignment = VerticalAlignment.Center;
 
             TextBlock t = new TextBlock();
             t.Text = Stars.ToString("0.0");
             t.Margin = new Thickness(3, 0, 0, 0);
             t.Style = Application.Current.FindResource("ListHeader") as Style;
             t.FontSize = 16;
-            
+            t.VerticalAlignment = VerticalAlignment.Center;
             sp.Children.Add(t);
 
 

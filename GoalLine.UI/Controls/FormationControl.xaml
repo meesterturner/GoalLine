@@ -45,7 +45,7 @@
             </Grid.RowDefinitions>
         </Grid>
 
-        <ScrollViewer x:Name="scvRows" Grid.Column="1" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Visible" Width="250">
+        <ScrollViewer x:Name="scvRows" Grid.Column="1" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Visible" Width="300" HorizontalAlignment="Left" Margin="25,0,0,0">
             <StackPanel x:Name="stkNames">
                 
            
