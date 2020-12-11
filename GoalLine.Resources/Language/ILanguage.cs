@@ -27,6 +27,7 @@ namespace GoalLine.Resources.Language
         string Emails { get; }
         string Error { get; }
         string FirstName { get; }
+        string Fitness { get;  }
         string Formation { get; }
         string FormationExists { get; }
         string FormationInvalid { get; }
@@ -37,6 +38,7 @@ namespace GoalLine.Resources.Language
         string GameSavedSuccessfully { get; }
         string Handling { get; }
         string Heading { get; }
+        string Health { get; }
         string Home { get; }
         string Influence { get; }
         string LastName { get; }
@@ -71,6 +73,7 @@ namespace GoalLine.Resources.Language
         string Stamina { get; }
         string Start { get; }
         string StartNewGame { get; }
+        string Strength { get;  }
         string Subject { get;  }
         string Tackling { get; }
         string Tactics { get; }

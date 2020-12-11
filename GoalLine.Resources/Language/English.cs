@@ -60,6 +60,7 @@ namespace GoalLine.Resources.Language
         public string Emails => "Emails";
         public string Error => "Error";
         public string FirstName => "First Name";
+        public string Fitness => "Fitness";
         public string Formation => "Formation";
         public string FormationExists => "Formation with same name exists.";
         public string FormationInvalid => "Formation must have exactly 11 points";
@@ -70,6 +71,7 @@ namespace GoalLine.Resources.Language
         public string GameSavedSuccessfully => "Game saved successfully as \"{0}\"";
         public string Handling => "Handling";
         public string Heading => "Heading";
+        public string Health => "Health";
         public string Home => "Home";
         public string Influence => "Influence";
         public string LastName => "Last Name";
@@ -118,6 +120,7 @@ namespace GoalLine.Resources.Language
         public string Stamina => "Stamina";
         public string Start => "Start";
         public string StartNewGame => "Start New Game";
+        public string Strength => "Strength";
         public string Subject => "Subject";
         public string Tackling => "Tackling";
         public string Tactics => "Tactics";

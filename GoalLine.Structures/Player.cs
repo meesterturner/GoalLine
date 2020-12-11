@@ -16,7 +16,9 @@ namespace GoalLine.Structures
         public int Handling { get; set; }
         public int Heading { get; set; }
         public int Influence { get; set; }
-
+        public int Fitness { get; set; }
+        public int Strength { get; set; }
+        public double Health { get; set; }
         public int Wages { get; set; }
 
 

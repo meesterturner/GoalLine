@@ -204,6 +204,9 @@ namespace GoalLine.UI.GameScreens
             stats.Add((LangResources.CurLang.Heading, p.Heading));
             stats.Add((LangResources.CurLang.Influence, p.Influence));
 
+            stats.Add((LangResources.CurLang.Strength, p.Strength));
+            stats.Add((LangResources.CurLang.Fitness, p.Fitness));
+
             int halfList = (int)Math.Ceiling((double)stats.Count() / 2) - 1;
 
             Grid g;
@@ -241,7 +244,7 @@ namespace GoalLine.UI.GameScreens
             Grid g;
             g = GenerateBlankBlockGrid(4, "Medical", 1);
 
-            UiUtils.AddGridData_DoubleSize(g, 0, 1, "Physical Condition", "--");
+            UiUtils.AddGridData_DoubleSize(g, 0, 1, LangResources.CurLang.Health, Convert.ToInt32(p.Health).ToString() + "%");
             UiUtils.AddGridData_DoubleSize(g, 0, 2, "Injury", "None");
             UiUtils.AddGridData_DoubleSize(g, 0, 3, "Est. Availability", "n/a");
             return g;

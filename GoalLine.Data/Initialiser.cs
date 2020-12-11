@@ -199,6 +199,10 @@ namespace GoalLine.Data
                 NewPlayer.Heading = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, p == PlayerPosition.Midfielder || p == PlayerPosition.Attacker);
                 NewPlayer.Influence = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, rand.RandomInclusive(0, 1) == 1);
 
+                NewPlayer.Fitness = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, true);
+                NewPlayer.Strength = RandomPlayerStat(rand, Ranges[range].min, Ranges[range].max, true);
+                NewPlayer.Health = rand.GaussianDistributedRandom(60, 95);
+
                 NewPlayer.Wages = rand.RandomInclusive(5, 80) * 100;
 
                 NewPlayer.DateOfBirth = DateTime.Now.AddDays(rand.RandomInclusive(0 - (32 * 365), 0-(18*365)));
