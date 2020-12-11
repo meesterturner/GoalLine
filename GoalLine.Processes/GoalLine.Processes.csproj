@@ -43,8 +43,10 @@
   <ItemGroup>
     <Compile Include="AIProcesses.cs" />
     <Compile Include="DirectorProcesses.cs" />
+    <Compile Include="MedicalProcesses.cs" />
     <Compile Include="ProcessLogic\AITeamAndTactics.cs" />
     <Compile Include="ProcessLogic\DirectorLogic.cs" />
+    <Compile Include="ProcessLogic\PlayerMedical.cs" />
     <Compile Include="ProcessLogic\SeasonFixtures.cs" />
     <Compile Include="ProcessLogic\SeasonStats.cs" />
     <Compile Include="ProcessManager.cs" />

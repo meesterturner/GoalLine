@@ -77,12 +77,6 @@ namespace GoalLine.Data
         }
 
 
-        [Obsolete("Use new functions instead")]
-        public void SetTeamPlayerSelection(int TeamID, int PlayerID, PlayerSelectionStatus Status)
-        {
-            World.Teams[TeamID].Players[PlayerID].Selected = Status;
-        }
-
         public void SetTeamPlayerStarting(int TeamID, int PlayerID, int GridX, int GridY)
         {
             TeamPlayer tp = new TeamPlayer();
@@ -187,6 +181,20 @@ namespace GoalLine.Data
                     }
                 }
             }
+        }
+
+        public PlayerSelectionStatus GetPlayerSelectionStatus(int playerID, int teamID, bool current)
+        {
+            Dictionary<int, TeamPlayer> list = new Dictionary<int, TeamPlayer>();
+            if(current)
+                list = World.Teams[teamID].Players;
+            else
+                list = World.Teams[teamID].LastKnownPick;
+
+            if (list.ContainsKey(playerID))
+                return list[playerID].Selected;
+
+            return PlayerSelectionStatus.None;
         }
     }
 }

@@ -85,6 +85,11 @@ namespace GoalLine.Data
             return NextID;
         }
 
+        public List<Player> GetPlayers()
+        {
+            return World.Players;
+        }
+
         public List<Player> GetPlayers(int TeamID)
         {
             return (from player in World.Players
@@ -133,6 +138,11 @@ namespace GoalLine.Data
             }
 
             return pos + side;
+        }
+
+        public void UpdatePlayer(Player p)
+        {
+            World.Players[p.UniqueID] = p;
         }
     }
 }
