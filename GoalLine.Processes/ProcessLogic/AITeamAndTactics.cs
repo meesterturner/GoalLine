@@ -77,6 +77,10 @@ namespace GoalLine.Processes.ProcessLogic
                         Team Opposition = ta.GetTeam(f.TeamIDs[1 - t]);
                         PlayerAdapter pa = new PlayerAdapter();
                         int[,] PlayerGridPositions = new int[5, 8]; // TODO: Maybe not hard code these...
+                        for (int x = 0; x <= PlayerGridPositions.GetUpperBound(0); x++)
+                            for (int y = 0; y <= PlayerGridPositions.GetUpperBound(1); y++)
+                                PlayerGridPositions[x, y] = -1;
+
 
                         Formation TeamFormation = new FormationAdapter().GetFormation(ThisTeam.CurrentFormation);
                         List<AvailablePlayer> avail = GetEligiblePlayers(ThisTeam, f);
