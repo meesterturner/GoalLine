@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using Newtonsoft.Json;
+using System.Text.Json;
 using GoalLine.Structures;
 using GoalLine.Resources;
 
@@ -125,14 +125,14 @@ namespace GoalLine.Data
 
             ZipFile.ExtractToDirectory(Filename, TempFolder);
 
-            World.WorldState = JsonConvert.DeserializeObject<State>(SerialisedData(FILE_WORLDSTATE));
-            World.Formations = JsonConvert.DeserializeObject<List<Formation>>(SerialisedData(FILE_FORMATIONS));
-            World.Players = JsonConvert.DeserializeObject<List<Player>>(SerialisedData(FILE_PLAYERS));
-            World.Teams = JsonConvert.DeserializeObject<List<Team>>(SerialisedData(FILE_TEAMS));
-            World.Managers = JsonConvert.DeserializeObject<List<Manager>>(SerialisedData(FILE_MANAGERS));
-            World.Leagues = JsonConvert.DeserializeObject<List<League>>(SerialisedData(FILE_LEAGUES));
-            World.Fixtures = JsonConvert.DeserializeObject<List<Fixture>>(SerialisedData(FILE_FIXTURES));
-            World.Emails = JsonConvert.DeserializeObject<Dictionary<int, List<Email>>>(SerialisedData(FILE_EMAILS));
+            World.WorldState = JsonSerializer.Deserialize<State>(SerialisedData(FILE_WORLDSTATE));
+            World.Formations = JsonSerializer.Deserialize<List<Formation>>(SerialisedData(FILE_FORMATIONS));
+            World.Players = JsonSerializer.Deserialize<List<Player>>(SerialisedData(FILE_PLAYERS));
+            World.Teams = JsonSerializer.Deserialize<List<Team>>(SerialisedData(FILE_TEAMS));
+            World.Managers = JsonSerializer.Deserialize<List<Manager>>(SerialisedData(FILE_MANAGERS));
+            World.Leagues = JsonSerializer.Deserialize<List<League>>(SerialisedData(FILE_LEAGUES));
+            World.Fixtures = JsonSerializer.Deserialize<List<Fixture>>(SerialisedData(FILE_FIXTURES));
+            World.Emails = JsonSerializer.Deserialize<Dictionary<int, List<Email>>>(SerialisedData(FILE_EMAILS));
 
             Directory.Delete(TempFolder, true);
 
@@ -143,7 +143,7 @@ namespace GoalLine.Data
 
         private void SerialiseToDisk(Object o, string FileName)
         {
-            string ObjectJson = JsonConvert.SerializeObject(o);
+            string ObjectJson = JsonSerializer.Serialize(o);
             File.WriteAllText(Path.Combine(TempFolder, FileName), ObjectJson);
         }
 

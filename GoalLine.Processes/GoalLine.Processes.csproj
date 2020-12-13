@@ -1,68 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E508150D-C0CA-42C6-B011-1CDF6DE116F8}</ProjectGuid>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GoalLine.Processes</RootNamespace>
-    <AssemblyName>GoalLine.Processes</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\GoalLine.Data\GoalLine.Data.csproj" />
+    <ProjectReference Include="..\GoalLine.Structures\GoalLine.Structures.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AIProcesses.cs" />
-    <Compile Include="DirectorProcesses.cs" />
-    <Compile Include="MedicalProcesses.cs" />
-    <Compile Include="ProcessLogic\AITeamAndTactics.cs" />
-    <Compile Include="ProcessLogic\DirectorLogic.cs" />
-    <Compile Include="ProcessLogic\PlayerMedical.cs" />
-    <Compile Include="ProcessLogic\SeasonFixtures.cs" />
-    <Compile Include="ProcessLogic\SeasonStats.cs" />
-    <Compile Include="ProcessManager.cs" />
-    <Compile Include="IProcess.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SeasonProcesses.cs" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GoalLine.Data\GoalLine.Data.csproj">
-      <Project>{5d7e0338-5365-4da7-afd8-55be7a5d7ab2}</Project>
-      <Name>GoalLine.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GoalLine.Structures\GoalLine.Structures.csproj">
-      <Project>{59791ade-64e6-445c-8069-7ad27c82f5f9}</Project>
-      <Name>GoalLine.Structures</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
