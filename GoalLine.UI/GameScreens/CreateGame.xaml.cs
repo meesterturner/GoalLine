@@ -140,7 +140,7 @@ namespace GoalLine.UI
             you.FirstName = txtFirstName.Text;
             you.LastName = txtSurname.Text;
             you.Human = true;
-            you.DateOfBirth = new DateTime(Convert.ToInt32(cboDOBDay.Text), cboDOBMonth.SelectedIndex + 1, Convert.ToInt32(cboDOBDay.Text));
+            you.DateOfBirth = new DateTime(Convert.ToInt32(cboDOBYear.Text), cboDOBMonth.SelectedIndex + 1, Convert.ToInt32(cboDOBDay.Text));
             you.Reputation = 50;
 
             ManagerAdapter ma = new ManagerAdapter();
@@ -166,7 +166,10 @@ namespace GoalLine.UI
             DateTime dob;
             try
             {
-                dob = new DateTime(Convert.ToInt32(cboDOBDay.Text), cboDOBMonth.SelectedIndex + 1, Convert.ToInt32(cboDOBDay.Text));
+                dob = new DateTime(Convert.ToInt32(cboDOBYear.Text), cboDOBMonth.SelectedIndex + 1, Convert.ToInt32(cboDOBDay.Text));
+
+                if (cboDOBDay.SelectedIndex == -1)
+                    throw new ArgumentOutOfRangeException();
             }
             catch (Exception)
             {
