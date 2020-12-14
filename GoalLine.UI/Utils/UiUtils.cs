@@ -11,6 +11,7 @@ using GoalLine.Resources;
 using System.Windows.Media.Imaging;
 using System.Windows.Input;
 using System.Windows.Threading;
+using GoalLine.UI.Controls;
 
 namespace GoalLine.UI.Utils
 {
@@ -138,22 +139,17 @@ namespace GoalLine.UI.Utils
             sp.HorizontalAlignment = HorizontalAlignment.Center;
             sp.VerticalAlignment = VerticalAlignment.Center;
 
-            ProgressBar pb = new ProgressBar();
-            pb.Width = 150;
-            pb.Height = 15;
-            pb.IsIndeterminate = true;
+            PercentageBarControl pb = new PercentageBarControl();
+            pb.Width = 602;
+            pb.Height = 52;
+            pb.Text = Text;
 
             sp.Children.Add(pb);
-
-            TextBlock tb = QuickTextblock(Text, false);
-
-            sp.Children.Add(tb);
 
             Overlay.Children.Add(sp);
 
             Dictionary<string, object> obj = new Dictionary<string, object>();
             obj.Add(ReturnedUIObjects.GridContainer, Overlay);
-            obj.Add(ReturnedUIObjects.Caption, tb);
             obj.Add(ReturnedUIObjects.ProgressBar, pb);
             return obj;
         }
